@@ -1,4 +1,3 @@
-
 void list_topologies() {
 	TFile *inf = TFile::Open("hist_bggen.root");
 	string hist_name = "hThrownTopologies_nominalCuts";
@@ -10,10 +9,5 @@ void list_topologies() {
 	h->GetXaxis()->LabelsOption(">");
 	for(int i = 1; h->GetBinContent(i) > 0; i++) {
 		file << "$" << h->GetXaxis()->GetBinLabel(i) << "$ & " << h->GetBinContent(i) << " \\\\" << std::endl;
-//		cout << "   -> Number of events: " << h->GetBinContent(i) << endl;
 	}
-//	for(int i = 1; i <= num_topologies; i++) {
-//		cout << h->GetXaxis()->GetBinLabel(i) << endl;
-////		cout << "   -> Number of events: " << h->GetBinContent(i) << endl;
-//	}
 }
