@@ -3,17 +3,20 @@ import glob
 import sys
 from multiprocessing import Pool
 
-new_dir = 'ksks_D2_pref_m1525_w086_r2017_01_2M'
-mc_dir = 'gen_amp_ksks_D2_pref_m1525_w086_r2017_01_2M'
+#new_dir = 'ksks_D2_pref_m1525_w086_r2017_01_2M'
+#mc_dir = 'gen_amp_ksks_D2_pref_m1525_w086_r2017_01_2M'
+new_dir = 'trees'
+mc_dir = '/d/grid17/gabyrod7/MC/ksks/gen_amp_ksks_f_r2017_01_20M'
 
 def run_over_rest_files(run_number):
-	os.chdir('/d/grid15/gabyrod7/analysis/kskl/ksks_miss_recon/'+new_dir)
+	os.chdir(new_dir)
 
 	if os.path.exists(run_number) == False:
 		os.mkdir(run_number)
 	os.chdir(run_number)
 
-	fnames = glob.glob( '/d/grid17/gabyrod7/MC/ksks/%s/hddm/dana_rest_gen_amp_%s_???.hddm'%(mc_dir, run_number) )
+	#fnames = glob.glob( '/d/grid17/gabyrod7/MC/ksks/%s/hddm/dana_rest_gen_amp_%s_???.hddm'%(mc_dir, run_number) )
+	fnames = glob.glob( mc_dir+'/hddm/dana_rest_gen_amp_'+run_number+'_???.hddm' )
 	print(fnames)
 
 	for fname in fnames:
@@ -28,7 +31,7 @@ def run_over_rest_files(run_number):
 if __name__ == '__main__':
 	processes=20 # number of process to spawn
 
-	fnames = glob.glob('/d/grid17/gabyrod7/MC/ksks/'+mc_dir+'/hddm/dana_rest*.hddm')
+	fnames = glob.glob(mc_dir+'/hddm/dana_rest*.hddm')
 	tmp = [(tree.split('/')[-1])[18:24] for tree in fnames]
 	run_numbers = []
 	[run_numbers.append(x) for x in tmp if x not in run_numbers]
