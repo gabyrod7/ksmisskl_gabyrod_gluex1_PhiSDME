@@ -25,3 +25,7 @@
 # Ignore config and log files used for bootstrap
 bootstrap_*.cfg
 bootstrap_*.log
+
+# Ignore pdf and png 
+*.pdf
+*.png
