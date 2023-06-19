@@ -18,8 +18,8 @@ void fig_mkskl() {
 	gStyle->SetMarkerSize(1.5);
 	gROOT->ForceStyle();
 
-	TFile *inf1 = TFile::Open("hist_dat.root");
-	TFile *inf2 = TFile::Open("hist_acc.root");
+	TFile *inf1 = TFile::Open("../DSelector/hist_dat.root");
+	TFile *inf2 = TFile::Open("../DSelector/hist_acc.root");
 
 	TH1F *h1 = (TH1F*)inf1->Get("im_kskl");
 	TH1F *h1_sb = (TH1F*)inf1->Get("im_kskl_sb");
