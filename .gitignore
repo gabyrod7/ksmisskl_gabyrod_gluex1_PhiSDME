@@ -3,6 +3,11 @@
 *.so
 *.pcm
 
+# Ignore compiles python code
+*.pyc
+__pycache__/
+__init__/
+
 # Ignore root files
 *.root
 
