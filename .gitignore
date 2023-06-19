@@ -30,8 +30,9 @@ bootstrap_*.log
 *.pdf
 *.png
 
-# Maybe I change my mind later but lets ignore all .cfg, .log, .fit and .ni files for now
+# Maybe I change my mind later but lets ignore all .txt, .cfg, .log, .fit and .ni files for now
 *.cfg
 *.log
 *.fit
 *.ni
+.txt
