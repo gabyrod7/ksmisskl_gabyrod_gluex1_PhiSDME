@@ -49,4 +49,4 @@ bootstrap_*.log
 *tmp*
 
 # Ignore directories
-sdme/fit/
+sdme/fits/
