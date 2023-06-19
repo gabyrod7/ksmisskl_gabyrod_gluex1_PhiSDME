@@ -44,3 +44,6 @@ bootstrap_*.log
 *.fit
 *.ni
 *.txt
+
+# Ignore tmp files
+*tmp*
