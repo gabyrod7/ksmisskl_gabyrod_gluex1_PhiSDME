@@ -19,6 +19,9 @@
 *.tar
 *.zip
 
+# Ignore json files
+*.json
+
 # 
 .nfs*
 
@@ -35,4 +38,4 @@ bootstrap_*.log
 *.log
 *.fit
 *.ni
-.txt
+*.txt
