@@ -29,3 +29,9 @@ bootstrap_*.log
 # Ignore pdf and png 
 *.pdf
 *.png
+
+# Maybe I change my mind later but lets ignore all .cfg, .log, .fit and .ni files for now
+*.cfg
+*.log
+*.fit
+*.ni
