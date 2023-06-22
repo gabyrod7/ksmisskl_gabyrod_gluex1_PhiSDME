@@ -296,6 +296,8 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 	UInt_t locRunNumber = Get_RunNumber();
 	if(locRunNumber != dPreviousRunNumber)
 	{
+		hasPolarizationAngle = dAnalysisUtilities.Get_PolarizationAngle(locRunNumber, locPolarizationAngle);
+
 		dIsPolarizedFlag = dAnalysisUtilities.Get_IsPolarizedBeam(locRunNumber, dIsPARAFlag);
 		dPreviousRunNumber = locRunNumber;
 	}
