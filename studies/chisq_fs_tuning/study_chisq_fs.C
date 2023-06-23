@@ -61,11 +61,11 @@ void optimize_cuts(TH3F *h3) {
 	// TString signal_func = "gausn(0)";
 	TString background_func = "pol2";
 	TString fit_func = compose_fit_func(signal_func, background_func);
-	fit = new TF1("fit", fit_func, 0.38, 0.56);
+	fit = new TF1("fit", fit_func, 0.38, 0.555);
 	fit->SetParameters(1, 0.497, 0.008, 1, 0.497, 0.008, -1, 1, 1, 1);
 
-	sig = new TF1("sig", signal_func, 0.38, 0.56);
-	bkg = new TF1("bkg", background_func, 0.38, 0.56);
+	sig = new TF1("sig", signal_func, 0.38, 0.555);
+	bkg = new TF1("bkg", background_func, 0.38, 0.555);
 
 	TCanvas *c = new TCanvas();
 	format_canvas(c);
@@ -101,25 +101,25 @@ void optimize_cuts(TH3F *h3) {
 			l = new TLegend(0.25, 0.6, 0.65, 0.95);
 			l->SetBorderSize(0);
 			l->AddEntry(h, "Data", "lep");
-			l->AddEntry(fit, "fit", "l");
-			l->AddEntry(sig, "signal", "l");
-			l->AddEntry(bkg, "background", "l");
-			// l->AddEntry((TObject*)0, name, "");
+			l->AddEntry(fit, "Fit", "l");
+			l->AddEntry(sig, "Signal", "l");
+			l->AddEntry(bkg, "Background", "l");
+			//l->AddEntry((TObject*)0, name, "");
 			sprintf(name, "FS > %.1f", fs[j]);
 			l->AddEntry((TObject*)0, name, "");
 			sprintf(name, "#chi^{2}/ndf < %.1f", chisq_ndf[i]);
 			l->AddEntry((TObject*)0, name, "");
-			sprintf(name, "#mu = %.3f (GeV)", mean);
+			sprintf(name, "#mu = %.1f (MeV)", mean*1000);
 			l->AddEntry((TObject*)0, name, "");
 			sprintf(name, "#sigma = %.1f (MeV)", width*1000);
 			l->AddEntry((TObject*)0, name, "");
-			// sprintf(name, "S = %.2f", signal);
-			// l->AddEntry((TObject*)0, name, "");
+			sprintf(name, "S = %.2f", signal);
+			l->AddEntry((TObject*)0, name, "");
 			// sprintf(name, "S/B = %.2f", r1);
 			// l->AddEntry((TObject*)0, name, "");
 			// sprintf(name, "S/#sqrt{S+B} = %.2f", r2);
 			// l->AddEntry((TObject*)0, name, "");
-			sprintf(name, "purity = %.2f", purity[i][j]);
+			sprintf(name, "Purity = %.2f", purity[i][j]);
 			l->AddEntry((TObject*)0, name, "");
 			auto clone = (TH1F*)h->Clone();
 			clone->GetXaxis()->SetRangeUser(0.48,0.52);
@@ -129,9 +129,9 @@ void optimize_cuts(TH3F *h3) {
 			bkg->Draw("SAME");
 			l->Draw("SAME");
 
-			box = new TBox(0.40, 0, 0.44, 0.25*h->GetMaximum());
-			box->SetFillColorAlpha(kRed, 0.4);
-			box->Draw("SAME");
+			//box = new TBox(0.40, 0, 0.44, 0.25*h->GetMaximum());
+			//box->SetFillColorAlpha(kRed, 0.4);
+			//box->Draw("SAME");
 
 			// sprintf(name, "#chi^{2}/ndf = %.1f", chisq);
 			// t.DrawLatex(0.54, 0.6*h->GetMaximum(), name);
@@ -141,14 +141,14 @@ void optimize_cuts(TH3F *h3) {
 			// 	csv << name << endl;
 			// }
 
-			sprintf(name, "pdf_of_hists/%d_%d.pdf", i, j);
+			sprintf(name, "hists/%d_%d.pdf", i, j);
 			c->SaveAs(name);
 
-			auto rp1 = new TRatioPlot(h);
-			rp1->Draw();
-			rp1->GetLowerRefYaxis()->SetRangeUser(-4, 4);
-			sprintf(name, "pdf_of_hists/ratio_%d_%d.pdf", i, j);
-			c->SaveAs(name);
+			//auto rp1 = new TRatioPlot(h);
+			//rp1->Draw();
+			//rp1->GetLowerRefYaxis()->SetRangeUser(-4, 4);
+			//sprintf(name, "hists/ratio_%d_%d.pdf", i, j);
+			//c->SaveAs(name);
 		}
 
 		pur[i] = new TGraph(n, fs, purity[i]);
@@ -233,9 +233,9 @@ TH1F *get_hist(TH3F *h, TString name, double ymin, double ymax, double zmin, dou
 	hist->SetTitle("");
 
 	hist->GetXaxis()->SetTitle("M(#pi^{+}#pi^{-}) (GeV)");
-	hist->GetXaxis()->SetRangeUser(0.38, 0.56);
+	hist->GetXaxis()->SetRangeUser(0.38, 0.555);
 
-	sprintf(title, "Counts / %.3f GeV", hist->GetBinWidth(1));
+	sprintf(title, "Counts / %.0f MeV", 1000*hist->GetBinWidth(1));
 	hist->GetYaxis()->SetTitle(title);
 
 	hist->GetYaxis()->SetRangeUser(0, 1.1*hist->GetMaximum());
