@@ -27,7 +27,9 @@ __init__/
 # Ignore json files
 *.json
 
-# 
+# Ignore files created by DSelector while running
+DSelector/
+0.*/
 .nfs*
 
 # Ignore config and log files used for bootstrap
