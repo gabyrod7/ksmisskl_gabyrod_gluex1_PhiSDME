@@ -476,7 +476,8 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		double chisq_ndf = chisq / dComboWrapper->Get_NDF_KinFit("");
 
 		bool Ks_Criteria = locDecayingKShortP4.M() > 0.48 && locDecayingKShortP4.M() < 0.52;
-		bool Ks_Sideband = (locDecayingKShortP4.M() > 0.42 && locDecayingKShortP4.M() < 0.46) || (locDecayingKShortP4.M() > 0.54 && locDecayingKShortP4.M() < 0.58);
+		// bool Ks_Sideband = (locDecayingKShortP4.M() > 0.42 && locDecayingKShortP4.M() < 0.46) || (locDecayingKShortP4.M() > 0.54 && locDecayingKShortP4.M() < 0.58);
+		bool Ks_Sideband = locDecayingKShortP4.M() > 0.42 && locDecayingKShortP4.M() < 0.46;
 
 		if(Ks_Criteria && fabs(locDeltaT_RF) < 2)	event_weight = 1;
 		else if(Ks_Criteria && fabs(locDeltaT_RF) > 2)	event_weight = locHistAccidWeightFactor;
@@ -546,7 +547,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		else
 			dFlatTreeInterface->Fill_Fundamental<bool>("amptools_dat", false);
 
-		if((Ks_Criteria && (locDeltaT_RF) > 2) || (Ks_Criteria && (locDeltaT_RF) > 2) || (Ks_Sideband && (locDeltaT_RF) < 2))
+		if((Ks_Criteria && fabs(locDeltaT_RF) > 2) || (Ks_Criteria && fabs(locDeltaT_RF) > 2) || (Ks_Sideband && fabs(locDeltaT_RF) < 2))
 			dFlatTreeInterface->Fill_Fundamental<bool>("amptools_bkg", true);
 		else
 			dFlatTreeInterface->Fill_Fundamental<bool>("amptools_bkg", false);
