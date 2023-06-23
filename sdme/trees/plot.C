@@ -11,9 +11,9 @@ void plot() {
 	vector<string> datasets = {"dat", "acc", "gen", "bkg"};
 	vector<string> pols = {"000", "045", "090", "135"};
 
-	int nBins = 20;
+	int nBins = 100;
 	char s[50];
-	double lmass = 0.15, umass = 1.50;
+	double lmass = 0.99, umass = 1.10;
 	TH1F *hist[4], *hist_all[4], *h1_be, *h1_mandelt, *mpipi;
 	TH2F *cosHX[4], *coshx[4], *Phi[4], *phi[4];
 
@@ -28,7 +28,7 @@ void plot() {
 	hist_all[3] = new TH1F("h_bkg_all", ";M(K_{S}K_{L});Counts", nBins, lmass, umass),
 
 	h1_be = new TH1F("h1_be", ";Beam energy (GeV);Counts", 100, 8, 9);
-	h1_mandelt= new TH1F("h1_mandelt", ";-t (GeV^{2});Counts", 7, 0.15, 1.55);
+	h1_mandelt= new TH1F("h1_mandelt", ";-t (GeV^{2});Counts", 150, 0.0, 1.50);
 	mpipi = new TH1F("mpipi", ";M(#pi#pi);Counts", 400, 0.3, 0.7);
 
 	cosHX[0] = new TH2F("cosHX_dat", ";M(K_{S}K_{L});cos(#theta_{HX})", nBins, lmass, umass, 30, -1, 1), 
@@ -132,6 +132,7 @@ void plot() {
 				}
 				if(datasets[j] == "bkg") {
 					h1_mandelt->Fill( -(target_p4 - recoil_p4).M2(), -weight);
+					mpipi->Fill(p1_res.M(), -weight);
 				}
 			} // loop over entries
 
