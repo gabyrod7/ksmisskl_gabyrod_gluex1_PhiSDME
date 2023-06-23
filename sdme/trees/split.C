@@ -16,25 +16,26 @@ void split() {
 	int n_threads = 20;
 	std::string ext = "";
 	std::string cuts;
-	std::string gen_cuts;
+	std::string gen_cuts = "";
 
-	// Spring 2017 data for SDME
+//	// Spring 2017 data for SDME
 	inf_names = {"ftree_dat_sp17.root", "ftree_acc_sp17.root", "ftree_gen_sp17.root"};	
 	dir = "sp17";
-	cuts = "&& missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.5 && mkskl > 1.005 && mkskl < 1.05";
+	cuts = "missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.5 && mkskl > 1.005 && mkskl < 1.05";
+	gen_cuts = "mandel_t > 0.15 && mandel_t < 1.5";
 	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
-	// Spring 2018 data for SDME
-	inf_names = {"ftree_dat_sp18.root", "ftree_acc_sp18.root", "ftree_gen_sp18.root"};	
-	dir = "sp18";
-	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
+//	// Spring 2018 data for SDME
+//	inf_names = {"ftree_dat_sp18.root", "ftree_acc_sp18.root", "ftree_gen_sp18.root"};	
+//	dir = "sp18";
+//	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
 	// Fall 2018 data for SDME
 	inf_names = {"ftree_dat_fa18.root", "ftree_acc_fa18.root", "ftree_gen_fa18.root"};	
 	dir = "fa18";
-	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
-	// GlueX-I data for SDME
-	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_gluex1.root", "ftree_gen_gluex1.root"};	
-	dir = "gluex1";
-	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
+	// runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
+//	// GlueX-I data for SDME
+//	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_gluex1.root", "ftree_gen_gluex1.root"};	
+//	dir = "gluex1";
+//	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
 
 //	// GlueX-1 data for SDME measurement. Beam energy 8.2-8.4
 //	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_phi_gluex1.root", "ftree_gen_phi_gluex1.root"};	
@@ -81,28 +82,62 @@ void split() {
 //	cuts = "&& mpipi > 0.480 && mpipi < 0.520 && missing_mass > 0.2 && missing_mass < 0.8 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.01 && mkskl < 1.03 && Weight > 0.0";
 //	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
 
-//	// GlueX-1 data for SDME measurement. mkskl 1.015-1.025
-//	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_phi_gluex1.root", "ftree_gen_phi_gluex1.root"};	
-//	dir = "sdme_gluex1_mkskl1";
-//	cuts = "&& mpipi > 0.480 && mpipi < 0.520 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.015 && mkskl < 1.025 && Weight > 0.0";
+	// GlueX-1 data for SDME measurement. mkskl 1.010-1.030
+	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_gluex1.root", "ftree_gen_gluex1.root"};	
+//	dir = "mkskl1";
+//	cuts = "&& mkskl > 1.010 && mkskl < 1.030 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
 //	gen_cuts = "";
 //	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
 //	// mkskl 1.005-1.04
-//	dir = "sdme_gluex1_mkskl2";
-//	cuts = "&& mpipi > 0.480 && mpipi < 0.520 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.005 && mkskl < 1.040 && Weight > 0.0";
+//	dir = "mkskl2";
+//	cuts = "&& mkskl > 1.005 && mkskl < 1.040 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
 //	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
-//	// mkskl 1-1.05
-//	dir = "sdme_gluex1_mkskl3";
-//	cuts = "&& mpipi > 0.480 && mpipi < 0.520 && missing_mass > 0.20 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.000 && mkskl < 1.050 && Weight > 0.0";
+//	// mkskl 1-1.06
+//	dir = "mkskl3";
+//	cuts = "&& mkskl > 1.000 && mkskl < 1.060 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
+//	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
+//	// mkskl 1.005-1.020
+//	dir = "mkskl_low";
+//	cuts = "&& mkskl > 1.000 && mkskl < 1.020 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
+//	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
+//	// mkskl 1.020-1.050
+//	dir = "mkskl_high";
+//	cuts = "&& mkskl > 1.020 && mkskl < 1.050 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
+//	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
+
+//	// Spring 2017 data for SDME
+//	inf_names = {"../../DSelector/ftree_acc_sdme1.root", "ftree_acc_sp17.root", "ftree_gen_sp17.root"};	
+//	dir = "mc_sdme1";
+//	cuts = "&& missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.5 && mkskl > 1.005 && mkskl < 1.05";
+//	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
+
+
+//	// mkskl 1.005-1.020
+//	dir = "mkskl_bin1";
+//	cuts = "&& mkskl > 1.000 && mkskl < 1.020 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
+//	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
+//	// mkskl 1.020-1.030
+//	dir = "mkskl_bin2";
+//	cuts = "&& mkskl > 1.020 && mkskl < 1.030 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
+//	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
+//	// mkskl 1.030-1.050
+//	dir = "mkskl_bin3";
+//	cuts = "&& mkskl > 1.020 && mkskl < 1.050 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
+//	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
+
+
+//	// GlueX-I no pipi-sideband 
+//	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_gluex1.root", "ftree_gen_gluex1.root"};	
+//	dir = "no_sideband";
+//	cuts = "&& missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.5 && mkskl > 1.005 && mkskl < 1.05 && mpipi > 0.48 && mpipi < 0.52";
 //	runSplit(inf_names, dir, n_threads, ext, cuts, gen_cuts);
 }
 
 void runSplit(std::vector<std::string> inf_names, std::string dir, int n_threads = 4, std::string ext = "", std::string cuts = "", std::string gen_cuts = "", bool verbose = false) {
-	if(TFile::Open( (dir+"/dat000.root").c_str() ) == NULL) {
+	if(gSystem->AccessPathName(dir.c_str())) {
 		std::cout << "Making directory called "+dir << std::endl;
 		gSystem->Exec( ("mkdir "+dir+"/").c_str() );
 	}
-
 
 	Split(inf_names[0], "dat", dir, n_threads, ext, cuts);
 	Split(inf_names[1], "acc", dir, n_threads, ext, cuts);
@@ -119,7 +154,7 @@ void Split(std::string inf_name, std::string data, std::string run, int n_thread
 
 	// make data frame
 	// format : tree name, file name, branches to open
-	auto df = ROOT::RDataFrame("kskl", inf_name.c_str());
+	auto df = ROOT::RDataFrame("kskl", inf_name.c_str()).Filter(filter);
 
 	std::cout << std::endl;
 	std::cout << "We will now separate the file "+inf_name+" base on polarization angle" << std::endl;
@@ -137,10 +172,10 @@ void Split(std::string inf_name, std::string data, std::string run, int n_thread
 	//auto dat090 = df.Filter( ("Weight == 1 && pol_angle == 90"+filter).c_str() );
 	//auto dat135 = df.Filter( ("Weight == 1 && pol_angle == 135"+filter).c_str() );
 
-	auto dat000 = df.Filter( ("amptools_dat == 1 && pol_angle == 0"+filter).c_str() );
-	auto dat045 = df.Filter( ("amptools_dat == 1 && pol_angle == 45"+filter).c_str() );
-	auto dat090 = df.Filter( ("amptools_dat == 1 && pol_angle == 90"+filter).c_str() );
-	auto dat135 = df.Filter( ("amptools_dat == 1 && pol_angle == 135"+filter).c_str() );
+	auto dat000 = df.Filter( "amptools_dat == 1 && pol_angle == 0" );
+	auto dat045 = df.Filter( "amptools_dat == 1 && pol_angle == 45" );
+	auto dat090 = df.Filter( "amptools_dat == 1 && pol_angle == 90" );
+	auto dat135 = df.Filter( "amptools_dat == 1 && pol_angle == 135" );
 
 	//auto dat000 = df.Filter( ("pol_angle == 0"+filter).c_str() );
 	//auto dat045 = df.Filter( ("pol_angle == 45"+filter).c_str() );
@@ -148,13 +183,6 @@ void Split(std::string inf_name, std::string data, std::string run, int n_thread
 	//auto dat135 = df.Filter( ("pol_angle == 135"+filter).c_str() );
 
 	std::cout << std::endl << "Filters have been defines next we take a Snapshot" << std::endl;
-	std::cout << "Number of entries to save " << *dat000.Count() + *dat045.Count() + *dat090.Count() + *dat135.Count()<< std::endl;
-
-	cout <<"  "<< endl;
-	cout <<"Cut Report:"<< endl;
-	auto allCutsReport = dat000.Report();
-	allCutsReport->Print();
-	cout <<"  "<< endl;
 
 	// save falt tree with specific branches
 	dat000.Snapshot("kin", (run+ext+"/"+data+"000.root").c_str(), branches);
@@ -163,6 +191,7 @@ void Split(std::string inf_name, std::string data, std::string run, int n_thread
 	dat135.Snapshot("kin", (run+ext+"/"+data+"135.root").c_str(), branches);
 
 	std::cout << std::endl << "Snapshots have completed" << std::endl;
+	std::cout << "Number of entries saved " << *dat000.Count() + *dat045.Count() + *dat090.Count() + *dat135.Count() << std::endl;
 
 	if(data == "dat") {
 		std::cout << std::endl << "Proccesing background files" << std::endl;
@@ -171,10 +200,10 @@ void Split(std::string inf_name, std::string data, std::string run, int n_thread
 		//auto bkg045 = df.Filter("Weight != 1 && pol_angle == 45"+filter);
 		//auto bkg090 = df.Filter("Weight != 1 && pol_angle == 90"+filter);
 		//auto bkg135 = df.Filter("Weight != 1 && pol_angle == 135"+filter);
-		auto bkg000 = df.Filter("pol_angle == 0 && amptools_bkg == 1"+filter);
-		auto bkg045 = df.Filter("pol_angle == 45 && amptools_bkg == 1"+filter);
-		auto bkg090 = df.Filter("pol_angle == 90 && amptools_bkg == 1"+filter);
-		auto bkg135 = df.Filter("pol_angle == 135 && amptools_bkg == 1"+filter);
+		auto bkg000 = df.Filter("pol_angle == 0 && amptools_bkg == 1");
+		auto bkg045 = df.Filter("pol_angle == 45 && amptools_bkg == 1");
+		auto bkg090 = df.Filter("pol_angle == 90 && amptools_bkg == 1");
+		auto bkg135 = df.Filter("pol_angle == 135 && amptools_bkg == 1");
 
 		bkg000.Snapshot("kin", (run+ext+"/bkg000.root").c_str(), branches);
 		bkg045.Snapshot("kin", (run+ext+"/bkg045.root").c_str(), branches);
