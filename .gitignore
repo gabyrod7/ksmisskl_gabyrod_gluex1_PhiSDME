@@ -28,7 +28,6 @@ __init__/
 *.json
 
 # Ignore files created by DSelector while running
-DSelector/
 0.*/
 .nfs*
 
