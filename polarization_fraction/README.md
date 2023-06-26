@@ -7,7 +7,7 @@ The luminosity for each GlueX-I run period can be found at https://halldweb.jlab
 Here is a table of the relevant information:
 
 | run | luminosity | fraction of total |
-| --- | --- |
+| --- | --- | --- |
 | Spring 2017 | 21.8 | 0.175 |
 | Spring 2018 | 63.0 | 0.504 |
 | Fall 2018 | 40.1 | 0.321 |
