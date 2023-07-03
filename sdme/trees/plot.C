@@ -7,6 +7,10 @@
 #include "TLorentzRotation.h"
 
 void plot() {
+	string base_directory = "";
+
+	base_directory = "sp18/";
+
 	TFile *inf;
 	vector<string> datasets = {"dat", "acc", "gen", "bkg"};
 	vector<string> pols = {"000", "045", "090", "135"};
@@ -51,13 +55,13 @@ void plot() {
 	phi[2] = new TH2F("phi_gen_all", ";M(K_{S}K_{L});#phi_{HX}", nBins, lmass, umass, 40, -3.14, 3.14);
 	phi[3] = new TH2F("phi_bkg_all", ";M(K_{S}K_{L});#phi_{HX}", nBins, lmass, umass, 40, -3.14, 3.14);
 
-	TFile	*opf = TFile::Open("histograms.root", "RECREATE");
+	TFile	*opf = TFile::Open( (base_directory+"histograms.root").c_str(), "RECREATE");
 
 	// Loop through data sets
 	for(int i = 0; i < pols.size(); i++) {
 		for(int j = 0; j < datasets.size(); j++) {
 			cout << "Running over file: " << datasets[j]+pols[i]+".root" << endl;
-			inf = TFile::Open( (datasets[j]+pols[i]+".root").c_str() );
+			inf = TFile::Open( (base_directory+datasets[j]+pols[i]+".root").c_str() );
 
 			TTree* tree;
 			inf->GetObject("kin",tree);
