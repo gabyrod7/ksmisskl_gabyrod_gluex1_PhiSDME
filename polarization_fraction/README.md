@@ -1,3 +1,5 @@
+# Polarization Fraction
+
 Here we combine the different polarization fraction vs. beam energy plots.
 These plots were made by Mike Dogger and sent out in an email on February 25, 2021.
 The makePolValsV9.tar was sent in that email.
@@ -14,3 +16,17 @@ Here is a table of the relevant information:
 
 The combine.C script will create a gluex1Tpol.root file which has the weighted polarization fraction vs. beam energy.
 
+# Polarization angle 
+
+The diamond used to convert the electrom beam from CEBAF into a linearly polarized photon beam is oriented so the the 
+linear polarization is at 0, 45, 90 and 135 (or -45) degrees with respect to the floor (double check this is correct).
+However the actual orientation of the beam is shifted from these angles by a small amount. This offset has been 
+measured using the $\rho$(770) -> $\pi$<sup>+</sup>$\pi$<sup>-</sup> decays. The results of this analysis can be found in [DocDb:3977](https://halldweb.jlab.org/DocDB/0039/003977/006/note.pdf).
+For easy reference we also write the values here (in degrees) here:
+
+| Nominal | Spring 2017 | Spring 2018 | Fall 2018 | Spring 2020 |
+| ---     | ---         | ---         | ---       | ---         |
+| 0   | 1.8 | 4.1 | 3.3 | 1.4 |
+| 90  | 94.5 | 94.2 | 92.9 | 93.4 |
+| -45 | -41.6 | -42.4 | -42.1 | -42.2 |
+| 45  | 47.9 | 48.5 | 48.3 | 47.1 | 
