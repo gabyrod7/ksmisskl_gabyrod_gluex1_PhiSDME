@@ -469,7 +469,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		double ks_proper_time = -(1./locDecayingKShortP4.Gamma())*locDetachedLifeTime;
 
 		double event_weight = locHistAccidWeightFactor;
-		double sideband_w = -0.5;
+		double sideband_w = -1;
 		float Weight = 0; // This weight is for AmpTools fits
 
 		double chisq = dComboWrapper->Get_ChiSq_KinFit("");
@@ -547,7 +547,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		else
 			dFlatTreeInterface->Fill_Fundamental<bool>("amptools_dat", false);
 
-		if((Ks_Criteria && fabs(locDeltaT_RF) > 2) || (Ks_Criteria && fabs(locDeltaT_RF) > 2) || (Ks_Sideband && fabs(locDeltaT_RF) < 2))
+		if((Ks_Criteria && fabs(locDeltaT_RF) > 2) || (Ks_Sideband && fabs(locDeltaT_RF) < 2))
 			dFlatTreeInterface->Fill_Fundamental<bool>("amptools_bkg", true);
 		else
 			dFlatTreeInterface->Fill_Fundamental<bool>("amptools_bkg", false);
