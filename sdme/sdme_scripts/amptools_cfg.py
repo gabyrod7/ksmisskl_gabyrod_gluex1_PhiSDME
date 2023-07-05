@@ -1,6 +1,5 @@
 import os
 import random
-import numpy as np
 
 class amptools_cfg:
 	pols_map = {1.77 : '000', 47.85 : '045', 94.50 : '090', 138.43 : '135', 'AMO' : 'AMO'}
@@ -92,15 +91,15 @@ class amptools_cfg:
 
 		if self.parRange:
 			f.write('keyword parRange 3 3\n')
-			f.write('parRange rho000  -0.03 0.03\n')
-			f.write('parRange rho100  -0.03 0.03\n')
-			f.write('parRange rho1m10 -0.03 0.03\n')
-			f.write('parRange rho111  -0.03 0.03\n')
-			f.write('parRange rho001  -0.03 0.03\n')
-			f.write('parRange rho101  -0.03 0.03\n')
-			f.write('parRange rho1m11 0.3 0.6\n')
-			f.write('parRange rho102  -0.03 0.03\n')
-			f.write('parRange rho1m12 -0.6 -0.4\n\n')
+			f.write('parRange rho000  -0.01 0.01\n')
+			f.write('parRange rho100  -0.01 0.01\n')
+			f.write('parRange rho1m10 -0.01 0.01\n')
+			f.write('parRange rho111  -0.01 0.01\n')
+			f.write('parRange rho001  -0.01 0.01\n')
+			f.write('parRange rho101  -0.01 0.01\n')
+			f.write('parRange rho1m11 0.45 0.55\n')
+			f.write('parRange rho102  -0.01 0.01\n')
+			f.write('parRange rho1m12 -0.55 -0.45\n\n')
 
 		for pol_angle, pol_frac in self.pol_info:
 			f.write('# Amplitude SDME and polarization angle %d \n' % (pol_angle))
