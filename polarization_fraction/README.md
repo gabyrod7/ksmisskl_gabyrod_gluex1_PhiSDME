@@ -1,7 +1,7 @@
 # Polarization Fraction
 
 Here we combine the different polarization fraction vs. beam energy plots.
-These plots were made by Mike Dogger and sent out in an email on February 25, 2021.
+These plots were made with code sent by Mike Dugger in an email to halld-physics@jlab.org on February 25, 2021.
 The makePolValsV9.tar was sent in that email.
 These plots are used in the SDME analysis.
 Since each run period has differnt amount of statistics we use the luminosity in the coherent peak as the weight factor.
