@@ -36,7 +36,7 @@ void compare_kskl_kpkm() {
 	h4->GetYaxis()->SetRangeUser(0.01, 1.6);
 	h5->GetYaxis()->SetRangeUser(0.01, 1.6);
 
-	double low = 0.15, high = 1.0;
+	double low = 0.2, high = 1.0;
 	h1->GetXaxis()->SetRangeUser(low, high);
 	h2->GetXaxis()->SetRangeUser(low, high);
 	h3->GetXaxis()->SetRangeUser(low, high);
@@ -53,22 +53,28 @@ void compare_kskl_kpkm() {
 	// h4->Draw("SAME");
 	h5->Draw("SAME");
 
-	TLegend *lg = new TLegend(0.1,0.10,0.6,0.4);
+	TLegend *lg = new TLegend(0.1,0.10,0.65,0.4);
+
+	double integral, error;
 
 	h5->Fit(fit, "RQN");
-	sprintf(text, "#phi #rightarrow K^{+}K^{-}, slope = %.2f #pm %.2f", fit->GetParameter(1), fit->GetParError(1));
+	integral = h5->IntegralAndError(h5->FindBin(0.2), h5->FindBin(1.0), error);
+	sprintf(text, "#phi #rightarrow K^{+}K^{-}, slope = %.2f #pm %.2f, integral = %.2f #pm %.2f", fit->GetParameter(1), fit->GetParError(1), integral, error);
 	lg->AddEntry(h5, text, "lep");
 
 	h1->Fit(fit, "RQN");
-	sprintf(text, "Spring 2017, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f", fit->GetParameter(1), fit->GetParError(1));
+	integral = h1->IntegralAndError(h1->FindBin(0.2), h1->FindBin(1.0), error);
+	sprintf(text, "Spring 2017, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f, integral = %.2f #pm %.2f", fit->GetParameter(1), fit->GetParError(1), integral, error);
 	lg->AddEntry(h1, text, "lep");
 
 	h2->Fit(fit, "RQN");
-	sprintf(text, "Spring 2018, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f", fit->GetParameter(1), fit->GetParError(1));
+	integral = h2->IntegralAndError(h2->FindBin(0.2), h2->FindBin(1.0), error);
+	sprintf(text, "Spring 2018, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f, integral = %.2f #pm %.2f", fit->GetParameter(1), fit->GetParError(1), integral, error);
 	lg->AddEntry(h2, text, "lep");
 
 	h3->Fit(fit, "RQN");
-	sprintf(text, "Fall 2018, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f", fit->GetParameter(1), fit->GetParError(1));
+	integral = h3->IntegralAndError(h3->FindBin(0.2), h3->FindBin(1.0), error);
+	sprintf(text, "Fall 2018, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f, integral = %.2f #pm %.2f", fit->GetParameter(1), fit->GetParError(1), integral, error);
 	lg->AddEntry(h3, text, "lep");
 
 	// h4->Fit(fit, "QN");
@@ -88,11 +94,12 @@ void compare_kskl_kpkm() {
 	// h1->GetYaxis()->SetRangeUser(0, 2.0);
 
 	// h1->Draw();
+	h2->GetYaxis()->SetRangeUser(0.8, 1.3);
 	h2->Draw("");
 	h3->Draw("SAME");
 	// h4->Draw("SAME");
 
-	lg = new TLegend(0.40,0.75,0.85,0.90);
+	lg = new TLegend(0.20,0.1,0.5,0.30);
 
 	fit = new TF1("line", "pol1", low, high);
 	fit->SetLineColor(kBlue);

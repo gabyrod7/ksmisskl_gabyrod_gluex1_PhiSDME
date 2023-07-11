@@ -79,8 +79,8 @@ void RDF_recon(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut
 	cout <<"Set up histograms..."<< endl;
 	
 	//4.1) Histograms
-	auto h1_t = rdf_cut.Histo1D({"h1_t", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
-	auto h1_t_sb = rdf_cut_sb.Histo1D({"h1_t_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t = rdf_cut.Histo1D({"h1_t", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_sb = rdf_cut_sb.Histo1D({"h1_t_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
 	auto h1_t2 = rdf_cut2.Histo1D({"h1_t2", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
 	auto h1_t2_sb = rdf_cut2_sb.Histo1D({"h1_t2_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");

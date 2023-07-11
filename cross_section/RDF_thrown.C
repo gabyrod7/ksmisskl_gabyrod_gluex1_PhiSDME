@@ -52,7 +52,7 @@ void RDF_thrown(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cu
 	auto im_kskl = rdf_cut.Filter("mandel_t > 0.1 && mandel_t < 0.5").Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts / 1 MeV",  75, 0.98, 2.48}, "mkskl");
 	auto im_kskl2 = rdf_cut.Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts / 1 MeV",  75, 0.98, 2.48}, "mkskl");
 
-	auto h1_t = rdf_cut.Histo1D({"h1_t", ";M(K_{S}K_{L});Counts / 1 MeV", 100, 0.00, 1.00}, "mandel_t");
+	auto h1_t = rdf_cut.Histo1D({"h1_t", ";M(K_{S}K_{L});Counts / 1 MeV", 50, 0.00, 1.00}, "mandel_t");
 	//auto h1_t = rdf_cut.Filter("mkskl > 1.01 && mkskl < 1.05").Histo1D({"h1_t", ";M(K_{S}K_{L});Counts / 1 MeV", 100, 0.00, 1.00}, "mandel_t");
 	//auto h1_t2 = rdf_cut.Filter("mkskl < 1.05").Histo1D({"h1_t2", ";M(K_{S}K_{L});Counts / 1 MeV", 100, 0.00, 1.00}, "mandel_t");
 
