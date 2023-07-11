@@ -1,11 +1,11 @@
 # Polarization Fraction
 
 Here we combine the different polarization fraction vs. beam energy plots.
-These plots were made with code sent by Mike Dugger in an email to halld-physics@jlab.org on February 25, 2021.
+These plots were made from code by Mike Dugger which can be found at [GlueX wiki](https://halldweb.jlab.org/wiki-private/index.php/TPOL_Polarization).
 The makePolValsV9.tar was sent in that email.
 These plots are used in the SDME analysis.
 Since each run period has differnt amount of statistics we use the luminosity in the coherent peak as the weight factor.
-The luminosity for each GlueX-I run period can be found at https://halldweb.jlab.org/wiki-private/index.php/GlueX_Phase-I_Dataset_Summary.
+The luminosity for each GlueX-I run period can be found at [GlueX wiki](https://halldweb.jlab.org/wiki-private/index.php/GlueX_Phase-I_Dataset_Summary).
 Here is a table the luminosity for each run period, what fraction of GlueX-I data each run period corresponds to and the average polarization for each diamond orientation:
 
 | run | luminosity | fraction of total | 0 | 45 | 90 | -45 |
