@@ -557,7 +557,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		dFlatTreeInterface->Fill_Fundamental<double>("Target_Mass", 0.9382720); // Necesary for divideData.pl not for AmpTools itself (I think)
 		dFlatTreeInterface->Fill_Fundamental<int>("PID_FinalState", 2212, 0); // proton
 		dFlatTreeInterface->Fill_Fundamental<int>("PID_FinalState", 310, 1);  // KShort
-		dFlatTreeInterface->Fill_Fundamental<int>("PID_FinalState", 130, 2);  // KShort
+		dFlatTreeInterface->Fill_Fundamental<int>("PID_FinalState", 130, 2);  // KLong
 		FillAmpTools_FlatTree(locBeamP4, locFinalStateP4);
 
 		//FILL FLAT TREE
@@ -570,7 +570,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 
 		if(mmiss > 0.3 && mmiss < 0.7)
 			im_pipi->Fill(locDecayingKShortP4.M(), locHistAccidWeightFactor);
-		if(mpipi > 0.48 && mpipi < 0.52) {
+		if(Ks_Criteria) {
 			im_miss->Fill(locMissingP4_Measured.M(), locHistAccidWeightFactor);
 			h1_NumUnusedTracks->Fill(dComboWrapper->Get_NumUnusedTracks(), locHistAccidWeightFactor);
 			h1_NumUnusedShowers->Fill(dComboWrapper->Get_NumUnusedShowers(), locHistAccidWeightFactor);
@@ -591,7 +591,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 			}
 		}
 
-		if( (mpipi > 0.44 && mpipi < 0.46) || (mpipi > 0.54 && mpipi < 0.56) ) {
+		if( Ks_Sideband ) {
 			im_miss_sb->Fill(locMissingP4_Measured.M(), locHistAccidWeightFactor);
 
 			if(mmiss > 0.3 && mmiss < 0.7 && dComboWrapper->Get_NumUnusedTracks() < 1 && dComboWrapper->Get_NumUnusedShowers() < 3) {
