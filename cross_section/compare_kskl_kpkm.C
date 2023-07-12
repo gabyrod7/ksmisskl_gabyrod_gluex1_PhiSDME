@@ -50,7 +50,6 @@ void compare_kskl_kpkm() {
 	h1->Draw();
 	h2->Draw("SAME");
 	h3->Draw("SAME");
-	// h4->Draw("SAME");
 	h5->Draw("SAME");
 
 	TLegend *lg = new TLegend(0.1,0.10,0.65,0.4);
@@ -77,47 +76,33 @@ void compare_kskl_kpkm() {
 	sprintf(text, "Fall 2018, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f, integral = %.1f #pm %.1f (nb)", fit->GetParameter(1), fit->GetParError(1), integral*1000, error*1000);
 	lg->AddEntry(h3, text, "lep");
 
-	// h4->Fit(fit, "QN");
-	// sprintf(text, "GlueX-I, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f", fit->GetParameter(1), fit->GetParError(1));
-	// lg->AddEntry(h4, text, "lep");
-
 	lg->Draw();
 
 	c->SaveAs("compare.png");
 
 	c = new TCanvas();
-	// h1->Divide(h5);
 	h2->Divide(h1);
 	h3->Divide(h1);
-	// h4->Divide(h5);
 
-	// h1->GetYaxis()->SetRangeUser(0, 2.0);
-
-	// h1->Draw();
 	h2->GetYaxis()->SetRangeUser(0.8, 1.3);
 	h2->Draw("");
 	h3->Draw("SAME");
-	// h4->Draw("SAME");
 
-	lg = new TLegend(0.20,0.1,0.5,0.30);
+	lg = new TLegend(0.15,0.15,0.85,0.30);
 
 	fit = new TF1("line", "pol1", low, high);
 	fit->SetLineColor(kBlue);
 	h2->Fit(fit, "R");
-	lg->AddEntry(h2, "Spring 2018, #phi #rightarrow K_{S}K_{L}", "lep");
+	sprintf(text, "Spring 2018/Spring 2017, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f", fit->GetParameter(1), fit->GetParError(1));
+	lg->AddEntry(h2, text, "lep");
 
 	fit = new TF1("line2", "pol1", low, high);
 	fit->SetLineColor(kBlack);
 	h3->Fit(fit, "R");
-	lg->AddEntry(h3, "Fall 2018, #phi #rightarrow K_{S}K_{L}", "lep");
+	sprintf(text, "Fall 2018/Spring 2017, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f", fit->GetParameter(1), fit->GetParError(1));
+	lg->AddEntry(h3, text, "lep");
 
 	lg->Draw();
 
 	c->SaveAs("compare_ratio.png");
-
-	// c = new TCanvas();
-	// h3->Divide(h2);
-	// h3->GetYaxis()->SetTitle("#phi #rightarrow K_{S}K_{L}/#phi #rightarrow K^{+}K^{-}");
-	// h3->Draw();
-	// h3->GetYaxis()->SetRangeUser(0.5, 1.1);
 }
