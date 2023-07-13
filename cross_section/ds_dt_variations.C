@@ -21,20 +21,19 @@ void ds_dt_variations() {
 	//TFile *opf = TFile::Open("xs_phi_kskl.root", "UPDATE");
 	TFile *opf = TFile::Open("xs_phi_kskl_variations.root", "RECREATE");
 
-	TLegend *lg = new TLegend(0.6, 0.6, 0.9, 0.9);
+	TLegend *lg = new TLegend(0.5, 0.5, 0.9, 0.9);
 
-	vector<string> hnames = {"h1_t", "h1_t2", "h1_t3", "h1_t4", "h1_t5"};
-	map<string, string> legend = {{"h1_t", "nominal"}, {"h1_t2", "unused tracks < 2"}, {"h1_t3", "#chi^{2}/ndf < 5"}, {"h1_t4", "FS > 3"}, {"h1_t5", "0.45 < MM < 0.55"}};
-	// vector<string> hnames = {"h1_t_shower1", "h1_t_shower2", "h1_t_shower3", "h1_t_shower4", "h1_t_shower5", "h1_t_shower6"};
-	// // map<string, string> legend = {{"h1_t_shower1", "unused shower < "}, {"h1_t_shower", "unused tracks < 2"}};
+	pair<string, string> hnames[] = {make_pair("h1_t", "No unused showers cut"), make_pair("h1_t_shower1", "unused shower < 1"), 
+									make_pair("h1_t_shower2", "unused shower < 2"), make_pair("h1_t_shower3", "unused shower < 3"), 
+									make_pair("h1_t_shower4", "unused shower < 4"), make_pair("h1_t_shower5", "unused shower < 5"), 
+									make_pair("h1_t_shower6", "unused shower < 6")};
 
 	int count = 1;
 	TCanvas *c = new TCanvas();
 	for(auto hname : hnames) {
-
-		TH1F *dat = (TH1F*)inf1->Get(hname.c_str());
-		TH1F *bkg = (TH1F*)inf1->Get((hname+"_sb").c_str());
-		TH1F *acc = (TH1F*)inf2->Get(hname.c_str());
+		TH1F *dat = (TH1F*)inf1->Get(hname.first.c_str());
+		TH1F *bkg = (TH1F*)inf1->Get((hname.first+"_sb").c_str());
+		TH1F *acc = (TH1F*)inf2->Get(hname.first.c_str());
 		TH1F *gen = (TH1F*)inf3->Get("h1_t");
 		TH1F *hflux = (TH1F*)inf4->Get("tagged_flux");
 		TH1F *eff = (TH1F*)acc->Clone("eff");
@@ -53,27 +52,26 @@ void ds_dt_variations() {
 		dat->Scale( 1.0/br );
 		dat->Scale( 1.0/Delta_t );
 	
-		dat->GetXaxis()->SetRangeUser(0.1, 0.70);
-		dat->GetYaxis()->SetRangeUser(0.0, 1.8);
+		dat->GetXaxis()->SetRangeUser(0.2, 1.00);
+		dat->GetYaxis()->SetRangeUser(0.0, 1.2);
 	
 		dat->GetYaxis()->SetTitle("#frac{d#sigma}{d(-t)} (#mub/GeV^{2})");
 
 		dat->SetLineColor(count);
 		count++;
 
-		// TCanvas *c = new TCanvas();
-		// eff->Draw();
-		// c->SaveAs("efficiency.pdf");
-	
-		// c = new TCanvas();
-		if(hname == "h1_t_shower1")
+		if(hname.first == "h1_t")
 			dat->Draw();
 		else
 			dat->Draw("same");
 
 		// sprintf(text, "Unused Showers < %c", hname[11]);
 		// lg->AddEntry(dat , text, "lep");
-		lg->AddEntry(dat, legend[hname].c_str(), "lep");
+
+		TF1 *fit = new TF1("expo", "expo", 0.2, 1.0);
+		dat->Fit(fit, "RQN");
+		sprintf(text, "%s, slope = %.2f #pm %.2f", hname.second.c_str(), fit->GetParameter(1), fit->GetParError(1));
+		lg->AddEntry(dat, text, "lep");
 	
 		dat->Write();
 	
