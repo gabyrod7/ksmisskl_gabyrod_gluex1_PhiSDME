@@ -82,35 +82,35 @@ void RDF_recon(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut
 	auto h1_t = rdf_cut.Histo1D({"h1_t", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 	auto h1_t_sb = rdf_cut_sb.Histo1D({"h1_t_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
-	auto h1_t2 = rdf_cut2.Histo1D({"h1_t2", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
-	auto h1_t2_sb = rdf_cut2_sb.Histo1D({"h1_t2_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t2 = rdf_cut2.Histo1D({"h1_t2", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t2_sb = rdf_cut2_sb.Histo1D({"h1_t2_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
-	auto h1_t3 = rdf_cut3.Histo1D({"h1_t3", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
-	auto h1_t3_sb = rdf_cut3_sb.Histo1D({"h1_t3_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t3 = rdf_cut3.Histo1D({"h1_t3", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t3_sb = rdf_cut3_sb.Histo1D({"h1_t3_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
-	auto h1_t4 = rdf_cut4.Histo1D({"h1_t4", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
-	auto h1_t4_sb = rdf_cut4_sb.Histo1D({"h1_t4_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t4 = rdf_cut4.Histo1D({"h1_t4", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t4_sb = rdf_cut4_sb.Histo1D({"h1_t4_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
-	auto h1_t5 = rdf_cut5.Histo1D({"h1_t5", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
-	auto h1_t5_sb = rdf_cut5_sb.Histo1D({"h1_t5_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t5 = rdf_cut5.Histo1D({"h1_t5", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t5_sb = rdf_cut5_sb.Histo1D({"h1_t5_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
-	auto h1_t_shower1 = rdf_ShowerCut1.Histo1D({"h1_t_shower1", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
-	auto h1_t_shower1_sb = rdf_ShowerCut1_sb.Histo1D({"h1_t_shower1_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower1 = rdf_ShowerCut1.Histo1D({"h1_t_shower1", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower1_sb = rdf_ShowerCut1_sb.Histo1D({"h1_t_shower1_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
-	auto h1_t_shower2 = rdf_ShowerCut2.Histo1D({"h1_t_shower2", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
-	auto h1_t_shower2_sb = rdf_ShowerCut2_sb.Histo1D({"h1_t_shower2_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower2 = rdf_ShowerCut2.Histo1D({"h1_t_shower2", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower2_sb = rdf_ShowerCut2_sb.Histo1D({"h1_t_shower2_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
-	auto h1_t_shower3 = rdf_ShowerCut3.Histo1D({"h1_t_shower3", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
-	auto h1_t_shower3_sb = rdf_ShowerCut3_sb.Histo1D({"h1_t_shower3_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower3 = rdf_ShowerCut3.Histo1D({"h1_t_shower3", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower3_sb = rdf_ShowerCut3_sb.Histo1D({"h1_t_shower3_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
-	auto h1_t_shower4 = rdf_ShowerCut4.Histo1D({"h1_t_shower4", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
-	auto h1_t_shower4_sb = rdf_ShowerCut4_sb.Histo1D({"h1_t_shower4_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower4 = rdf_ShowerCut4.Histo1D({"h1_t_shower4", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower4_sb = rdf_ShowerCut4_sb.Histo1D({"h1_t_shower4_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
-	auto h1_t_shower5 = rdf_ShowerCut5.Histo1D({"h1_t_shower5", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
-	auto h1_t_shower5_sb = rdf_ShowerCut5_sb.Histo1D({"h1_t_shower5_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower5 = rdf_ShowerCut5.Histo1D({"h1_t_shower5", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower5_sb = rdf_ShowerCut5_sb.Histo1D({"h1_t_shower5_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
-	auto h1_t_shower6 = rdf_ShowerCut6.Histo1D({"h1_t_shower6", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
-	auto h1_t_shower6_sb = rdf_ShowerCut6_sb.Histo1D({"h1_t_shower6_sb", ";-t (GeV^{2});Counts", 100, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower6 = rdf_ShowerCut6.Histo1D({"h1_t_shower6", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
+	auto h1_t_shower6_sb = rdf_ShowerCut6_sb.Histo1D({"h1_t_shower6_sb", ";-t (GeV^{2});Counts", 50, 0.00, 1.00}, "mandel_t", "accidental_weight");
 
 	cout <<" "<< endl;
 	
