@@ -21,7 +21,7 @@ void ds_dt_variations() {
 	//TFile *opf = TFile::Open("xs_phi_kskl.root", "UPDATE");
 	TFile *opf = TFile::Open("xs_phi_kskl_variations.root", "RECREATE");
 
-	TLegend *lg = new TLegend(0.5, 0.5, 0.9, 0.9);
+	TLegend *lg = new TLegend(0.25, 0.5, 0.9, 0.9);
 
 	pair<string, string> hnames[] = {make_pair("h1_t", "No unused showers cut"), make_pair("h1_t_shower1", "unused shower < 1"), 
 									make_pair("h1_t_shower2", "unused shower < 2"), make_pair("h1_t_shower3", "unused shower < 3"), 
@@ -29,7 +29,7 @@ void ds_dt_variations() {
 									make_pair("h1_t_shower6", "unused shower < 6")};
 
 	int count = 1;
-	TCanvas *c = new TCanvas();
+	TCanvas *c = new TCanvas("c", "c", 1800, 1000);
 	for(auto hname : hnames) {
 		TH1F *dat = (TH1F*)inf1->Get(hname.first.c_str());
 		TH1F *bkg = (TH1F*)inf1->Get((hname.first+"_sb").c_str());
@@ -70,12 +70,13 @@ void ds_dt_variations() {
 
 		TF1 *fit = new TF1("expo", "expo", 0.2, 1.0);
 		dat->Fit(fit, "RQN");
-		sprintf(text, "%s, slope = %.2f #pm %.2f", hname.second.c_str(), fit->GetParameter(1), fit->GetParError(1));
+		sprintf(text, "%s, integral = %.4f #pm %.4f, slope = %.2f #pm %.2f", hname.second.c_str(), fit->Integral(0.2, 1.0), fit->IntegralError(0.2, 1.0), fit->GetParameter(1), fit->GetParError(1));
+		// sprintf(text, "%s, A = %.3f #pm %.3f, slope = %.2f #pm %.2f", hname.second.c_str(), fit->GetParameter(0), fit->GetParError(0), fit->GetParameter(1), fit->GetParError(1));
 		lg->AddEntry(dat, text, "lep");
 	
 		dat->Write();
 	
-		cout << "Integrated cross section " << dat->Integral() << endl;
+		cout << "Integrated cross section " << dat->Integral("width") << endl;
 	}
 
 	lg->Draw();
