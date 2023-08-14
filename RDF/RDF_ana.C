@@ -31,15 +31,16 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	//3.) Define important variables and analysis conditions
 	
 	//3.1) Define some variables first:
-	auto rdf_variables = rdf.Define("fs", "flight_significance").Define("mmiss", "missing_mass")
+	auto rdf_variables = rdf.Define("fs", "flight_significance").Define("mmiss", "missing_mass").Define("misse", "missing_p4_meas.E()")
 				.Define("mksp", "(ks_p4 + p_p4_kin).M()").Define("mklp", "(kl_p4 + p_p4_kin).M()")
 				.Define("ks_phi", "ks_p4_cm.Phi()").Define("p_z", "p_x4_kin.Z()")
 				.Define("mpipp", "(pip_p4_kin + p_p4_kin).M()").Define("mpimp", "(pim_p4_kin + p_p4_kin).M()");
 
 	//3.2)Now apply cuts on the newly defined variables:
-	
-	auto rdf_cut = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15&& mandel_t < 1.5 && num_unused_tracks == 0 && num_unused_showers < 3");
-	auto rdf_cut_sb = rdf_variables.Filter("((mpipi > 0.44 && mpipi < 0.46) || (mpipi > 0.54 && mpipi < 0.56)) && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15&& mandel_t < 1.5 && num_unused_tracks == 0 && num_unused_showers < 3");
+	auto rdf_cut = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && p_z > 52 && p_z < 78 && mandel_t > 0.15 && mandel_t < 1.5");
+	auto rdf_cut_sb = rdf_variables.Filter("((mpipi > 0.44 && mpipi < 0.46) || (mpipi > 0.54 && mpipi < 0.56)) && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15 && mandel_t < 1.5 && num_unused_tracks == 0 && num_unused_showers < 3&& p_z > 52 && p_z < 78");
+	auto rdf_cut_mmiss = rdf_variables.Filter("p_z > 52 && p_z < 78 && mpipi > 0.48 && mpipi < 0.52 && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15&& mandel_t < 1.5 && num_unused_tracks == 0 && num_unused_showers < 3");
+	auto rdf_cut_mmiss_sb = rdf_variables.Filter("p_z > 52 && p_z < 78 && ((mpipi > 0.44 && mpipi < 0.46) || (mpipi > 0.54 && mpipi < 0.56)) && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15&& mandel_t < 1.5 && num_unused_tracks == 0 && num_unused_showers < 3");
 	//auto rdf_cut = rdf_variables.Filter("(p_z > 83 && p_z < 86) && mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15&& mandel_t < 1.5 && num_unused_tracks == 0 && num_unused_showers < 3");
 	//auto rdf_cut_sb = rdf_variables.Filter("(p_z > 83 && p_z < 86) && ((mpipi > 0.44 && mpipi < 0.46) || (mpipi > 0.54 && mpipi < 0.56)) && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15&& mandel_t < 1.5 && num_unused_tracks == 0 && num_unused_showers < 3");
 	auto rdf_cut2 = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.4 && mmiss < 0.6 && fs > 6 && chisq_ndf < 2 && num_unused_tracks == 0 && num_unused_showers < 3");
@@ -58,25 +59,29 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	cout <<"Set up histograms..."<< endl;
 	
 	//4.1) Histograms
-	auto im_kskl = rdf_cut.Histo1D({"im_kskl", ";M(K_{S}p);Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
-	auto im_ksp = rdf_cut.Histo1D({"im_ksp", ";M(K_{S}p);Counts", 100, 1.00, 4.00}, "mksp", "accidental_weight");
-	auto im_klp = rdf_cut.Histo1D({"im_klp", ";M(K_{L}p);Counts", 100, 1.00, 4.00}, "mklp", "accidental_weight");
+	auto im_kskl = rdf_cut.Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
+	auto im_ksp = rdf_cut.Histo1D({"im_ksp", ";M(K_{S}p);Counts", 110, 2.50, 3.40}, "mksp", "accidental_weight");
+	auto im_klp = rdf_cut.Histo1D({"im_klp", ";M(K_{L}p);Counts", 110, 2.50, 3.40}, "mklp", "accidental_weight");
 	auto im_pipp = rdf_cut.Histo1D({"im_pipp", ";M(#pi^{+}p);Counts", 100, 1.00, 4.00}, "mpipp", "accidental_weight");
 	auto im_pimp = rdf_cut.Histo1D({"im_pimp", ";M(#pi^{-}p);Counts", 100, 1.00, 4.00}, "mpimp", "accidental_weight");
-	auto im_miss = rdf_cut.Histo1D({"im_miss", ";Missing Mass (GeV);Counts", 100, 0.00, 1.00}, "mmiss", "accidental_weight");
+	auto im_miss = rdf_cut_mmiss.Histo1D({"im_miss", ";Missing Mass (GeV);Counts", 100, 0.00, 1.00}, "mmiss", "accidental_weight");
 	auto im_pipi = rdf_cut3.Filter("mkskl > 1.005 & mkskl < 1.05").Histo1D({"im_pipi", ";M(#pi#pi) (GeV);Counts", 150, 0.40, 0.55}, "mpipi", "accidental_weight");
 
-	auto im_kskl_sb = rdf_cut_sb.Histo1D({"im_kskl_sb", ";M(K_{S}p);Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
-	auto im_ksp_sb = rdf_cut_sb.Histo1D({"im_ksp_sb", ";M(K_{S}p);Counts", 100, 1.00, 4.00}, "mksp", "accidental_weight");
-	auto im_klp_sb = rdf_cut_sb.Histo1D({"im_klp_sb", ";M(K_{L}p);Counts", 100, 1.00, 4.00}, "mklp", "accidental_weight");
+	auto im_kskl_sb = rdf_cut_sb.Histo1D({"im_kskl_sb", ";M(K_{S}K_{L});Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
+	auto im_ksp_sb = rdf_cut_sb.Histo1D({"im_ksp_sb", ";M(K_{S}p);Counts", 110, 2.50, 3.40}, "mksp", "accidental_weight");
+	auto im_klp_sb = rdf_cut_sb.Histo1D({"im_klp_sb", ";M(K_{L}p);Counts", 110, 2.50, 3.40}, "mklp", "accidental_weight");
 	auto im_pipp_sb = rdf_cut_sb.Histo1D({"im_pipp_sb", ";M(#pi^{+}p);Counts", 100, 1.00, 4.00}, "mpipp", "accidental_weight");
 	auto im_pimp_sb = rdf_cut_sb.Histo1D({"im_pimp_sb", ";M(#pi^{-}p);Counts", 100, 1.00, 4.00}, "mpimp", "accidental_weight");
+	auto im_miss_sb = rdf_cut_mmiss_sb.Histo1D({"im_miss_sb", ";Missing Mass (GeV);Counts", 100, 0.00, 1.00}, "mmiss", "accidental_weight");
 
 	auto h1_p_z = rdf_cut.Histo1D({"h1_p_z", ";recoil proton Z (cm);Counts", 100, 0.00, 100.00}, "p_z", "accidental_weight");
 	auto h1_p_z_sb = rdf_cut_sb.Histo1D({"h1_p_z_sb", ";recoil proton Z (cm);Counts", 100, 0.00, 100.00}, "p_z", "accidental_weight");
 
 	auto h1_t = rdf_cut2.Histo1D({"h1_t", ";-t;Counts",  100, 0, 1}, "mandel_t", "accidental_weight");
 	auto h1_t_sb = rdf_cut2_sb.Histo1D({"h1_t_sb", ";-t;Counts",  100, 0, 1}, "mandel_t", "accidental_weight");
+
+	auto h1_t2 = rdf_variables.Filter("missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.5 && mkskl > 1.005 && mkskl < 1.05 && amptools_dat == 1").Histo1D({"h1_t2", ";-t;Counts",  100, 0, 1}, "mandel_t", "Weight");
+	auto h1_t_sb2 = rdf_variables.Filter("missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.5 && mkskl > 1.005 && mkskl < 1.05 && amptools_bkg == 1").Histo1D({"h1_t_sb2", ";-t;Counts",  100, 0, 1}, "mandel_t", "Weight");
 
 	auto h2_mpipi_t = rdf_cut3.Histo2D({"h2_mpipi_t", ";M(#pi#pi);-t;Counts",  100, 0.4, 0.6, 150, 0, 1.5}, "mpipi", "mandel_t", "accidental_weight");
 
@@ -116,12 +121,17 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	im_klp_sb->Write();
 	im_pipp_sb->Write();
 	im_pimp_sb->Write();
+	im_miss_sb->Write();
 
 	h1_p_z->Write();
 	h1_p_z_sb->Write();
 
 	h1_t->Write();
 	h1_t_sb->Write();
+
+	h1_t2->Write();
+	h1_t_sb2->Write();
+
 	h2_mpipi_t->Write();
 
 	h1_path_length->Write();
