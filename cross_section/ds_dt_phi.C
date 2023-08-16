@@ -1,10 +1,10 @@
 void ds_dt(string inf_dat, string inf_acc, string inf_gen, string inf_flux, string outf);
 
 void ds_dt_phi() {
-	ds_dt("hist_dat_sp17.root", "hist_acc_sp17.root", "hist_gen_sp17.root", "../flux/flux_30274_31057.root", "xs_phi_kskl_sp17.root");
-	ds_dt("hist_dat_sp18.root", "hist_acc_sp18.root", "hist_gen_sp18.root", "../flux/flux_40856_42559.root", "xs_phi_kskl_sp18.root");
-	ds_dt("hist_dat_fa18.root", "hist_acc_fa18.root", "hist_gen_fa18.root", "../flux/flux_50685_51768.root", "xs_phi_kskl_fa18.root");
-	ds_dt("hist_dat_gluex1.root", "hist_acc_gluex1.root", "hist_gen_gluex1.root", "../flux/flux_gluex1.root", "xs_phi_kskl_gluex1.root");
+	ds_dt("hist_dat_sp17.root", "hist_acc_sp17.root", "hist_gen_sp17.root", "../flux/flux_30274_31057.root", "xs_phi_kskl_sp17");
+	ds_dt("hist_dat_sp18.root", "hist_acc_sp18.root", "hist_gen_sp18.root", "../flux/flux_40856_42559.root", "xs_phi_kskl_sp18");
+	ds_dt("hist_dat_fa18.root", "hist_acc_fa18.root", "hist_gen_fa18.root", "../flux/flux_50685_51768.root", "xs_phi_kskl_fa18");
+	ds_dt("hist_dat_gluex1.root", "hist_acc_gluex1.root", "hist_gen_gluex1.root", "../flux/flux_gluex1.root", "xs_phi_kskl_gluex1");
 }
 
 void ds_dt(string inf_dat, string inf_acc, string inf_gen, string inf_flux, string outf) {
@@ -15,8 +15,7 @@ void ds_dt(string inf_dat, string inf_acc, string inf_gen, string inf_flux, stri
 	TFile *inf3 = TFile::Open(inf_gen.c_str());
 	TFile *inf4 = TFile::Open(inf_flux.c_str());
 
-	//TFile *opf = TFile::Open("xs_phi_kskl.root", "UPDATE");
-	TFile *opf = TFile::Open(outf.c_str(), "RECREATE");
+	TFile *opf = TFile::Open((outf+".root").c_str(), "RECREATE");
 
 	TH1F *dat = (TH1F*)inf1->Get("h1_t");
 	TH1F *bkg = (TH1F*)inf1->Get("h1_t_sb");
@@ -50,7 +49,8 @@ void ds_dt(string inf_dat, string inf_acc, string inf_gen, string inf_flux, stri
 
 	TCanvas *c = new TCanvas();
 	eff->Draw();
-	c->SaveAs("efficiency.pdf");
+	// eff->Write("efficiency");
+	c->SaveAs(("figs/"+outf+"_efficiency.pdf").c_str());
 
 	c = new TCanvas();
 	dat->Draw();
@@ -68,5 +68,5 @@ void ds_dt(string inf_dat, string inf_acc, string inf_gen, string inf_flux, stri
 	dat->Write();
 	dat->Fit("expo");
 
-	cout << "Integrated cross section " << dat->Integral() << endl;
+	cout << "Integrated cross section " << dat->Integral("width") << endl;
 }

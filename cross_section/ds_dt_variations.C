@@ -2,24 +2,28 @@ void ds_dt_variations() {
 	gStyle->SetOptStat(0);
 
 	char text[50];
+	string opf_name = "";
 
 	// TFile *inf1 = TFile::Open("hist_dat_sp17.root");
 	// TFile *inf2 = TFile::Open("hist_acc_sp17.root");
 	// TFile *inf3 = TFile::Open("hist_gen_sp17.root");
 	// TFile *inf4 = TFile::Open("../flux/flux_30274_31057.root");
+	// fig_name = "sp17_xs_phi_kskl_variations";
 
 	TFile *inf1 = TFile::Open("hist_dat_sp18.root");
 	TFile *inf2 = TFile::Open("hist_acc_sp18.root");
 	TFile *inf3 = TFile::Open("hist_gen_sp18.root");
 	TFile *inf4 = TFile::Open("../flux/flux_40856_42559.root");
+	opf_name = "sp18_xs_phi_kskl_unUsedShowers_variations";
 
 	// TFile *inf1 = TFile::Open("hist_dat_fa18.root");
 	// TFile *inf2 = TFile::Open("hist_acc_fa18.root");
 	// TFile *inf3 = TFile::Open("hist_gen_fa18.root");
 	// TFile *inf4 = TFile::Open("../flux/flux_50685_51768.root");
+	// fig_name = "fa18_xs_phi_kskl_variations";
 
 	//TFile *opf = TFile::Open("xs_phi_kskl.root", "UPDATE");
-	TFile *opf = TFile::Open("xs_phi_kskl_variations.root", "RECREATE");
+	TFile *opf = TFile::Open( (opf_name+".root").c_str(), "RECREATE");
 
 	TLegend *lg = new TLegend(0.25, 0.5, 0.9, 0.9);
 
@@ -70,7 +74,7 @@ void ds_dt_variations() {
 
 		TF1 *fit = new TF1("expo", "expo", 0.2, 1.0);
 		dat->Fit(fit, "RQN");
-		sprintf(text, "%s, integral = %.4f #pm %.4f, slope = %.2f #pm %.2f", hname.second.c_str(), fit->Integral(0.2, 1.0), fit->IntegralError(0.2, 1.0), fit->GetParameter(1), fit->GetParError(1));
+		sprintf(text, "%s, integral = %.1f #pm %.1f (nb), slope = %.2f #pm %.2f", hname.second.c_str(), fit->Integral(0.2, 1.0)*1000, fit->IntegralError(0.2, 1.0)*1000, fit->GetParameter(1), fit->GetParError(1));
 		// sprintf(text, "%s, A = %.3f #pm %.3f, slope = %.2f #pm %.2f", hname.second.c_str(), fit->GetParameter(0), fit->GetParError(0), fit->GetParameter(1), fit->GetParError(1));
 		lg->AddEntry(dat, text, "lep");
 	
@@ -81,5 +85,5 @@ void ds_dt_variations() {
 
 	lg->Draw();
 
-	c->SaveAs("sp18_xs_phi_kskl_variations.png");
+	c->SaveAs( ("figs/"+opf_name+".pdf").c_str() );
 }

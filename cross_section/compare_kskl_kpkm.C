@@ -57,28 +57,29 @@ void compare_kskl_kpkm() {
 	double integral, error;
 
 	h5->Fit(fit, "RQN");
-	integral = h5->IntegralAndError(h5->FindBin(0.2), h5->FindBin(1.0), error, "width");
+	integral = h5->IntegralAndError(h5->FindBin(low), h5->FindBin(high), error, "width");
 	sprintf(text, "#phi #rightarrow K^{+}K^{-}, slope = %.2f #pm %.2f, integral = %.1f #pm %.1f (nb)", fit->GetParameter(1), fit->GetParError(1), integral*1000, error*1000);
 	lg->AddEntry(h5, text, "lep");
 
 	h1->Fit(fit, "RQN");
-	integral = h1->IntegralAndError(h1->FindBin(0.2), h1->FindBin(1.0), error, "width");
+	integral = h1->IntegralAndError(h1->FindBin(low), h1->FindBin(high), error, "width");
 	sprintf(text, "Spring 2017, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f, integral = %.1f #pm %.1f (nb)", fit->GetParameter(1), fit->GetParError(1), integral*1000, error*1000);
 	lg->AddEntry(h1, text, "lep");
 
 	h2->Fit(fit, "RQN");
-	integral = h2->IntegralAndError(h2->FindBin(0.2), h2->FindBin(1.0), error, "width");
+	integral = h2->IntegralAndError(h2->FindBin(low), h2->FindBin(high), error, "width");
 	sprintf(text, "Spring 2018, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f, integral = %.1f #pm %.1f (nb)", fit->GetParameter(1), fit->GetParError(1), integral*1000, error*1000);
 	lg->AddEntry(h2, text, "lep");
 
 	h3->Fit(fit, "RQN");
-	integral = h3->IntegralAndError(h3->FindBin(0.2), h3->FindBin(1.0), error, "width");
+	integral = h3->IntegralAndError(h3->FindBin(low), h3->FindBin(high), error, "width");
 	sprintf(text, "Fall 2018, #phi #rightarrow K_{S}K_{L}, slope = %.2f #pm %.2f, integral = %.1f #pm %.1f (nb)", fit->GetParameter(1), fit->GetParError(1), integral*1000, error*1000);
 	lg->AddEntry(h3, text, "lep");
 
 	lg->Draw();
 
-	c->SaveAs("compare.png");
+	// c->SaveAs("compare.png");
+	c->SaveAs("figs/compare.pdf");
 
 	c = new TCanvas();
 	h2->Divide(h1);
@@ -104,5 +105,5 @@ void compare_kskl_kpkm() {
 
 	lg->Draw();
 
-	c->SaveAs("compare_ratio.png");
+	c->SaveAs("figs/compare_ratio.pdf");
 }
