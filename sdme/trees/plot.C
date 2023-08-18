@@ -6,11 +6,7 @@
 #include <fstream>
 #include "TLorentzRotation.h"
 
-void plot() {
-	string base_directory = "";
-
-	base_directory = "sp18/";
-
+void plot(string base_directory = "sp18/") {
 	TFile *inf;
 	vector<string> datasets = {"dat", "acc", "gen", "bkg"};
 	vector<string> pols = {"000", "045", "090", "135"};
@@ -126,8 +122,8 @@ void plot() {
 
 				//cosHX[j]->Fill(resonance.M(), cos1_hx, weight);
 				//Phi[j]->Fill(resonance.M(), ks1_phi_hx, weight);
-				cosHX[j]->Fill(-(target_p4 - recoil_p4).M2(), cos1_hx, weight);
-				Phi[j]->Fill(-(target_p4 - recoil_p4).M2(), ks1_phi_hx, weight);
+				cosHX[j]->Fill(resonance.M(), cos1_hx, weight);
+				Phi[j]->Fill(resonance.M(), ks1_phi_hx, weight);
 
 				if(datasets[j] == "dat") {
 					h1_be->Fill(beam_p4.E(), weight);
