@@ -20,15 +20,17 @@ void drawsdme(int nBins = 8, double lowT = 0.15, double highT = 0.95) {
 	gStyle->SetTitleOffset(1.1,"X");
 	
 	gStyle->SetMarkerStyle(8);
-	gStyle->SetMarkerSize(1.0);
+	gStyle->SetMarkerSize(0.0);
 
 	FILE *fin = fopen("sdme.csv","r");
+	// FILE *fin2 = fopen("9bins_1.50t/tBins.txt","r");
 	TFile *opf = TFile::Open("sdme.root", "RECREATE");
 
-	double bin_width = (highT-lowT)/(nBins);
+	// double bin_width = (highT-lowT)/(nBins);
 	//double bin_width = ( TMath::Log10(highT) - TMath::Log10(lowT) ) / nBins;
 	//vector<double> bin = {0.162, 0.189, 0.220, 0.257, 0.300, 0.349, 0.406, 0.474 ,0.551, 0.643, 0.748, 0.874, 1.019, 1.182, 1.380};
 	
+	int bin;
 	double t;
 	double te;
 	double rho000;
@@ -64,16 +66,7 @@ void drawsdme(int nBins = 8, double lowT = 0.15, double highT = 0.95) {
 
 	for(int iBin = 0; iBin < nBins; iBin++) {
 
-		fscanf(fin,"%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf \n", &rho000, &rho000e, &rho100,  &rho100e,  &rho1m10,  &rho1m10e,  &rho111,  &rho111e,  &rho001 ,  &rho001e ,  &rho101 ,  &rho101e,  &rho1m11 ,  &rho1m11e ,  &rho102 ,  &rho102e ,  &rho1m12 ,  &rho1m12e);
-
-		double low = lowT + iBin*bin_width;
-		double high = lowT + (1 + iBin)*bin_width;
-
-		//t = bin[iBin];
-		//te = 0;
-		//cout << (high + low)/2. << endl;
-		t = (high + low)/2.;
-		te = bin_width/2;
+		fscanf(fin,"%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf \n", &t, &te, &rho000, &rho000e, &rho100,  &rho100e,  &rho1m10,  &rho1m10e,  &rho111,  &rho111e,  &rho001 ,  &rho001e ,  &rho101 ,  &rho101e,  &rho1m11 ,  &rho1m11e ,  &rho102 ,  &rho102e ,  &rho1m12 ,  &rho1m12e);
 
 		Psigma = 2*rho1m11 - rho001;
 
@@ -129,6 +122,7 @@ void drawsdme(int nBins = 8, double lowT = 0.15, double highT = 0.95) {
 	draw_graph(g_rho1m12, "Im(#rho_{1-1}^{2})", lowT, highT, -0.75, -0.25, kTRUE, -0.50);
 	g_rho1m12->Write("g_rho1m12");
 
+	c->Write("c_sdme");
 	c->SaveAs("sdme.pdf");
 	c->SaveAs("sdmee.png");
 
