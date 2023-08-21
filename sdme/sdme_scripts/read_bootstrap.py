@@ -70,6 +70,13 @@ def main(argv):
 	par_errs = []
 	par_vals2 = []
 	par_errs2 = []
+	tBins = {}
+ 
+	#Read bin center and width from tBins.txt
+	with open(fitname+'/tBins.txt', 'r') as f:
+		for line in f:
+			line = line.strip().split(',')
+			tBins['bin_'+line[0]] = [line[1], line[2]]
 
 	opf = open('bootstrap.csv','w')
 
@@ -239,7 +246,7 @@ def main(argv):
 		fig2.savefig(f'tmp/std_bin{iBin}.png')
 		
 		#print(iBin, np.mean(rho1m11), np.std(rho1m11))
-		line = f'{par_vals2[8]},{np.std(rho000)},{par_vals2[9]},{np.std(rho100)},{par_vals2[10]},{np.std(rho1m10)},{par_vals2[11]},{np.std(rho111)},{par_vals2[12]},{np.std(rho001)},{par_vals2[13]},{np.std(rho101)},{par_vals2[14]},{np.std(rho1m11)},{par_vals2[15]},{np.std(rho102)},{par_vals2[16]},{np.std(rho1m12)}\n'
+		line = f{tBins[bin_name][0]},{tBins[bin_name][1]},{par_vals2[8]},{np.std(rho000)},{par_vals2[9]},{np.std(rho100)},{par_vals2[10]},{np.std(rho1m10)},{par_vals2[11]},{np.std(rho111)},{par_vals2[12]},{np.std(rho001)},{par_vals2[13]},{np.std(rho101)},{par_vals2[14]},{np.std(rho1m11)},{par_vals2[15]},{np.std(rho102)},{par_vals2[16]},{np.std(rho1m12)}\n'
 		#line = f'{np.mean(rho000)},{np.std(rho000)},{np.mean(rho100)},{np.std(rho100)},{np.mean(rho1m10)},{np.std(rho1m10)},{np.mean(rho111)},{np.std(rho111)},{np.mean(rho001)},{np.std(rho001)},{np.mean(rho101)},{np.std(rho101)},{np.mean(rho1m11)},{np.std(rho1m11)},{np.mean(rho102)},{np.std(rho102)},{np.mean(rho1m12)},{np.std(rho1m12)}\n'
 		opf.write(line)
 

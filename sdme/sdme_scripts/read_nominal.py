@@ -2,7 +2,6 @@
 
 import sys
 import os
-import subprocess
 import math
 
 def read_sdme_fit(fitfilename):
@@ -54,11 +53,15 @@ def main(argv):
 	fitname = sys.argv[1]      #name of the fit, eg phi_0 where the fit file is phi_0.fit
 	nBins = int(sys.argv[2])      # number of bins
 	
-	read_params = False
-
-	par_names = []
 	par_vals = []
 	par_errs = []
+	tBins = {}
+ 
+	#Read bin center and width from tBins.txt
+	with open(fitname+'/tBins.txt', 'r') as f:
+		for line in f:
+			line = line.strip().split(',')
+			tBins['bin_'+line[0]] = [line[1], line[2]]
 
 	opf = open(f'sdme.csv','w')
 
@@ -67,7 +70,8 @@ def main(argv):
 		fitfilename = fitname + "/" + bin_name + "/nominal.fit"
 		npar, par_vals, par_errs = read_sdme_fit(fitfilename)
 
-		line = ''
+		# line = ''
+		line = f'{tBins[bin_name][0]},{tBins[bin_name][1]},'
 
 		if npar == 0:
 			line = '1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0\n'
