@@ -53,7 +53,7 @@ void plot_angles(string fit_name = "", string var = "", int nx = 3, int ny = 3, 
 	int bin;
 	double t, te, tlow, thigh;
 
-	FILE *fin = fopen("9bins_1.50t/tBins.txt","r");
+	FILE *fin = fopen((fit_name+"/tBins.txt").c_str(),"r");
 
 	TCanvas *c = new TCanvas();
 	c->Divide(nx, ny);
@@ -66,15 +66,15 @@ void plot_angles(string fit_name = "", string var = "", int nx = 3, int ny = 3, 
 			c->cd(ibin + 1);
 
 			fname = fit_name+"/bin_"+to_string(ibin)+"/phi1020_plot.root";
-			inf = TFile::Open(fname.c_str(), "READ");
-			if(inf == NULL)	cout << "empty file" << endl;
-			cout << "Get histogram from file "+fname << endl;
 
-			if(inf == NULL)	{
+			if(gSystem->AccessPathName(fname.c_str())) {
 				cout << fname << " does not exist." << endl;
 				continue;
 			}
-		
+
+			cout << "Get histogram from file "+fname << endl;
+			inf = TFile::Open(fname.c_str(), "READ");
+
 			for(auto subdir : subdirs) {
 				if(inf->GetDirectory(subdir.c_str()) == NULL) {
 					cout << subdir << " does not exist." << endl;
@@ -94,7 +94,11 @@ void plot_angles(string fit_name = "", string var = "", int nx = 3, int ny = 3, 
 				}
 			}
 
-			if(h1[i][j] == NULL || h2[i][j] == NULL || h3[i][j] == NULL)	continue;
+			if(h1[i][j] == NULL || h2[i][j] == NULL || h3[i][j] == NULL) {
+				cout << "h1, h2, or h3 is NULL" << endl;
+				continue;
+			}
+			cout << "hi" << endl;
 	
 			h1[i][j]->Add(h3[i][j], -1);
 	
@@ -122,27 +126,27 @@ void plot_angles(string fit_name = "", string var = "", int nx = 3, int ny = 3, 
 	c->SaveAs( ("figs/"+var+".png").c_str() );
 	c->SaveAs( ("figs/"+var+".pdf").c_str() );
 
-	TF1 *f1 = new TF1("f1", "pol1", -0.8, 0.8);
-	for(int i = 0; i < nx; i++) {
-		for(int j = 0; j < ny; j++) {
-			if(h1[i][j] == NULL || h2[i][j] == NULL)	continue;
+	// TF1 *f1 = new TF1("f1", "pol1", -0.8, 0.8);
+	// for(int i = 0; i < nx; i++) {
+	// 	for(int j = 0; j < ny; j++) {
+	// 		if(h1[i][j] == NULL || h2[i][j] == NULL)	continue;
 
-			c->cd(i*ny + j + 1);
+	// 		c->cd(i*ny + j + 1);
 
-			h1[i][j]->SetTitle("");
-			h1[i][j]->GetYaxis()->SetTitle("Data / Fit Result");
-			h1[i][j]->Divide(h2[i][j]);
-			h1[i][j]->GetYaxis()->SetRangeUser(0.5, 1.5);
-			h1[i][j]->Draw();
+	// 		h1[i][j]->SetTitle("");
+	// 		h1[i][j]->GetYaxis()->SetTitle("Data / Fit Result");
+	// 		h1[i][j]->Divide(h2[i][j]);
+	// 		h1[i][j]->GetYaxis()->SetRangeUser(0.5, 1.5);
+	// 		h1[i][j]->Draw();
 
-			if(var == "cosTheta") {
-				h1[i][j]->Fit(f1, "RQ");
+	// 		if(var == "cosTheta") {
+	// 			h1[i][j]->Fit(f1, "RQ");
 
-				sprintf(text, "slope = %.2f #pm %.2f", f1->GetParameter(1), f1->GetParError(1));
-				if(var == "cosTheta")	latex.DrawLatex(-0.4, 1.3, text);
-			}
-		}
-	}
-	c->SaveAs( ("figs/ratio_"+var+".png").c_str() );
-	c->SaveAs( ("figs/ratio_"+var+".pdf").c_str() );
+	// 			sprintf(text, "slope = %.2f #pm %.2f", f1->GetParameter(1), f1->GetParError(1));
+	// 			if(var == "cosTheta")	latex.DrawLatex(-0.4, 1.3, text);
+	// 		}
+	// 	}
+	// }
+	// c->SaveAs( ("figs/ratio_"+var+".png").c_str() );
+	// c->SaveAs( ("figs/ratio_"+var+".pdf").c_str() );
 }
