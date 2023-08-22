@@ -15,6 +15,7 @@ class amptools_cfg:
 		self.ext = ''
 		self.include_bkg = True
 		self.parRange = False
+		self.amplitudes = ''
 
 	def set_fit_name(self, name):
 		self.fit_name = name
@@ -40,6 +41,9 @@ class amptools_cfg:
 
 	def set_parRange(self, parRange):
 		self.parRange = parRange
+  
+	def set_amplitudes(self, amplitudes):
+		self.amplitudes = amplitudes
 
 	def write_zlm(self, f, sum, amp, l, m, fix):
 		for pol_angle, pol_frac in self.pol_info:
@@ -163,14 +167,6 @@ class amptools_cfg:
 			f.write('define flat 0\n')
 			f.write('\n')
 
-			#for pol_angle, pol_frac in self.pol_info:
-			#	if len(self.pol_info) > 1:
-			#		if pol_angle == 0:
-			#			f.write('parameter par_scale_%s 1 fixed \n' % (self.pols_map[pol_angle]))
-			#		else:
-			#			f.write('parameter par_scale_%s 1 \n' % (self.pols_map[pol_angle]))
-			#f.write('\n')
-
 			for pol_angle, pol_frac in self.pol_info:
 				f.write('reaction '+self.reaction_name+self.pols_map[pol_angle]+' Beam Proton KShort KLong\n')
 			f.write('\n')
@@ -194,7 +190,8 @@ class amptools_cfg:
 				f.write('sum '+self.reaction_name+self.pols_map[pol_angle]+' xpol\n')
 			f.write('\n')
 			
-			self.write_sdme(f)
+			write_amplitude = {'sdme' : self.write_sdme, 'zlm' : self.write_zlm}
+			write_amplitude[self.amplitudes](f)
 
 if __name__ == '__main__':
 	x = amptools_cfg('Sp0+_Sp0-')
@@ -202,4 +199,5 @@ if __name__ == '__main__':
 	x.set_reaction_name('kskl')
 	x.set_pol_info([[0, 0.35],[45,0.35],[90,0.35],[135,0.35]])
 	x.set_ext('_0')
+	x.set_amplitudes('sdme')
 	x.write_amptools_config()
