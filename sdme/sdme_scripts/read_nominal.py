@@ -74,7 +74,7 @@ def main(argv):
 		line = f'{tBins[bin_name][0]},{tBins[bin_name][1]},'
 
 		if npar == 0:
-			line = '1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0\n'
+			line = line+'1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0\n'
 			opf.write(line)
 			print(f'Warning: bin number {ibin} did not converge. All SDMEs set to 1 and 0 error')
 			continue
