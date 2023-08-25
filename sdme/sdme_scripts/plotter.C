@@ -98,7 +98,6 @@ void plot_angles(string fit_name = "", string var = "", int nx = 3, int ny = 3, 
 				cout << "h1, h2, or h3 is NULL" << endl;
 				continue;
 			}
-			cout << "hi" << endl;
 	
 			h1[i][j]->Add(h3[i][j], -1);
 	
