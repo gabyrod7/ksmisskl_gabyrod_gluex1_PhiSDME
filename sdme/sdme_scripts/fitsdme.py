@@ -41,7 +41,7 @@ def pwa_setup(nbins, base_directory):
 
 		if os.path.exists(path+'/fit.log'):
 			print('removing {}/fit.log'.format(path))
-			os.system('rm '+path+'/fit.fit')
+			os.system('rm '+path+'/fit.log')
 
 		if nfits > 1:
 			cfg_file.set_parRange(True)
