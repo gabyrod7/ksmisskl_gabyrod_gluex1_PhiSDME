@@ -44,8 +44,8 @@ void high_low_mkskl() {
 			if(i == 2)	set_marker(g[i][j], 22, 2);	// 
 //			if(i == 3)	set_marker(g[i][j], 20, 3);	// 
 
-			if(i == 1)	x_shift_graph(g[i][j], -0.025);
-			if(i == 2)	x_shift_graph(g[i][j], 0.025);
+			// if(i == 1)	x_shift_graph(g[i][j], -0.025);
+			// if(i == 2)	x_shift_graph(g[i][j], 0.025);
 		}
 
 

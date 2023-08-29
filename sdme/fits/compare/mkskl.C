@@ -52,10 +52,9 @@ void mkskl() {
 			if(i == 3)	set_marker(g[i][j], 20, 3); 
 
 			// If points overlap to much we can shift some points to make the results more readable
-			if(i == 1)	x_shift_graph(g[i][j], -0.025);
-			if(i == 2)	x_shift_graph(g[i][j], 0.025);
+			// if(i == 1)	x_shift_graph(g[i][j], -0.025);
+			// if(i == 2)	x_shift_graph(g[i][j], 0.025);
 		}
-
 
 	c->cd(1);
 	draw_graph(g[0][0], "#rho_{00}^{0}",  0.01, 1.50, -0.17, 0.17, kTRUE, 0.00);
