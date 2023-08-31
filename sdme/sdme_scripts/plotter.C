@@ -1,4 +1,4 @@
-void plot_angles(string fit_name = "", string var = "", int nx = 3, int ny = 3, vector<string> subdirs = {"NAME_000", "NAME_045", "NAME_090", "NAME_135"});
+void plot_variables(string fit_name = "", string var = "", int nx = 3, int ny = 3, vector<string> subdirs = {"NAME_000", "NAME_045", "NAME_090", "NAME_135"});
 
 void plotter(string fit_name = "9bins_1.50t", int nx = 3, int ny = 3) {
 	gStyle->SetPadTopMargin(0.08);
@@ -22,17 +22,17 @@ void plotter(string fit_name = "9bins_1.50t", int nx = 3, int ny = 3) {
 	gStyle->SetMarkerStyle(8);
 	gStyle->SetMarkerSize(1.5);
 
-	plot_angles(fit_name, "M2K", nx, ny);
-	plot_angles(fit_name, "cosTheta", nx, ny);
-	plot_angles(fit_name, "phi", nx, ny);
-	plot_angles(fit_name, "psi", nx, ny);
-	plot_angles(fit_name, "p1mom", nx, ny);
-	plot_angles(fit_name, "p2mom", nx, ny);
-	plot_angles(fit_name, "pmom", nx, ny);
-	plot_angles(fit_name, "t", nx, ny);
+	plot_variables(fit_name, "M2K", nx, ny);
+	plot_variables(fit_name, "cosTheta", nx, ny);
+	plot_variables(fit_name, "phi", nx, ny);
+	plot_variables(fit_name, "psi", nx, ny);
+	plot_variables(fit_name, "p1mom", nx, ny);
+	plot_variables(fit_name, "p2mom", nx, ny);
+	plot_variables(fit_name, "pmom", nx, ny);
+	plot_variables(fit_name, "t", nx, ny);
 }
 
-void plot_angles(string fit_name = "", string var = "", int nx = 3, int ny = 3, vector<string> subdirs = {"NAME_000", "NAME_045", "NAME_090", "NAME_135"}) {
+void plot_variables(string fit_name = "", string var = "", int nx = 3, int ny = 3, vector<string> subdirs = {"NAME_000", "NAME_045", "NAME_090", "NAME_135"}) {
 	gStyle->SetOptStat(0);
 
 	if(gSystem->AccessPathName("figs/"))
