@@ -47,7 +47,7 @@ $baseGenFileName="gen";
 $baseBkgFileName="bkg";
 $baseDatFileName="dat";
 
-@polTags=qw(000 045 090 135);
+@polTags=qw(_DATA_000 _DATA_045 _DATA_090 _DATA_135);
 #@polTags=qw(045);
 print "DATAFILES:\n";
 foreach $polTag (@polTags){
