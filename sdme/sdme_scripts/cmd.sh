@@ -5,7 +5,7 @@ gxenv /d/home/gabyrod7/gluex_top/version.xml
 
 name=$(basename "$PWD")
 nbins=9
-nfits=10
+nfits=100
 nBootstraps=500
 nprocess=$nbins
 low_t=0.15
