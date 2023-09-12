@@ -229,6 +229,8 @@ void DSelector_phi::Init(TTree *locTree)
 	dFlatTreeInterface->Create_Branch_Fundamental<double>("vanHove_x");
 	dFlatTreeInterface->Create_Branch_Fundamental<double>("vanHove_y");
 
+	dFlatTreeInterface->Create_Branch_Fundamental<double>("proton_z_vertex");
+
 //	dFlatTreeInterface->Create_Branch_NoSplitTObject<TLorentzVector>("pip_p4");
 //	dFlatTreeInterface->Create_Branch_NoSplitTObject<TLorentzVector>("pim_p4");
 	dFlatTreeInterface->Create_Branch_NoSplitTObject<TLorentzVector>("ks_p4");
@@ -423,6 +425,8 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		TLorentzVector locPrecoil_P4 = locBeamP4_Measured + dTargetP4 - locProtonP4;
 		TLorentzVector locPrecoil_P4_Measured = locBeamP4_Measured + dTargetP4 - locProtonP4_Measured;
 
+		TLorentzVector locProtonX4 = dProtonWrapper->Get_X4();
+
 		// do some boosting
 		//TLorentzRotation resRestBoost( -locKSKL_P4.BoostVector() );
 		TLorentzRotation resRestBoost( -(locBeamP4_Measured + dTargetP4).BoostVector() );
@@ -520,6 +524,8 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 
 		dFlatTreeInterface->Fill_Fundamental<double>("vanHove_x", vanHove_x);
 		dFlatTreeInterface->Fill_Fundamental<double>("vanHove_y", vanHove_y);
+
+		dFlatTreeInterface->Fill_Fundamental<double>("proton_z_vertex", locProtonX4.Z());
 
 //		dFlatTreeInterface->Fill_TObject<TLorentzVector>("pip_p4", locPiPlusP4);
 //		dFlatTreeInterface->Fill_TObject<TLorentzVector>("pim_p4", locPiMinusP4);
