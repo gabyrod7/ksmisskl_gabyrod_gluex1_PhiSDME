@@ -11,5 +11,6 @@ else
 	sed -i s/sdme_dir/$1 cmd.sh
 	sed -i s/DATA/$2/g divideData.pl
 	sed -i s/DATA/$2/g fitsdme.py
+	sed -i s/DATA/$2/g plotter.C
 fi
 
