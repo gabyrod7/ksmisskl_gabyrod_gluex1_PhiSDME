@@ -8,7 +8,7 @@ else
 	mkdir $1
 	cp ../sdme_scripts/* $1
 	cd $1
-	sed -i s/sdme_dir/$1 cmd.sh
+	sed -i s/sdme_dir/$1/ cmd.sh
 	sed -i s/DATA/$2/g divideData.pl
 	sed -i s/DATA/$2/g fitsdme.py
 	sed -i s/DATA/$2/g plotter.C
