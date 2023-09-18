@@ -3,7 +3,7 @@ import random
 
 class amptools_cfg:
 	def __init__(self):
-		self.data = ''
+		self.data = []
 		self.wave_set = ''
 		self.fname = 'amptools.cfg'
 		self.particles = 'particle1 particle2 particle3 particle4'
@@ -71,7 +71,7 @@ class amptools_cfg:
 		polFrac	 = {'sp17_000' : 0.3537, 'sp17_045' : 0.3484, 'sp17_090' : 0.3472, 'sp17_135' : 0.3512, 
 	      			'sp18_000' : 0.3420, 'sp18_045' : 0.3474, 'sp18_090' : 0.3478, 'sp18_135' : 0.3517, 
 					'fa18_000' : 0.3563, 'fa18_045' : 0.3403, 'fa18_090' : 0.3430, 'fa18_135' : 0.3523,
-					'gluex1_000' : 0.3486, 'gluex1' : 0.3452, 'gluex1_090' : 0.3461, 'gluex1_135' : 0.3518}
+					'gluex1_000' : 0.3486, 'gluex1_045' : 0.3452, 'gluex1_090' : 0.3461, 'gluex1_135' : 0.3518}
 
 		for dat in self.data:
 			f.write('define pol_{0} {1:.1f} {2:.4f}\n'.format(dat, polAngle[dat], polFrac[dat]))
@@ -110,80 +110,118 @@ class amptools_cfg:
 				f.write(line)
 		f.write('\n')
 
-	def write_zlm(self, f, sum, amp, l, m, fix):
-		wave_dictionary = { 'Sp0+' : ['Positive', 'Sp0+', 0, 0, True],
-                            'Sp0-' : ['Negative', 'Sp0-', 0, 0, True],
+	def write_twopsZlm(self, f):
+		# The convention for the wave names is as follows:
+		# Wave, orbital angular momentum (note so keep all strings the same length we 0+ rather than just 0), reflectivity (p/m = +/-)
+		# Example: Sp0+ = S-wave, 0 orbital angular momentum, positive reflectivity
+		wave_dictionary = { 'Sp0+' : ['Pos', 'Sp0+', 0, 0, True],
+                            'Sp0-' : ['Neg', 'Sp0-', 0, 0, True],
 
-                            'Pm1+': ['Positive', 'Pm1+', 1, -1, False],
-                            'Pm1-': ['Negative', 'Pm1-', 1, -1, False],
-                            'Pp0+': ['Positive', 'Pp0+', 1, 0, False],
-                            'Pp0-': ['Negative', 'Pp0-', 1, 0, False],
-                            'Pp1+': ['Positive', 'Pp1+', 1, 1, False],
-                            'Pp1-': ['Negative', 'Pp1-', 1, 1, False],
+                            'Pm1+': ['Pos', 'Pm1+', 1, -1, False],
+                            'Pm1-': ['Neg', 'Pm1-', 1, -1, False],
+                            'Pp0+': ['Pos', 'Pp0+', 1, 0, False],
+                            'Pp0-': ['Neg', 'Pp0-', 1, 0, False],
+                            'Pp1+': ['Pos', 'Pp1+', 1, 1, False],
+                            'Pp1-': ['Neg', 'Pp1-', 1, 1, False],
 
-                            'Dm2+': ['Positive', 'Dm2+', 2, -2, False],
-                            'Dm2-': ['Negative', 'Dm2-', 2, -2, False],
-                            'Dm1+': ['Positive', 'Dm1+', 2, -1, False],
-                            'Dm1-': ['Negative', 'Dm1-', 2, -1, False],
-                            'Dp0+': ['Positive', 'Dp0+', 2, 0, False],
-                            'Dp0-': ['Negative', 'Dp0-', 2, 0, False],
-                            'Dp1+': ['Positive', 'Dp1+', 2, 1, False],
-                            'Dp1-': ['Negative', 'Dp1-', 2, 1, False],
-                            'Dp2+': ['Positive', 'Dp2+', 2, 2, False],
-                            'Dp2-': ['Negative', 'Dp2-', 2, 2, False],
+                            'Dm2+': ['Pos', 'Dm2+', 2, -2, False],
+                            'Dm2-': ['Neg', 'Dm2-', 2, -2, False],
+                            'Dm1+': ['Pos', 'Dm1+', 2, -1, False],
+                            'Dm1-': ['Neg', 'Dm1-', 2, -1, False],
+                            'Dp0+': ['Pos', 'Dp0+', 2, 0, False],
+                            'Dp0-': ['Neg', 'Dp0-', 2, 0, False],
+                            'Dp1+': ['Pos', 'Dp1+', 2, 1, False],
+                            'Dp1-': ['Neg', 'Dp1-', 2, 1, False],
+                            'Dp2+': ['Pos', 'Dp2+', 2, 2, False],
+                            'Dp2-': ['Neg', 'Dp2-', 2, 2, False],
 
-                            'Fm3+': ['Positive', 'Fm3+', 3, -3, False],
-                            'Fm3-': ['Negative', 'Fm3-', 3, -3, False],
-                            'Fm2+': ['Positive', 'Fm2+', 3, -2, False],
-                            'Fm2-': ['Negative', 'Fm2-', 3, -2, False],
-                            'Fm1+': ['Positive', 'Fm1+', 3, -1, False],
-                            'Fm1-': ['Negative', 'Fm1-', 3, -1, False],
-                            'Fp0+': ['Positive', 'Fp0+', 3, 0, False],
-                            'Fp0-': ['Negative', 'Fp0-', 3, 0, False],
-                            'Fp1+': ['Positive', 'Fp1+', 3, 1, False],
-                            'Fp1-': ['Negative', 'Fp1-', 3, 1, False],
-                            'Fp2+': ['Positive', 'Fp2+', 3, 2, False],
-                            'Fp2-': ['Negative', 'Fp2-', 3, 2, False],
-                            'Fp3+': ['Positive', 'Fp3+', 3, 3, False],
-                            'Fp3-': ['Negative', 'Fp3-', 3, 3, False] }
+                            'Fm3+': ['Pos', 'Fm3+', 3, -3, False],
+                            'Fm3-': ['Neg', 'Fm3-', 3, -3, False],
+                            'Fm2+': ['Pos', 'Fm2+', 3, -2, False],
+                            'Fm2-': ['Neg', 'Fm2-', 3, -2, False],
+                            'Fm1+': ['Pos', 'Fm1+', 3, -1, False],
+                            'Fm1-': ['Neg', 'Fm1-', 3, -1, False],
+                            'Fp0+': ['Pos', 'Fp0+', 3, 0, False],
+                            'Fp0-': ['Neg', 'Fp0-', 3, 0, False],
+                            'Fp1+': ['Pos', 'Fp1+', 3, 1, False],
+                            'Fp1-': ['Neg', 'Fp1-', 3, 1, False],
+                            'Fp2+': ['Pos', 'Fp2+', 3, 2, False],
+                            'Fp2-': ['Neg', 'Fp2-', 3, 2, False],
+                            'Fp3+': ['Pos', 'Fp3+', 3, 3, False],
+                            'Fp3-': ['Neg', 'Fp3-', 3, 3, False] }
                            
-		for pol_angle, pol_frac in self.pol_info:
-			f.write('# Amplitude %s and polarization angle %d \n' % (amp, pol_angle))
-			if sum == 'Positive':
-				line = 'amplitude %s::%sRe::%s Zlm %d %d +1 +1 %.1f %.3f \n' % (self.reaction_name+self.pols_map[pol_angle], sum, amp, l, m, pol_angle, pol_frac) # real term
-				f.write(line)
-				line = 'amplitude %s::%sIm::%s Zlm %d %d -1 -1 %.1f %.3f \n' % (self.reaction_name+self.pols_map[pol_angle], sum, amp, l, m, pol_angle, pol_frac) # imeginary term
-				f.write(line)
-			if sum == 'Negative':
-				line = 'amplitude %s::%sRe::%s Zlm %d %d +1 -1 %.1f %.3f \n' % (self.reaction_name+self.pols_map[pol_angle], sum, amp, l, m, pol_angle, pol_frac) # real term
-				f.write(line)
-				line = 'amplitude %s::%sIm::%s Zlm %d %d -1 +1 %.1f %.3f \n' % (self.reaction_name+self.pols_map[pol_angle], sum, amp, l, m, pol_angle, pol_frac) # imeginary term
-				f.write(line)
+		f.write('# Create sums\n')
+		for dat in self.data:
+			'''
+			Posititve reflectivity amplitudes go in the PosRe and PosIm sums
+			Negative reflectivity amplitudes go in the NegRe and NegIm sums
+			'''
+			if '+' in  self.wave_set:
+				f.write('sum {0}_{1} PosRe\n'.format(self.reaction_name, dat))
+				f.write('sum {0}_{1} PosIm\n'.format(self.reaction_name, dat))
+			if '-' in  self.wave_set:
+				f.write('sum {0}_{1} NegRe\n'.format(self.reaction_name, dat))
+				f.write('sum {0}_{1} NegIm\n'.format(self.reaction_name, dat))
+			f.write('\n')
 
-			if fix:
-				num1 = random.uniform(-100, 100)
-				line = 'initialize %s::%sRe::%s cartesian %.2f 0.0 real \n' % (self.reaction_name+self.pols_map[pol_angle], sum, amp, num1)
-				f.write(line)
-			else:
-				num1, num2 = (random.uniform(-100, 100) , random.uniform(-100, 100))
-				line = 'initialize %s::%sRe::%s cartesian %.2f %.2f \n' % (self.reaction_name+self.pols_map[pol_angle], sum, amp, num1, num2)
-				f.write(line)
+		if len(self.data) > 1:
+			for dat in self.data:
+				if dat == self.data[0]:
+					f.write('parameter par_scale_{0} 1.0 fixed \n'.format(dat))
+					continue
+				f.write('parameter par_scale_{0} 1.0 \n'.format(dat))
+			f.write('\n')
 
-			line = 'constrain %s::%sRe::%s %s::%sIm::%s \n' % (self.reaction_name+self.pols_map[pol_angle], sum, amp, self.reaction_name+self.pols_map[pol_angle], sum, amp)
-			f.write(line)
+		waves = self.wave_set.split('_')
+		for wave in waves:
+			for dat in self.data:
+				f.write('# Amplitude for wave {0} and polarization angle {1} \n'.format(wave, dat))
+				if wave[-1] == '+':
+					f.write('amplitude {0}_{1}::PosRe::{2} Zlm {3} {4} +1 +1 pol_{1}\n'.format(self.reaction_name, dat, wave, wave_dictionary[wave][2], wave_dictionary[wave][3]))
+					f.write('amplitude {0}_{1}::PosIm::{2} Zlm {3} {4} -1 -1 pol_{1}\n'.format(self.reaction_name, dat, wave, wave_dictionary[wave][2], wave_dictionary[wave][3]))
 
-		if len(self.pol_info) > 1:
-			f.write('# Constrain parameters across datasets \n')
-			for pol_angle, pol_frac in self.pol_info:
-				line = 'constrain %s::%sRe::%s %s::%sRe::%s \n' % (self.reaction_name+self.pols_map[self.pol_info[0][0]], sum, amp, self.reaction_name+self.pols_map[pol_angle], sum, amp)
-				f.write(line)
-				#line = 'scale %s::%sRe::%s [par_scale_%s] \n' % (self.reaction_name+self.pols_map[self.pol_info[0][0]], sum, amp, self.pols_map[pol_angle])
-				#line = 'scale %s::%sRe::%s [par_scale_%s] \n' % (self.reaction_name+self.pols_map[pol_angle], sum, amp, self.pols_map[pol_angle])
-				f.write(line)
-				line = 'constrain %s::%sIm::%s %s::%sIm::%s \n' % (self.reaction_name+self.pols_map[self.pol_info[0][0]], sum, amp, self.reaction_name+self.pols_map[self.pol_info[0][0]], sum, amp)
-				f.write(line)
+					if wave_dictionary[wave][4]:
+						f.write('initialize {0}_{1}::PosRe::{2} cartesian {3} 0.0 real\n'.format(self.reaction_name, dat, wave, random.uniform(0, 100)))
+					else:
+						f.write('initialize {0}_{1}::PosRe::{2} cartesian {3} {4} \n'.format(self.reaction_name, dat, wave, random.uniform(-100, 100), random.uniform(-100, 100)))
+
+					f.write('constrain {0}_{1}::PosRe::{2} {0}_{1}::PosIm::{2}\n'.format(self.reaction_name, dat, wave))
+					
+				if wave[-1] == '-':
+					f.write('amplitude {0}_{1}::NegRe::{2} Zlm {3} {4} +1 -1 pol_{1}\n'.format(self.reaction_name, dat, wave, wave_dictionary[wave][2], wave_dictionary[wave][3]))
+					f.write('amplitude {0}_{1}::NegIm::{2} Zlm {3} {4} -1 +1 pol_{1}\n'.format(self.reaction_name, dat, wave, wave_dictionary[wave][2], wave_dictionary[wave][3]))
+
+					if wave_dictionary[wave][4]:
+						f.write('initialize {0}_{1}::NegRe::{2} cartesian {3} 0.0 real\n'.format(self.reaction_name, dat, wave, random.uniform(0, 100)))
+					else:
+						f.write('initialize {0}_{1}::NegIm::{2} cartesian {3} {4} \n'.format(self.reaction_name, dat, wave, random.uniform(-100, 100), random.uniform(-100, 100)))
+
+					f.write('constrain {0}_{1}::NegRe::{2} {0}_{1}::NegIm::{2} \n'.format(self.reaction_name, dat, wave))
+				f.write('\n')
+
+			if len(self.data) > 1:
+				f.write('# Constrain parameters across datasets \n')
+				for dat in self.data:
+					if dat == self.data[0]:
+						if wave[-1] == '+':
+							f.write('scale {0}_{1}::PosRe::{2} [par_scale_{1}] \n'.format(self.reaction_name, dat, wave))
+						if wave [-1] == '-' :
+							f.write('scale {0}_{1}::NegRe::{2} [par_scale_{1}] \n'.format(self.reaction_name, dat, wave))
+						continue
+					if wave[-1] == '+':
+						f.write('constrain {0}_{1}::PosRe::{3} {0}_{2}::PosRe::{3} \n'.format(self.reaction_name, self.data[0], dat, wave))
+						f.write('scale {0}_{1}::PosRe::{2} [par_scale_{1}] \n'.format(self.reaction_name, dat, wave))
+					if wave[-1] == '-':
+						f.write('constrain {0}_{1}::NegRe::{3} {0}_{2}::NegRe::{3} \n'.format(self.reaction_name, self.data[0], dat, wave))
+						f.write('scale {0}_{1}::NegRe::{2} [par_scale_{1}] \n'.format(self.reaction_name, dat, wave))
+			f.write('\n')
 
 	def write_sdme(self, f):
+		f.write('# Create sums\n')
+		for dat in self.data:
+			f.write('sum {0}_{1} sum_{1}\n'.format(self.reaction_name, dat))
+		f.write('\n')
+
 		f.write('parameter rho000  0.01\n')
 		f.write('parameter rho100  0.01\n')
 		f.write('parameter rho1m10 0.01\n')
@@ -217,6 +255,8 @@ class amptools_cfg:
 		
 		with open(self.fname, 'w') as f:
 			f.write('# Writting AmpTools config file with amptools_cfg class\n')
+			if self.amplitudes == 'sdme':
+				f.write('# Write SDME amplitudes \n')
 			f.write('fit '+self.fit_name+'\n\n')
 
 			for dat in self.data:
@@ -237,17 +277,11 @@ class amptools_cfg:
 				else:
 					f.write('\n')
 			
-			f.write('# Create sums\n')
-			for dat in self.data:
-				f.write('sum {0}_{1} sum_{1}\n'.format(self.reaction_name, dat))
-			f.write('\n')
-
 			f.write('# Define polarization information\n')
 			write_pol = {'hist' : self.write_pol_hist, 'average' : self.write_pol_average, 'custom' : self.write_pol_custom}
 			write_pol[self.polarization](f)
 
-			# self.write_sdme(f)
-			write_amplitude = {'sdme' : self.write_sdme, 'zlm' : self.write_zlm}
+			write_amplitude = {'sdme' : self.write_sdme, 'twopsZlm' : self.write_twopsZlm}
 			write_amplitude[self.amplitudes](f)
 
 if __name__ == '__main__':
@@ -255,5 +289,4 @@ if __name__ == '__main__':
 	x = amptools_cfg()
 	x.set_data(z)
 	x.set_particles('Beam Proton KShort KLong')
-	# x.set_ext('_0')
 	x.write_amptools_config()
