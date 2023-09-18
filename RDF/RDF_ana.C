@@ -101,7 +101,8 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto h2_mkskl_mpipp = rdf_cut.Histo2D({"h2_mkskl_mpipp", ";M(K_{S}K_{L});M(#pi^{+}p)", 200, 0.98, 2.98, 100, 1.0, 4.0}, "mkskl", "mpipp", "accidental_weight");
 	auto h2_mkskl_mpimp = rdf_cut.Histo2D({"h2_mkskl_mpimp", ";M(K_{S}K_{L});M(#pi^{-}p)", 200, 0.98, 2.98, 100, 1.0, 4.0}, "mkskl", "mpimp", "accidental_weight");
 
-	auto h2_mkskl_coshx = rdf_cut.Histo2D({"h2_mkskl_coshx", ";M(K_{S}K_{L});cos(#theta_{hel})", 200, 0.98, 2.98, 100, -1.0, 1.0}, "mkskl", "cos_hel_ks", "accidental_weight");
+	auto h2_mkskl_coshx = rdf_cut.Histo2D({"h2_mkskl_coshx", ";M(K_{S}K_{L});cos(#theta_{hel})", 120, 0.98, 1.10, 100, -1.0, 1.0}, "mkskl", "cos_hel_ks", "accidental_weight");
+	auto h2_mkskl_mandelt = rdf_cut.Histo2D({"h2_mkskl_mandelt", ";M(K_{S}K_{L});-t (GeV^{2})", 120, 0.98, 1.10, 50, 0.15, 1.5}, "mkskl", "mandel_t", "accidental_weight");
 
 	cout <<" "<< endl;
 	
@@ -151,6 +152,7 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	h2_mkskl_mpimp->Write();
 
 	h2_mkskl_coshx->Write();
+	h2_mkskl_mandelt->Write();
 
 
 	auto chisq_sig = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52").Histo1D({"chisq_sig", ";M(K_{S}p);Counts",  60, 0, 6}, "chisq_ndf", "accidental_weight");
