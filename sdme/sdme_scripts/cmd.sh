@@ -12,17 +12,23 @@ low_t=0.15
 high_t=1.50
 fit_name=$nbins'bins_'$high_t't'
 plotter_name='phi1020_plotter'
-trees='/d/grid15/gabyrod7/analysis/ksmisskl_gabyrod_gluex1_PhiSDME/sdme/trees/sdme_dir/'
+trees='/d/grid15/gabyrod7/analysis/ksmisskl_gabyrod_gluex1_PhiSDME/sdme/trees/gluex1/'
 
 divide_data () { ./divideData.pl $fit_name $nbins $low_t $high_t $trees; }
 amptools_fit () { python3 fitsdme.py $fit_name $nbins $nfits; }
+read_bootstrap () { 
+	source /d/home/gabyrod7/python/python-3.6.8/bin/activate
+	python3 read_bootstrap.py $fit_name $nbins $nBootstraps
+}
 bootstrap () {
 	source /d/home/gabyrod7/python/python-3.6.8/bin/activate
 	python bootstrap.py $fit_name $nbins $nBootstraps
-	python read_bootstrap.py $fit_name $nbins $nBootstraps
+	read_bootstrap
 }
-read_amptools_fit () { python3 read_nominal.py $fit_name $nbins; }
+read_amptools_fit () { python3 read_nominal.py $fit_name $nbins
+}
 draw_amptools_fit() {
+	read_amptools_fit
 	root -l -b -q "drawsdme.C($nbins, $low_t, $high_t)"
 	mv sdme.csv $fit_name'.csv'
 	mv sdmee.png $fit_name'.png'
@@ -52,6 +58,11 @@ do
 	if [[ "$i" == "-fit" ]]
 	then
 		amptools_fit
+	fi
+
+	if [[ "$i" == "-read_bootstrap" ]]
+	then
+		read_bootstrap
 	fi
 
 	if [[ "$i" == "-bootstrap" ]]

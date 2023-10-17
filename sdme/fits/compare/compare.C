@@ -36,7 +36,7 @@ void compare() {
 	TFile *inf[3];
 	inf[0] = TFile::Open("../gluex1/sdme.root");
 	inf[1] = TFile::Open("../kpkm/sdme.root");
-	inf[2] = TFile::Open("jpac_model.root");
+	inf[2] = TFile::Open("../jpac/jpac_model.root");
 
 	TGraphErrors *g[3][9];
 	vector<string> names = {"g_rho000", "g_rho100", "g_rho1m10", "g_rho111", "g_rho001", "g_rho101", "g_rho1m11", "g_rho102", "g_rho1m12"};
@@ -56,32 +56,32 @@ void compare() {
 		}
 
 	c->cd(1);
-	draw_graph(g[0][0], "#rho_{00}^{0}",  xlow, xhigh, -0.25, 0.25, kTRUE, 0.00);
+	draw_graph(g[0][0], "#rho_{00}^{0}",  xlow, xhigh, -0.15, 0.15, kTRUE, 0.00);
 	g[1][0]->Draw("SAME P");
 	g[2][0]->Draw("SAME");
 
 	c->cd(2);
-	draw_graph(g[0][1], "Re(#rho_{10}^{0})",  xlow, xhigh, -0.25, 0.25, kTRUE, 0.00);
+	draw_graph(g[0][1], "Re(#rho_{10}^{0})",  xlow, xhigh, -0.15, 0.15, kTRUE, 0.00);
 	g[1][1]->Draw("SAME P");
 	g[2][1]->Draw("SAME");
 
 	c->cd(3);
-	draw_graph(g[0][2], "#rho_{1-1}^{0}", xlow, xhigh, -0.25, 0.25, kTRUE, 0.00);
+	draw_graph(g[0][2], "#rho_{1-1}^{0}", xlow, xhigh, -0.15, 0.15, kTRUE, 0.00);
 	g[1][2]->Draw("SAME P");
 	g[2][2]->Draw("SAME");
 
 	c->cd(4);
-	draw_graph(g[0][3], "#rho_{11}^{1}",  xlow, xhigh, -0.25, 0.25, kTRUE, 0.00);
+	draw_graph(g[0][3], "#rho_{11}^{1}",  xlow, xhigh, -0.15, 0.15, kTRUE, 0.00);
 	g[1][3]->Draw("SAME P");
 	g[2][3]->Draw("SAME");
 
 	c->cd(5);
-	draw_graph(g[0][4], "#rho_{00}^{1}",  xlow, xhigh, -0.25, 0.25, kTRUE, 0.00);
+	draw_graph(g[0][4], "#rho_{00}^{1}",  xlow, xhigh, -0.15, 0.15, kTRUE, 0.00);
 	g[1][4]->Draw("SAME P");
 	g[2][4]->Draw("SAME");
 
 	c->cd(6);
-	draw_graph(g[0][5], "Re(#rho_{10}^{1})",  xlow, xhigh, -0.25, 0.25, kTRUE, 0.00);
+	draw_graph(g[0][5], "Re(#rho_{10}^{1})",  xlow, xhigh, -0.15, 0.15, kTRUE, 0.00);
 	g[1][5]->Draw("SAME P");
 	g[2][5]->Draw("SAME");
 
@@ -92,7 +92,7 @@ void compare() {
 
 
 	c->cd(8);
-	draw_graph(g[0][7], "Im(#rho_{10}^{2})",  xlow, xhigh, -0.25, 0.25, kTRUE, 0.00);
+	draw_graph(g[0][7], "Im(#rho_{10}^{2})",  xlow, xhigh, -0.15, 0.15, kTRUE, 0.00);
 	g[1][7]->Draw("SAME P");
 	g[2][7]->Draw("SAME");
 
