@@ -6,10 +6,13 @@
 #include <fstream>
 #include "TLorentzRotation.h"
 
-void plot(string base_directory = "sp18/") {
+void plot(string dir = "fa18/", string ext = "fa18") {
 	TFile *inf;
+	string fname = "";
 	vector<string> datasets = {"dat", "acc", "gen", "bkg"};
 	vector<string> pols = {"000", "045", "090", "135"};
+
+	if((dir == "sp17" || dir == "sp18" || dir == "fa18" || dir == "gluex1") && ext == "")	ext = dir;
 
 	int nBins = 100;
 	char s[50];
@@ -51,13 +54,19 @@ void plot(string base_directory = "sp18/") {
 	phi[2] = new TH2F("phi_gen_all", ";M(K_{S}K_{L});#phi_{HX}", nBins, lmass, umass, 40, -3.14, 3.14);
 	phi[3] = new TH2F("phi_bkg_all", ";M(K_{S}K_{L});#phi_{HX}", nBins, lmass, umass, 40, -3.14, 3.14);
 
-	TFile	*opf = TFile::Open( (base_directory+"histograms.root").c_str(), "RECREATE");
+	TFile	*opf = TFile::Open( (dir+"histograms.root").c_str(), "RECREATE");
 
 	// Loop through data sets
 	for(int i = 0; i < pols.size(); i++) {
 		for(int j = 0; j < datasets.size(); j++) {
-			cout << "Running over file: " << datasets[j]+pols[i]+".root" << endl;
-			inf = TFile::Open( (base_directory+datasets[j]+pols[i]+".root").c_str() );
+			fname = dir+datasets[j]+"_"+ext+"_"+pols[i]+".root";
+			if(gSystem->AccessPathName(fname.c_str())) {
+				std::cout << "File does not exists:  "+fname << std::endl;
+				continue;
+			}
+			else 
+				cout << "Running over file: " << fname << endl;
+			inf = TFile::Open( fname.c_str() );
 
 			TTree* tree;
 			inf->GetObject("kin",tree);
