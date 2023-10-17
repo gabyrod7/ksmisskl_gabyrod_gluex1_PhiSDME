@@ -58,16 +58,22 @@ void x_shift_graph(TGraphErrors *g, double shift) {
 }
 
 
-TGraph* calc_barlow(TGraphErrors *nominal, TGraphErrors *variation) {
-	TGraph *graph = new TGraph();
+TGraphErrors* calc_barlow(TGraphErrors *nominal, TGraphErrors *variation) {
+	TGraphErrors *graph = new TGraphErrors();
 	double Delta, sigma;
 
 	for(int i = 0; i < nominal->GetN(); i++) {
 		Delta = nominal->GetPointY(i) - variation->GetPointY(i);
 		sigma = TMath::Sqrt( abs( nominal->GetErrorY(i)*nominal->GetErrorY(i) - variation->GetErrorY(i)*variation->GetErrorY(i) ) );
 		//cout << Delta << "	" << sigma << "		" << Delta / sigma << endl;
-		graph->SetPointY( i, Delta/sigma );
+
+		if(sigma != 0.0)	graph->SetPointY( i, Delta/sigma );
+		else				graph->SetPointY( i, 0.0 );
 		graph->SetPointX( i, nominal->GetPointX(i) );
+		graph->SetPointError( i, variation->GetErrorX(i), 0 );
+
+		cout << i << "	" << Delta / sigma << endl;
+		cout << "	"<< sigma << endl;
 	}
 
 	return graph;
