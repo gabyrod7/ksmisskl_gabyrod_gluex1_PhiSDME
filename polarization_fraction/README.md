@@ -1,7 +1,7 @@
 # Polarization Fraction
 
 Here we combine the different polarization fraction vs. beam energy plots.
-These plots were made for each run period with code by Mike Dugger which can be found at [GlueX wiki](https://halldweb.jlab.org/wiki-private/index.php/TPOL_Polarization).
+These plots were made for each run period with version 9 of code by Mike Dugger which can be found at [GlueX wiki](https://halldweb.jlab.org/wiki-private/index.php/TPOL_Polarization).
 These plots are used in the SDME analysis.
 Since each run period has differnt amount of statistics we use the luminosity in the coherent peak as the weight factor.
 The luminosity for each GlueX-I run period can be found at [GlueX wiki](https://halldweb.jlab.org/wiki-private/index.php/GlueX_Phase-I_Dataset_Summary).
