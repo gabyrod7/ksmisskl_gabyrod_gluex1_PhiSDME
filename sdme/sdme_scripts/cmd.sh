@@ -15,8 +15,8 @@ fi
 
 name=$(basename "$PWD")
 nbins=9
-nfits=2
-nBootstraps=200
+nfits=100
+nBootstraps=500
 nprocess=1
 low_t=0.15
 high_t=1.0
@@ -49,11 +49,12 @@ run_plotter () {
 	root -l -b -q "plotter.C(\"$fit_name\", 3, 3)"
 }
 
-TEMP=`getopt -a -o dfrp --long divide,fit,read,draw,run_plotter,plotter,bootstrap,read_bootstrap,all -- "$@"`
+TEMP=`getopt -a -o n:dfrp --long nthread:divide,fit,read,draw,run_plotter,plotter,bootstrap,read_bootstrap,all -- "$@"`
 eval set -- "$TEMP"
 
 while true; do
 	case "$1" in 
+		n | --nthread) nprocess=$2; shift 2;;
 		d | --divide) divide_data; shift;;
 		f | --fit) amptools_fit; shift;;
 		--read) read_amptools_fit; shift;;
