@@ -6,7 +6,7 @@ import amptools_cfg
 fit_name = sys.argv[1]
 nbins = int(sys.argv[2]) 
 nfits = int(sys.argv[3])
-nprocess = nbins 
+nprocess = int(sys.argv[4])  
 # reaction_name = 'NAME_'
 seed_file = 'param_init.cfg'
 cfg_file_name = 'amptools.cfg'
@@ -16,7 +16,7 @@ base_directory = os.getcwd()
 
 # setup config file settings
 cfg_file = amptools_cfg.amptools_cfg()
-cfg_file.set_data([runPeriod+'_'+polAngle for runPeriod in ['DATA'] for polAngle in ['000', '045', '090', '135']])
+cfg_file.set_data([runPeriod+'_'+polAngle for runPeriod in ['gluex1'] for polAngle in ['000', '045', '090', '135']])
 #cfg_file.set_data([runPeriod+'_'+polAngle for runPeriod in ['sp17', 'sp18', 'fa18'] for polAngle in ['000', '045', '090', '135']])
 cfg_file.set_particles('Beam Proton KShort KLong')
 cfg_file.set_fname(cfg_file_name)
@@ -80,9 +80,9 @@ def run_fit(path):
 if __name__ == '__main__':
 	paths = pwa_setup(nbins, base_directory)
 
-	bins = [i for i in range(0,nbins)]
-
-	p = Pool(nprocess)
-	#p.map(run_fit, bins)
-	p.map(run_fit, paths)
-
+	if nprocess == 1:
+		for path in paths:
+			run_fit(path)
+	else:
+		p = Pool(nprocess)
+		p.map(run_fit, paths)

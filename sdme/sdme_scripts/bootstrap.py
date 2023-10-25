@@ -1,18 +1,16 @@
 import os
 import sys
 from multiprocessing import Pool
-import amptools_cfg
 import random
 
 fit_name = sys.argv[1]
 nBins = int(sys.argv[2]) 
 nBootstraps = int(sys.argv[3])
-nprocess = nBins 
+nprocess = int(sys.argv[4]) 
 reaction_name = 'NAME_'
 seed_file = 'param_init.cfg'
 cfg_file_name = 'amptools.cfg'
 data_dir = fit_name
-#keep_log = True
 base_directory = os.getcwd()
 
 def bootstrap_setup(nBins, base_directory):
@@ -40,7 +38,6 @@ def bootstrap_setup(nBins, base_directory):
 					arr = line.strip().split('\t')
 					SDMEs[arr[0]] = arr[1]
 					if arr[0] == 'rho1m12':
-						#print(SDMEs)
 						break # rho1m12 is the last SDME, we have what we want from this file
 
 			with open('amptools.cfg', 'r') as nominal:
@@ -87,7 +84,9 @@ def run_fit(path):
 if __name__ == '__main__':
 	paths = bootstrap_setup(nBins, base_directory)
 
-	#bins = [i for i in range(0,nBins)]
-
-	p = Pool(nprocess)
-	p.map(run_fit, paths)
+	if nprocess == 1:
+		for path in paths:
+			run_fit(path)
+	else:
+		p = Pool(nprocess)
+		p.map(run_fit, paths)

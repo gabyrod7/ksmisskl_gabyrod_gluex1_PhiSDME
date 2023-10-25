@@ -1,28 +1,38 @@
 #!/bin/bash
 
-source /d/home/gabyrod7/gluex_top/gluex_env_boot_gabriel.sh
-gxenv /d/home/gabyrod7/gluex_top/version.xml
+# Check if we are on a GPU node at FSU
+if [ "$(hostname)" = 'scigrid52.local' ]
+then
+	export BUILD_SCRIPTS=/group/halld/Software/build_scripts
+	source $BUILD_SCRIPTS/gluex_env_boot_jlab.sh
+	gxenv /d/home/sdobbs/grid13/src/apptainer-gpumpi/version.xml
+
+	export CUDA_INSTALL_PATH=/usr/local/cuda-12.2
+else
+	source /d/home/gabyrod7/gluex_top/gluex_env_boot_gabriel.sh
+	gxenv /d/home/gabyrod7/gluex_top/version.xml
+fi
 
 name=$(basename "$PWD")
 nbins=9
-nfits=100
-nBootstraps=500
-nprocess=$nbins
+nfits=2
+nBootstraps=200
+nprocess=1
 low_t=0.15
-high_t=1.50
+high_t=1.0
 fit_name=$nbins'bins_'$high_t't'
 plotter_name='phi1020_plotter'
 trees='/d/grid15/gabyrod7/analysis/ksmisskl_gabyrod_gluex1_PhiSDME/sdme/trees/gluex1/'
 
 divide_data () { ./divideData.pl $fit_name $nbins $low_t $high_t $trees; }
-amptools_fit () { python3 fitsdme.py $fit_name $nbins $nfits; }
+amptools_fit () { python3 fitsdme.py $fit_name $nbins $nfits $nprocess; }
 read_bootstrap () { 
 	source /d/home/gabyrod7/python/python-3.6.8/bin/activate
 	python3 read_bootstrap.py $fit_name $nbins $nBootstraps
 }
 bootstrap () {
 	source /d/home/gabyrod7/python/python-3.6.8/bin/activate
-	python bootstrap.py $fit_name $nbins $nBootstraps
+	python bootstrap.py $fit_name $nbins $nBootstraps $nprocess
 	read_bootstrap
 }
 read_amptools_fit () { python3 read_nominal.py $fit_name $nbins
@@ -39,63 +49,20 @@ run_plotter () {
 	root -l -b -q "plotter.C(\"$fit_name\", 3, 3)"
 }
 
-for i in $@
-do 
-	if [[ "$i" == "-screen" ]]
-	then
-		if [ -f "analysis.log" ]; then
-			rm 'analysis.log'
-		fi
+TEMP=`getopt -a -o dfrp --long divide,fit,read,draw,run_plotter,plotter,bootstrap,read_bootstrap,all -- "$@"`
+eval set -- "$TEMP"
 
-		screen -dmS $name bash -c './cmd.sh -all > analysis.log'
-	fi
-
-	if [[ "$i" == "-divide" ]]
-	then
-		divide_data
-	fi
-
-	if [[ "$i" == "-fit" ]]
-	then
-		amptools_fit
-	fi
-
-	if [[ "$i" == "-read_bootstrap" ]]
-	then
-		read_bootstrap
-	fi
-
-	if [[ "$i" == "-bootstrap" ]]
-	then
-		bootstrap
-	fi
-
-	if [[ "$i" == "-read" ]]
-	then
-		read_amptools_fit
-	fi
-
-	if [[ "$i" == "-draw" ]]
-	then
-		draw_amptools_fit
-	fi
-
-	if [[ "$i" == "-plotter" ]]
-	then
-		root -l -b -q "plotter.C(\"$fit_name\", 3, 3)"
-	fi
-	if [[ "$i" == "-run_plotter" ]]
-	then
-		run_plotter
-	fi
-	if [[ "$i" == "-all" ]]
-	then
-		divide_data
-		amptools_fit
-		read_amptools_fit
-		draw_amptools_fit
-		run_plotter
-
-#		bootstrap
-	fi
+while true; do
+	case "$1" in 
+		d | --divide) divide_data; shift;;
+		f | --fit) amptools_fit; shift;;
+		--read) read_amptools_fit; shift;;
+		r | --draw) draw_amptools_fit; shift;;
+		--run_plotter) run_plotter; shift;;
+		p | --plotter) root -l -b -q "plotter.C(\"$fit_name\", 3, 3)"; shift;;
+		--bootstrap) bootstrap; shift;;
+		--read_bootstrap) read_bootstrap; shift;;
+		--all) divide_data; amptools_fit; read_amptools_fit; draw_amptools_fit; run_plotter; bootstrap; shift;;
+		--) shift; break;;
+	esac
 done
