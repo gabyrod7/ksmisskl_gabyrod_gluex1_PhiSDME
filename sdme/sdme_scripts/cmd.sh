@@ -1,5 +1,16 @@
 #!/bin/bash
 
+name=$(basename "$PWD")
+nbins=9
+nfits=100
+nBootstraps=500
+nprocess=1
+low_t=0.15
+high_t=1.0
+fit_name=$nbins'bins_'$high_t't'
+plotter_name='phi1020_plotter'
+trees='/d/grid15/gabyrod7/analysis/ksmisskl_gabyrod_gluex1_PhiSDME/sdme/trees/gluex1/'
+
 # Check if we are on a GPU node at FSU
 if [ "$(hostname)" = 'scigrid52.local' ]
 then
@@ -11,18 +22,9 @@ then
 else
 	source /d/home/gabyrod7/gluex_top/gluex_env_boot_gabriel.sh
 	gxenv /d/home/gabyrod7/gluex_top/version.xml
-fi
 
-name=$(basename "$PWD")
-nbins=9
-nfits=100
-nBootstraps=500
-nprocess=1
-low_t=0.15
-high_t=1.0
-fit_name=$nbins'bins_'$high_t't'
-plotter_name='phi1020_plotter'
-trees='/d/grid15/gabyrod7/analysis/ksmisskl_gabyrod_gluex1_PhiSDME/sdme/trees/gluex1/'
+	nprocess=$nbins
+fi
 
 divide_data () { ./divideData.pl $fit_name $nbins $low_t $high_t $trees; }
 amptools_fit () { python3 fitsdme.py $fit_name $nbins $nfits $nprocess; }
