@@ -19,6 +19,9 @@ def bootstrap_setup(nBins, base_directory):
 	for i in range(nBins):
 		path = base_directory+'/'+data_dir+'/bin_'+str(i)
 
+		if not os.path.exists(path+'/bootstrap/'):
+			os.mkdir(path+'/bootstrap/')
+
 		# check that there is a nomianl.fit file, this is the best fit  
 		if os.path.exists(path+'/nominal.fit'):
 			print(f'nominal fit exists in {path}')
@@ -66,6 +69,9 @@ def bootstrap_setup(nBins, base_directory):
 				cmd = f'sed -i s/XXXX/{random.randint(1, 10000)}/g bootstrap_{j}.cfg'
 				os.system(cmd)
 
+				cmd = f'mv bootstrap_{j}.cfg bootstrap/bootstrap_{j}.cfg'
+				os.system(cmd)
+
 	return paths
 
 def run_fit(path):
@@ -74,11 +80,13 @@ def run_fit(path):
 
 	print(f'Perform {nBootstraps} bootstraps in {path}')
 	for i in range(nBootstraps):
-		cmd = f'fit -c bootstrap_{i}.cfg > bootstrap_{i}.log'
+		cmd = f'fit -c bootstrap/bootstrap_{i}.cfg > bootstrap/bootstrap_{i}.log'
 		os.system(cmd)
 
 		if i%10 == 0:
 			print(f'{i} of {nBootstraps} fits complete in directory {path}')
+	
+	os.system(f'mv bootstrap_*.fit bootstrap/')
 	print(f'Bootstap complete in {path}')
 
 if __name__ == '__main__':
