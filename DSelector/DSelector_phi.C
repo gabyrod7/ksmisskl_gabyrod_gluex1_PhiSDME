@@ -392,7 +392,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		Double_t locBunchPeriod = dAnalysisUtilities.Get_BeamBunchPeriod(Get_RunNumber());
 		Double_t locDeltaT_RF = dAnalysisUtilities.Get_DeltaT_RF(Get_RunNumber(), locBeamX4_Measured, dComboWrapper);
 
-		h1_RFTime->Fill(locDeltaT_RF);
+		// h1_RFTime->Fill(locDeltaT_RF);
 
 		Int_t locRelBeamBucket = dAnalysisUtilities.Get_RelativeBeamBucket(Get_RunNumber(), locBeamX4_Measured, dComboWrapper); // 0 for in-time events, non-zero integer for out-of-time photons
 		Int_t locNumOutOfTimeBunchesInTree = 3; //YOU need to specify this number
@@ -403,10 +403,10 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		Double_t locAccidentalScalingFactor = dAnalysisUtilities.Get_AccidentalScalingFactor(Get_RunNumber(), locBeamP4.E(), dIsMC); // Ideal value would be 1, but deviations require added factor, which is different for data and MC.
 		Double_t locAccidentalScalingFactorError = dAnalysisUtilities.Get_AccidentalScalingFactorError(Get_RunNumber(), locBeamP4.E()); // Ideal value would be 1, but deviations observed, need added factor.
 		Double_t locHistAccidWeightFactor = locRelBeamBucket==0 ? 1 : -locAccidentalScalingFactor/(2*locNumOutOfTimeBunchesToUse) ; // Weight by 1 for in-time events, ScalingFactor*(1/NBunches) for out-of-time
-		if(locSkipNearestOutOfTimeBunch && abs(locRelBeamBucket)==1) { // Skip nearest out-of-time bunch: tails of in-time distribution also leak in
-			dComboWrapper->Set_IsComboCut(true); 
-			continue; 
-		} 
+		// if(locSkipNearestOutOfTimeBunch && abs(locRelBeamBucket)==1) { // Skip nearest out-of-time bunch: tails of in-time distribution also leak in
+		// 	dComboWrapper->Set_IsComboCut(true); 
+		// 	continue; 
+		// } 
 
 		/********************************************* COMBINE FOUR-MOMENTUM ********************************************/
 
@@ -565,6 +565,16 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		dFlatTreeInterface->Fill_Fundamental<int>("PID_FinalState", 310, 1);  // KShort
 		dFlatTreeInterface->Fill_Fundamental<int>("PID_FinalState", 130, 2);  // KLong
 		FillAmpTools_FlatTree(locBeamP4, locFinalStateP4);
+
+		if(locBeamP4.E() > 8.2 && locBeamP4.E() < 8.8 && locKSKL_P4.M() < 1.04 && locKSKL_P4.M() > 1.005 
+			&& chisq_ndf < 4 && t < 1.0 && t > 0.15 && locPathLengthSignificance > 4 
+			&& mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7
+			&& dComboWrapper->Get_NumUnusedTracks() == 0 && dComboWrapper->Get_NumUnusedShowers() < 2)
+			h1_RFTime->Fill(locDeltaT_RF);
+		if(locSkipNearestOutOfTimeBunch && abs(locRelBeamBucket)==1) { // Skip nearest out-of-time bunch: tails of in-time distribution also leak in
+			dComboWrapper->Set_IsComboCut(true); 
+			continue; 
+		} 
 
 		//FILL FLAT TREE
 		if(locBeamP4.E() > 8.2 && locBeamP4.E() < 8.8 && locKSKL_P4.M() < 1.1 && chisq_ndf < 6 && t < 1.5)

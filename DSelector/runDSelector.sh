@@ -26,7 +26,7 @@ data="trees/tree_dat_sp17.root"
 hist="hist_dat_sp17.root"
 tree="tree_dat_sp17.root"
 ftree="ftree_dat_sp17.root"
-# runDSelector
+runDSelector
 
 # Spring 2018 data
 DSelector="DSelector_phi.C"
@@ -37,7 +37,7 @@ data="trees/tree_dat_sp18.root"
 hist="hist_dat_sp18.root"
 tree="tree_dat_sp18.root"
 ftree="ftree_dat_sp18.root"
-# runDSelector
+runDSelector
 
 # Fall 2018 data
 DSelector="DSelector_phi.C"
@@ -47,7 +47,7 @@ data="trees/tree_dat_fa18.root"
 hist="hist_dat_fa18.root"
 tree="tree_dat_fa18.root"
 ftree="ftree_dat_fa18.root"
-# runDSelector
+runDSelector
 
 ## Spring 2017 reconstructed phi MC
 DSelector="DSelector_phi.C"
