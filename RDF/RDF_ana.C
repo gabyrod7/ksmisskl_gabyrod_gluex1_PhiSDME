@@ -34,6 +34,7 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto rdf_variables = rdf.Define("fs", "flight_significance").Define("mmiss", "missing_mass").Define("misse", "missing_p4_meas.E()")
 				.Define("mksp", "(ks_p4 + p_p4_kin).M()").Define("mklp", "(kl_p4 + p_p4_kin).M()")
 				.Define("ks_phi", "ks_p4_cm.Phi()").Define("p_z", "p_x4_kin.Z()")
+				.Define("ksphi", "ks_p4.Phi()*180/3.14159265359")
 				.Define("mpipp", "(pip_p4_kin + p_p4_kin).M()").Define("mpimp", "(pim_p4_kin + p_p4_kin).M()");
 
 	//3.2)Now apply cuts on the newly defined variables:
@@ -102,7 +103,10 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto h2_mkskl_mpimp = rdf_cut.Histo2D({"h2_mkskl_mpimp", ";M(K_{S}K_{L});M(#pi^{-}p)", 200, 0.98, 2.98, 100, 1.0, 4.0}, "mkskl", "mpimp", "accidental_weight");
 
 	auto h2_mkskl_coshx = rdf_cut.Histo2D({"h2_mkskl_coshx", ";M(K_{S}K_{L});cos(#theta_{hel})", 120, 0.98, 1.10, 100, -1.0, 1.0}, "mkskl", "cos_hel_ks", "accidental_weight");
-	auto h2_mkskl_mandelt = rdf_cut.Histo2D({"h2_mkskl_mandelt", ";M(K_{S}K_{L});-t (GeV^{2})", 120, 0.98, 1.10, 50, 0.15, 1.5}, "mkskl", "mandel_t", "accidental_weight");
+	auto h2_mkskl_mandelt = rdf_cut.Histo2D({"h2_mkskl_mandelt", ";M(K_{S}K_{L});-t (GeV^{2})", 60, 0.98, 1.10, 50, 0.15, 1.5}, "mkskl", "mandel_t", "accidental_weight");
+
+	auto h2_ksmass_ksphi = rdf_cut3.Histo2D({"h2_ksmass_ksphi", ";M(#pi#pi);#phi", 100, 0.4, 0.6, 90, -180, 180}, "mpipi", "ksphi", "accidental_weight");
+	auto h2_mkskl_ksphi = rdf_cut.Histo2D({"h2_mkskl_ksphi", ";M(K_{S}K_{L});#phi", 100, 0.98, 1.10, 40, -180, 180}, "mkskl", "ksphi", "accidental_weight");
 
 	cout <<" "<< endl;
 	
@@ -154,12 +158,8 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	h2_mkskl_coshx->Write();
 	h2_mkskl_mandelt->Write();
 
-
-	auto chisq_sig = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52").Histo1D({"chisq_sig", ";M(K_{S}p);Counts",  60, 0, 6}, "chisq_ndf", "accidental_weight");
-	auto chisq_bkg = rdf_variables.Filter("(mpipi > 0.44 && mpipi < 0.46) || (mpipi > 0.54 && mpipi < 0.56)").Histo1D({"chisq_bkg", ";M(K_{S}p);Counts",  60, 0, 6}, "chisq_ndf", "accidental_weight");
-
-	chisq_sig->Write();
-	chisq_bkg->Write();
+	h2_ksmass_ksphi->Write();
+	h2_mkskl_ksphi->Write();
 
 	out_file->Write();
 	out_file->Close();
