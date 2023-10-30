@@ -18,8 +18,8 @@ void fig_mkskl() {
 	gStyle->SetMarkerSize(1.5);
 	gROOT->ForceStyle();
 
-	TFile *inf1 = TFile::Open("../DSelector/hist_dat.root");
-	TFile *inf2 = TFile::Open("../DSelector/hist_acc.root");
+	TFile *inf1 = TFile::Open("hist_dat_gluex1.root");
+	TFile *inf2 = TFile::Open("hist_acc_gluex1.root");
 
 	TH1F *h1 = (TH1F*)inf1->Get("im_kskl");
 	TH1F *h1_sb = (TH1F*)inf1->Get("im_kskl_sb");
@@ -28,8 +28,11 @@ void fig_mkskl() {
 	h1->Add(h1_sb, -1);
 	TH1F *h3 = (TH1F*)h1->Clone();
 
+	cout << h1->Integral() << endl;
+	cout << h2->Integral() << endl;
+	cout << h2->Integral()/h1->Integral() << endl;
 	h2->Scale(h1->GetMaximum()/h2->GetMaximum());
-	h3->GetXaxis()->SetRangeUser(1.005, 1.05);
+	h3->GetXaxis()->SetRangeUser(1.005, 1.04);
 
 	h1->SetMarkerColor(kBlack);
 	h2->SetMarkerColor(kRed);
@@ -40,6 +43,7 @@ void fig_mkskl() {
 
 	h1->GetYaxis()->SetRangeUser(0, 1.1*h1->GetMaximum());
 
+	TCanvas *c = new TCanvas();
 	h1->Draw();
 	h3->Draw("SAME HIST");
 	h1->Draw("SAME");
@@ -50,6 +54,8 @@ void fig_mkskl() {
 	t.DrawLatex(1.04, 0.85*h1->GetMaximum(), "GlueX-I Data");
 	t.SetTextColor(kRed);
 	t.DrawLatex(1.04, 0.73*h1->GetMaximum(), "Monte Carlo");
+
+	c->SaveAs("figs/mkskl.pdf");
 
 	cout << h3->Integral()/h1->Integral() << endl;
 }

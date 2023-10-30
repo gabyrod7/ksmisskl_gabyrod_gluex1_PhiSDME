@@ -51,5 +51,5 @@ void diagram_kskl_event  () {
     ellipse->SetLineColor(kRed);
     ellipse->Draw();
 
-    c1->SaveAs("figures/kskl_event.pdf");
+    c1->SaveAs("figs/kskl_event.pdf");
 }

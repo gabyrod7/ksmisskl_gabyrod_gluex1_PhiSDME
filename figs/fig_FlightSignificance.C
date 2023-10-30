@@ -18,8 +18,8 @@ void fig_FlightSignificance() {
 	gStyle->SetMarkerSize(1.5);
 	gROOT->ForceStyle();
 
-	TFile *inf1 = TFile::Open("hist_dat_sp17.root");
-	TFile *inf2 = TFile::Open("hist_acc_sp17.root");
+	TFile *inf1 = TFile::Open("hist_dat_gluex1.root");
+	TFile *inf2 = TFile::Open("hist_acc_gluex1.root");
 
 	TH1F *h1 = (TH1F*)inf1->Get("h1_FS");
 	TH1F *h1_sb = (TH1F*)inf1->Get("h1_FS_sb");
@@ -37,10 +37,10 @@ void fig_FlightSignificance() {
 	h1->SetMarkerStyle(8);
 	h2->SetMarkerStyle(35);
 
-	h1->GetYaxis()->SetRangeUser(0, 1.1*h1->GetMaximum());
-	h1->GetXaxis()->SetRangeUser(2, 10);
+	h1->GetYaxis()->SetRangeUser(0, 1.1*h2->GetMaximum());
 	h3->GetXaxis()->SetRangeUser(4, 10);
 
+	TCanvas *c = new TCanvas();
 	h1->Draw();
 	h3->Draw("SAME HIST");
 	h1->Draw("SAME");
@@ -52,4 +52,6 @@ void fig_FlightSignificance() {
 	t.DrawLatex(6.5, 0.85*h1->GetMaximum(), "GlueX-I Data");
 	t.SetTextColor(kRed);
 	t.DrawLatex(6.5, 0.73*h1->GetMaximum(), "Monte Carlo");
+
+	c->SaveAs("figs/flight_significance.pdf");
 }

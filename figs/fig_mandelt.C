@@ -18,34 +18,27 @@ void fig_mandelt() {
 	gStyle->SetMarkerSize(1.5);
 	gROOT->ForceStyle();
 
-	TFile *inf1 = TFile::Open("hist_dat_sp17.root");
-	TFile *inf2 = TFile::Open("hist_acc_sp17.root");
+	TFile *inf1 = TFile::Open("hist_dat_gluex1.root");
+	TFile *inf2 = TFile::Open("hist_acc_gluex1.root");
 
 	TH1F *h1 = (TH1F*)inf1->Get("h1_mandelt");
 	TH1F *h1_sb = (TH1F*)inf1->Get("h1_mandelt_sb");
 	TH1F *h2 = (TH1F*)inf2->Get("h1_mandelt");
-//	TH1F *h3 = (TH1F*)h1->Clone();
 
 	h1->Add(h1_sb, -1);
 
-	h1->Rebin(3);
-	h2->Rebin(3);
-
 	h2->Scale(h1->GetMaximum()/h2->GetMaximum());
-//	h3->GetXaxis()->SetRangeUser(0.15, 1.50);
 
 	h1->SetMarkerColor(kBlack);
 	h2->SetMarkerColor(kRed);
-//	h3->SetFillColor(kGreen);
 
 	h1->SetMarkerStyle(8);
 	h2->SetMarkerStyle(35);
 
 	h1->GetYaxis()->SetRangeUser(0, 1.1*h1->GetMaximum());
 
+	TCanvas *c = new TCanvas();
 	h1->Draw();
-//	h3->Draw("SAME HIST");
-	h1->Draw("SAME");
 	h2->Draw("SAME");
 
 	TLatex t;
@@ -54,7 +47,16 @@ void fig_mandelt() {
 	t.SetTextColor(kRed);
 	t.DrawLatex(0.9, 0.73*h1->GetMaximum(), "Monte Carlo");
 
-	// TLine *line = new TLine(0.15, 0, 0.15, h1->GetMaximum());
-	// line->SetLineWidth(2);
-	// line->Draw();
+	c->SaveAs("figs/mandel_t.pdf");
+
+	TLine *line = new TLine(0.15, 0, 0.15, h1->GetMaximum());
+	line->SetLineWidth(2);
+	line->Draw();
+
+	// c = new TCanvas();
+	// TRatioPlot *rp = new TRatioPlot(h1, h2);
+	// rp->Draw();
+	// rp->GetLowerRefYaxis()->SetNdivisions(509);
+	// rp->GetLowerRefYaxis()->SetRangeUser(0.9, 1.49);
+	// c->SaveAs("fig_mandelt.pdf");
 }

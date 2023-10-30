@@ -18,12 +18,12 @@ void fig_mmiss() {
 	gStyle->SetMarkerSize(1.5);
 	gROOT->ForceStyle();
 
-	TFile *inf1 = TFile::Open("hist_dat_sp17.root");
-	TFile *inf2 = TFile::Open("hist_acc_sp17.root");
+	TFile *inf1 = TFile::Open("hist_dat_gluex1.root");
+	TFile *inf2 = TFile::Open("hist_acc_gluex1.root");
 
-	TH1F *h1 = (TH1F*)inf1->Get("im_miss");
-	TH1F *h1_sb = (TH1F*)inf1->Get("im_miss_sb");
-	TH1F *h2 = (TH1F*)inf2->Get("im_miss");
+	TH1F *h1 = (TH1F*)inf1->Get("h1_MissingMass");
+	TH1F *h1_sb = (TH1F*)inf1->Get("h1_MissingMass_sb");
+	TH1F *h2 = (TH1F*)inf2->Get("h1_MissingMass");
 
 	h1->Add(h1_sb, -1);
 	TH1F *h3 = (TH1F*)h1->Clone();
@@ -40,6 +40,7 @@ void fig_mmiss() {
 
 	h1->GetYaxis()->SetRangeUser(0, 1.1*h1->GetMaximum());
 
+	TCanvas *c = new TCanvas();
 	h1->Draw();
 	h3->Draw("SAME HIST");
 	h1->Draw("SAME");
@@ -55,6 +56,8 @@ void fig_mmiss() {
 	line->SetLineWidth(2);
 	line->DrawLine(0.3, 0, 0.3, 0.5*h1->GetMaximum());
 	line->DrawLine(0.7, 0, 0.7, 0.5*h1->GetMaximum());
+
+	c->SaveAs("figs/missing_mass.pdf");
 
 	cout << h3->Integral()/h1->Integral() << endl;
 }
