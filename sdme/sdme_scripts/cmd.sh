@@ -65,7 +65,7 @@ while true; do
 		p | --plotter) root -l -b -q "plotter.C(\"$fit_name\", 3, 3)"; shift;;
 		--bootstrap) bootstrap; shift;;
 		--read_bootstrap) read_bootstrap; shift;;
-		--all) divide_data; amptools_fit; draw_amptools_fit; run_plotter; bootstrap; shift;;
+		--all) divide_data; amptools_fit; draw_amptools_fit; run_plotter; shift;;
 		--) shift; break;;
 	esac
 done
