@@ -1,6 +1,5 @@
 #!/bin/bash
 
-name=$(basename "$PWD")
 nbins=9
 nfits=100
 nBootstraps=500
