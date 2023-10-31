@@ -14,13 +14,14 @@ std::string set_cuts(std::map<std::string, std::string> cuts_list, std::pair<std
 void split() {
 	std::vector<std::string> inf_names;
 	std::string dir = "";
-	int n_threads = 20;
+	int n_threads = 16;
 	std::string run = "";
 	std::string cuts = "";
 	std::string gen_cuts = "";
 
 	std::map<std::string, std::string> cuts_list = {{"mkskl", "mkskl > 1.005 && mkskl < 1.04"},
 													{"mmiss", "missing_mass > 0.3 && missing_mass < 0.7"},
+													{"mpipi" , "mpipi > 0.48 && mpipi < 0.52"},
 													{"mandel_t", "mandel_t < 1.5"},
 													{"fs", "flight_significance > 4"},
 													{"chisq", "chisq_ndf < 4"},
@@ -34,22 +35,19 @@ void split() {
 	gen_cuts = "mandel_t > 0.15 && mandel_t < 1.5";
 
 	// Spring 2017 data for SDME
-	inf_names = {"ftree_dat_sp17.root", "ftree_acc_sp17.root", "ftree_gen_sp17.root"};
+	inf_names = {"DSelector/ftree_dat_sp17.root", "DSelector/ftree_acc_sp17.root", "DSelector/ftree_gen_sp17.root"};
 	dir = "sp17";
 	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 	// Spring 2018 data for SDME
-	inf_names = {"ftree_dat_sp18.root", "ftree_acc_sp18.root", "ftree_gen_sp18.root"};	
+	inf_names = {"DSelector/ftree_dat_sp18.root", "DSelector/ftree_acc_sp18.root", "DSelector/ftree_gen_sp18.root"};	
 	dir = "sp18";
 	//runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 	// Fall 2018 data for SDME
-	inf_names = {"ftree_dat_fa18.root", "ftree_acc_fa18.root", "ftree_gen_fa18.root"};	
+	inf_names = {"DSelector/ftree_dat_fa18.root", "DSelector/ftree_acc_fa18.root", "DSelector/ftree_gen_fa18.root"};	
 	dir = "fa18";
-	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-	dir = "fa18_weighted";
-	run = "fa18";
-	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 	// GlueX-I data for SDME
-	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_gluex1.root", "ftree_gen_gluex1.root"};	
+	inf_names = {"DSelector/ftree_dat_gluex1.root", "DSelector/ftree_acc_gluex1.root", "DSelector/ftree_gen_gluex1.root"};	
 	dir = "gluex1";
 //	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
