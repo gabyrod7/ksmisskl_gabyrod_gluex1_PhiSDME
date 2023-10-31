@@ -14,7 +14,7 @@ base_directory = os.getcwd()
 
 # setup config file settings
 cfg_file = amptools_cfg.amptools_cfg()
-cfg_file.set_data([runPeriod+'_'+polAngle for runPeriod in ['gluex1'] for polAngle in ['000', '045', '090', '135']])
+cfg_file.set_data([runPeriod+'_'+polAngle for runPeriod in ['DATA'] for polAngle in ['000', '045', '090', '135']])
 #cfg_file.set_data([runPeriod+'_'+polAngle for runPeriod in ['sp17', 'sp18', 'fa18'] for polAngle in ['000', '045', '090', '135']])
 cfg_file.set_particles('Beam Proton KShort KLong')
 cfg_file.set_fname(cfg_file_name)

@@ -1,14 +1,14 @@
 #!/bin/bash
 
 nbins=9
-nfits=100
+nfits=20
 nBootstraps=500
 nprocess=1
 low_t=0.15
 high_t=1.0
 fit_name=$nbins'bins_'$high_t't'
 plotter_name='phi1020_plotter'
-trees='/d/grid15/gabyrod7/analysis/ksmisskl_gabyrod_gluex1_PhiSDME/sdme/trees/gluex1/'
+trees='/d/grid15/gabyrod7/analysis/ksmisskl_gabyrod_gluex1_PhiSDME/sdme/trees/sdme_dir/'
 
 # Check if we are on a GPU node at FSU
 if [ "$(hostname)" = 'scigrid52.local' ]
@@ -55,13 +55,13 @@ eval set -- "$TEMP"
 
 while true; do
 	case "$1" in 
-		n | --nthread) nprocess=$2; shift 2;;
-		d | --divide) divide_data; shift;;
-		f | --fit) amptools_fit; shift;;
+		-n | --nthread) nprocess=$2; shift 2;;
+		-d | --divide) divide_data; shift;;
+		-f | --fit) amptools_fit; shift;;
 		--read) read_amptools_fit; shift;;
-		r | --draw) draw_amptools_fit; shift;;
+		-r | --draw) draw_amptools_fit; shift;;
 		--run_plotter) run_plotter; shift;;
-		p | --plotter) root -l -b -q "plotter.C(\"$fit_name\", 3, 3)"; shift;;
+		-p | --plotter) root -l -b -q "plotter.C(\"$fit_name\", 3, 3)"; shift;;
 		--bootstrap) bootstrap; shift;;
 		--read_bootstrap) read_bootstrap; shift;;
 		--all) divide_data; amptools_fit; draw_amptools_fit; run_plotter; shift;;
