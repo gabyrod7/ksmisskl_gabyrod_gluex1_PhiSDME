@@ -22,7 +22,7 @@ void split() {
 	std::map<std::string, std::string> cuts_list = {{"mkskl", "mkskl > 1.005 && mkskl < 1.04"},
 													{"mmiss", "missing_mass > 0.3 && missing_mass < 0.7"},
 													{"mpipi" , "mpipi > 0.48 && mpipi < 0.52"},
-													{"mandel_t", "mandel_t < 1.5"},
+													{"mandel_t", "mandel_t < 1.0"},
 													{"fs", "flight_significance > 4"},
 													{"chisq", "chisq_ndf < 4"},
 													{"ntracks", "num_unused_tracks == 0"},
@@ -32,7 +32,7 @@ void split() {
 
 	// Set nominal cuts
 	cuts = set_cuts(cuts_list);
-	gen_cuts = "mandel_t > 0.15 && mandel_t < 1.5";
+	gen_cuts = "mandel_t > 0.15 && mandel_t < 1.0";
 
 	// Spring 2017 data for SDME
 	inf_names = {"DSelector/ftree_dat_sp17.root", "DSelector/ftree_acc_sp17.root", "DSelector/ftree_gen_sp17.root"};
