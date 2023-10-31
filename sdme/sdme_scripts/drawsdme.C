@@ -126,10 +126,10 @@ void drawsdme(int nBins = 8, double lowT = 0.15, double highT = 0.95) {
 	c->SaveAs("sdme.pdf");
 	c->SaveAs("sdmee.png");
 
-	c = new TCanvas();
-	g_Psigma->GetYaxis()->SetRangeUser(-1.1, 1.1);
-	g_Psigma->Draw("AP");
-	c->SaveAs("Psigma.pdf");
+	// c = new TCanvas();
+	// g_Psigma->GetYaxis()->SetRangeUser(-1.1, 1.1);
+	// g_Psigma->Draw("AP");
+	// c->SaveAs("Psigma.pdf");
 }
 
 void set_graph_point(TGraphErrors *g, int n, double x, double ex, double y, double ey) {
