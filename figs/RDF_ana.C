@@ -66,6 +66,12 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	cuts = set_cuts(cuts_list, {"flight_significance", ""});
 	auto rdfFlightSignificance_cut = rdf_variables.Filter(cuts);
 
+	cuts = set_cuts(cuts_list, {"ntracks", ""});
+	auto rdfUnusedTracks_cut = rdf_variables.Filter(cuts);
+
+	cuts = set_cuts(cuts_list, {"nshowers", ""});
+	auto rdfUnusedShowers_cut = rdf_variables.Filter(cuts);
+
 	cout <<"...done!"<< endl;
 	cout <<" "<< endl;
 	
@@ -89,6 +95,12 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto h1_ChisqNdf = rdfChiSqNdf_cut.Filter(signal).Histo1D({"h1_ChisqNdf", ";#chi^{2}/ndf;Counts",  60, 0, 6}, "chisq_ndf", "accidental_weight");
 	auto h1_ChisqNdf_sb = rdfChiSqNdf_cut.Filter(sideband).Histo1D({"h1_ChisqNdf_sb", ";#chi^{2}/ndf;Counts",  60, 0, 6}, "chisq_ndf", "accidental_weight");
 
+	auto h1_UnusedTracks = rdfUnusedTracks_cut.Filter(signal).Histo1D({"h1_UnusedTracks", ";Number of Unused Tracks;Counts",  4, 0, 4}, "num_unused_tracks", "accidental_weight");
+	auto h1_UnusedTracks_sb = rdfUnusedTracks_cut.Filter(sideband).Histo1D({"h1_UnusedTracks_sb", ";Number of Unused Tracks;Counts",  4, 0, 4}, "num_unused_tracks", "accidental_weight");
+
+	auto h1_UnusedShowers = rdfUnusedShowers_cut.Filter(signal).Histo1D({"h1_UnusedShowers", ";Number of Unused Showers;Counts",  10, 0, 10}, "num_unused_showers", "accidental_weight");
+	auto h1_UnusedShowers_sb = rdfUnusedShowers_cut.Filter(sideband).Histo1D({"h1_UnusedShowers_sb", ";Number of Unused Showers;Counts",  10, 0, 10}, "num_unused_showers", "accidental_weight");
+
 	cout <<" "<< endl;
 	
 	//5.) Write everything to a file:
@@ -108,6 +120,12 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 
 	h1_ChisqNdf->Write();
 	h1_ChisqNdf_sb->Write();
+
+	h1_UnusedTracks->Write();
+	h1_UnusedTracks_sb->Write();
+
+	h1_UnusedShowers->Write();
+	h1_UnusedShowers_sb->Write();
 
 	out_file->Write();
 	out_file->Close();
