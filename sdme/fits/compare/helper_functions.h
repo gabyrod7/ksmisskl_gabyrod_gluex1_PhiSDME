@@ -40,9 +40,9 @@ void draw_graph(TGraphErrors *g, const char* gtitle, float xmin, float xmax, flo
 	TLatex t;
 	t.SetTextSize(0.12);
 	if(ymax < 0)
-		t.DrawLatex(0.45*xmax, ymax + (1-0.83)*(ymin - ymax), gtitle);
+		t.DrawLatex(0.7*xmax, ymax + (1-0.83)*(ymin - ymax), gtitle);
 	else
-		t.DrawLatex(0.45*xmax, ymin + 0.83*(ymax - ymin), gtitle);
+		t.DrawLatex(0.7*xmax, ymin + 0.83*(ymax - ymin), gtitle);
 
 	if (hline) {
 		TLine* l = new TLine(xmin, hval, xmax, hval);
@@ -72,8 +72,8 @@ TGraphErrors* calc_barlow(TGraphErrors *nominal, TGraphErrors *variation) {
 		graph->SetPointX( i, nominal->GetPointX(i) );
 		graph->SetPointError( i, variation->GetErrorX(i), 0 );
 
-		cout << i << "	" << Delta / sigma << endl;
-		cout << "	"<< sigma << endl;
+		// cout << i << "	" << Delta / sigma << endl;
+		// cout << "	"<< sigma << endl;
 	}
 
 	return graph;
@@ -91,15 +91,18 @@ TGraph* calc_deviation(TGraphErrors *nominal, TGraphErrors *variation) {
 	return graph;
 }
 
-void calc_pull(TGraphErrors *nominal, TGraphErrors *variation) {
+TGraphErrors* calc_pull(TGraphErrors *nominal, TGraphErrors *variation) {
 	double Delta, sigma;
+	TGraphErrors* graph = new TGraphErrors(nominal->GetN());
 
 	for(int i = 0; i < nominal->GetN(); i++) {
 		Delta = nominal->GetPointY(i) - variation->GetPointY(i);
-		sigma = TMath::Sqrt( nominal->GetErrorY(i)*nominal->GetErrorY(i) + variation->GetErrorY(i)*variation->GetErrorY(i) );
-		variation->SetPointY( i, Delta/sigma );
-		variation->SetPointX( i, nominal->GetPointX(i) );
+		sigma = variation->GetErrorY(i);
+		graph->SetPoint( i, nominal->GetPointX(i), Delta/sigma );
+		graph->SetPointError( i, nominal->GetErrorX(i), 0 );
 	}
+
+	return graph;
 }
 
 double calc_chisq(TGraphErrors *nominal, TGraphErrors *variation) {

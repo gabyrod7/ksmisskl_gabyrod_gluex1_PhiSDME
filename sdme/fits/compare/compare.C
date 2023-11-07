@@ -34,7 +34,7 @@ void compare() {
 	gStyle->SetMarkerSize(2.0);
 
 	TFile *inf[3];
-	inf[0] = TFile::Open("../gluex1/sdme.root");
+	inf[0] = TFile::Open("../no_sideband/sdme.root");
 	inf[1] = TFile::Open("../kpkm/sdme.root");
 	inf[2] = TFile::Open("../jpac/jpac_model.root");
 
