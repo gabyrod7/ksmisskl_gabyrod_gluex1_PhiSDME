@@ -49,8 +49,19 @@ run_plotter () {
 	python3 plotter.py $fit_name $nbins $plotter_name
 	root -l -b -q "plotter.C(\"$fit_name\", 3, 3)"
 }
+draw_variation () { 
+	python3 read_variation.py $fit_name $nbins
+	root -l -b -q "drawsdme.C($nbins, $low_t, $high_t)"
+	cp sdme.root sdme_variation.root
+	cp sdme.pdf sdme_variation.pdf
+	cp sdme.csv sdme_variation.csv
+}
+variation () { 
+	python3 variation.py $fit_name $nbins $nprocess
+	draw_variation
+}
 
-TEMP=`getopt -a -o n:dfrp --long nthread:divide,fit,read,draw,run_plotter,plotter,bootstrap,read_bootstrap,all -- "$@"`
+TEMP=`getopt -a -o n:dfrp --long nthread:divide,fit,read,draw,run_plotter,plotter,bootstrap,read_bootstrap,all,variation,draw_variation -- "$@"`
 eval set -- "$TEMP"
 
 while true; do
@@ -65,6 +76,8 @@ while true; do
 		--bootstrap) bootstrap; shift;;
 		--read_bootstrap) read_bootstrap; shift;;
 		--all) divide_data; amptools_fit; draw_amptools_fit; run_plotter; shift;;
+		--variation) variation; shift;;
+		--draw_variation) draw_variation; shift;;
 		--) shift; break;;
 	esac
 done

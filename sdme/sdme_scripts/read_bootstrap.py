@@ -110,13 +110,13 @@ def main(argv):
 
 		count = 0
 		for iBootstrap in range(nBootstraps):
+			if not os.path.exists(f'{fitname}/{bin_name}/bootstrap/bootstrap_{iBootstrap}.fit'):
+				count += 1
+				continue
+
 			fitfilename = f'{fitname}/{bin_name}/bootstrap/bootstrap_{iBootstrap}.fit'
 			par_vals, par_errs = read_sdme_fit(fitfilename)
 
-			stat = fit_status(fitfilename)
-			if stat == 1:
-				count += 1
-				#print(stat, iBin, iBootstrap)
 			if iBootstrap == 500-1:
 				print(f'Bin number : {iBin}	 Number of failed fits : {count}')
 
