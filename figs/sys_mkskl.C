@@ -34,23 +34,32 @@ void sys_mkskl() {
 
 	TLine *line1, *line2, *line3;
 	
+	// Nominal cut
 	line1 = new TLine(1.005, 0, 1.005, h1->GetMaximum());
 	line1->SetLineWidth(2);
 	line1->Draw();
 	line1->DrawLine(1.04, 0, 1.04, h1->GetMaximum());
 
-	line2 = new TLine(1.01, 0, 1.01, h1->GetMaximum());
+	// Cut variation 1
+	line2 = new TLine(1.002, 0, 1.002, h1->GetMaximum());
 	line2->SetLineWidth(2); line2->SetLineStyle(2); line2->SetLineColor(kRed);
 	line2->Draw();
 
-	line2 = new TLine(1.035, 0, 1.035, h1->GetMaximum());
+	line2 = new TLine(1.043, 0, 1.043, h1->GetMaximum());
 	line2->SetLineWidth(2); line2->SetLineStyle(2); line2->SetLineColor(kRed);
 	line2->Draw();
 
-	line3 = new TLine(1.0, 0, 1.0, h1->GetMaximum());
+	// Cut variation 2
+	line3 = new TLine(1.007, 0, 1.007, h1->GetMaximum());
 	line3->SetLineWidth(2); line3->SetLineStyle(2); line3->SetLineColor(kGreen);
 	line3->Draw();
-	line3->DrawLine(1.045, 0, 1.045, h1->GetMaximum());
+	line3->DrawLine(1.038, 0, 1.038, h1->GetMaximum());
+
+	// // Cut variation 3
+	// line3 = new TLine(1.008, 0, 1.008, h1->GetMaximum());
+	// line3->SetLineWidth(2); line3->SetLineStyle(2); line3->SetLineColor(kGreen);
+	// line3->Draw();
+	// line3->DrawLine(1.037, 0, 1.037, h1->GetMaximum());
 
 	TLegend *lg = new TLegend(0.6, 0.7, 0.95, 0.95);
 	lg->AddEntry(h1, "Data", "ep");
@@ -59,6 +68,10 @@ void sys_mkskl() {
 	lg->AddEntry(line3, "Cut Variation 2", "l");
 	lg->Draw();
 
+	// Integrate histogram upto each line
+	cout << h1->Integral(h1->GetXaxis()->FindBin(1.005), h1->GetXaxis()->FindBin(1.04))/h1->Integral(h1->GetXaxis()->FindBin(1.002), h1->GetXaxis()->FindBin(1.043)) << endl;
+	cout << h1->Integral(h1->GetXaxis()->FindBin(1.005), h1->GetXaxis()->FindBin(1.04))/h1->Integral(h1->GetXaxis()->FindBin(1.007), h1->GetXaxis()->FindBin(1.038)) << endl;
+	cout << h1->Integral(h1->GetXaxis()->FindBin(1.005), h1->GetXaxis()->FindBin(1.04))/h1->Integral(h1->GetXaxis()->FindBin(1.008), h1->GetXaxis()->FindBin(1.037)) << endl;
 
 	c->SaveAs("systematics/mkskl.pdf");
 }

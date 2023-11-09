@@ -52,5 +52,10 @@ void sys_FlightSignificance() {
 	lg->AddEntry(line2, "Cut Variations", "l");
 	lg->Draw();
 
+	// Integrate histogram upto each line
+	cout << h1->Integral(h1->GetXaxis()->FindBin(4.0), h1->GetXaxis()->FindBin(1000.0))/h1->Integral(h1->GetXaxis()->FindBin(3.5), h1->GetXaxis()->FindBin(1000.0)) << endl;
+	cout << h1->Integral(h1->GetXaxis()->FindBin(4.0), h1->GetXaxis()->FindBin(1000.0))/h1->Integral(h1->GetXaxis()->FindBin(4.5), h1->GetXaxis()->FindBin(1000.0)) << endl;
+	cout << h1->Integral(h1->GetXaxis()->FindBin(4.0), h1->GetXaxis()->FindBin(1000.0))/h1->Integral(h1->GetXaxis()->FindBin(5.0), h1->GetXaxis()->FindBin(1000.0)) << endl;
+
 	c->SaveAs("systematics/flight_significance.pdf");
 }

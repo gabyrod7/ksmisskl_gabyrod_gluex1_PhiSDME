@@ -72,6 +72,9 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	cuts = set_cuts(cuts_list, {"nshowers", ""});
 	auto rdfUnusedShowers_cut = rdf_variables.Filter(cuts);
 
+	cuts = set_cuts(cuts_list);
+	auto rdfMpipi_cut = rdf_variables.Filter(cuts);
+
 	cout <<"...done!"<< endl;
 	cout <<" "<< endl;
 	
@@ -80,8 +83,8 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	cout <<"Set up histograms..."<< endl;
 	
 	//4.1) Histograms
-	auto im_kskl = rdf_cut.Filter(signal).Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
-	auto im_kskl_sb = rdf_cut.Filter(sideband).Histo1D({"im_kskl_sb", ";M(K_{S}K_{L});Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
+	auto im_kskl = rdf_cut.Filter(signal).Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts", 220, 0.99, 1.10}, "mkskl", "accidental_weight");
+	auto im_kskl_sb = rdf_cut.Filter(sideband).Histo1D({"im_kskl_sb", ";M(K_{S}K_{L});Counts", 220, 0.99, 1.10}, "mkskl", "accidental_weight");
 
 	auto h1_mandelt = rdf_cut.Filter(signal).Histo1D({"h1_mandelt", ";-t (GeV^{2});Counts", 75, 0, 1.5}, "mandel_t", "accidental_weight");
 	auto h1_mandelt_sb = rdf_cut.Filter(sideband).Histo1D({"h1_mandelt_sb", ";-t (GeV^{2});Counts", 75, 0, 1.5}, "mandel_t", "accidental_weight");
@@ -100,6 +103,8 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 
 	auto h1_UnusedShowers = rdfUnusedShowers_cut.Filter(signal).Histo1D({"h1_UnusedShowers", ";Number of Unused Showers;Counts",  10, 0, 10}, "num_unused_showers", "accidental_weight");
 	auto h1_UnusedShowers_sb = rdfUnusedShowers_cut.Filter(sideband).Histo1D({"h1_UnusedShowers_sb", ";Number of Unused Showers;Counts",  10, 0, 10}, "num_unused_showers", "accidental_weight");
+
+	auto h1_Mpipi = rdfMpipi_cut.Histo1D({"h1_Mpipi", ";M(#pi#pi);Counts",  200, 0.4, 0.6}, "mpipi", "accidental_weight");
 
 	cout <<" "<< endl;
 	
@@ -126,6 +131,8 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 
 	h1_UnusedShowers->Write();
 	h1_UnusedShowers_sb->Write();
+
+	h1_Mpipi->Write();
 
 	out_file->Write();
 	out_file->Close();

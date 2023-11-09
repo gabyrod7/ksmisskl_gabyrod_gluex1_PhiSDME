@@ -1,4 +1,4 @@
-void sys_UnusedTracks() {
+void sys_UnusedShowers() {
 	gStyle->SetOptStat(0);
 	gStyle->SetPadTopMargin(0.03);
 	gStyle->SetPadRightMargin(0.01);
@@ -20,8 +20,8 @@ void sys_UnusedTracks() {
 
 	TFile *inf1 = TFile::Open("hist_dat_gluex1.root");
 
-	TH1F *h1 = (TH1F*)inf1->Get("h1_UnusedTracks");
-	TH1F *h1_sb = (TH1F*)inf1->Get("h1_UnusedTracks_sb");
+	TH1F *h1 = (TH1F*)inf1->Get("h1_UnusedShowers");
+	TH1F *h1_sb = (TH1F*)inf1->Get("h1_UnusedShowers_sb");
 
 	h1->Add(h1_sb, -1);
 
@@ -53,8 +53,9 @@ void sys_UnusedTracks() {
 	lg->Draw();
 
 	// Integrate histogram upto each line
-	cout << h1->Integral(0, h1->FindBin(0))/h1->Integral(0, h1->FindBin(1)) << endl;
-	cout << h1->Integral(0, h1->FindBin(0))/h1->Integral(0, h1->FindBin(2)) << endl;
+	cout << h1->Integral(0, h1->FindBin(2))/h1->Integral(0, h1->FindBin(3)) << endl;
+	cout << h1->Integral(0, h1->FindBin(2))/h1->Integral(0, h1->FindBin(4)) << endl;
+	// cout << h1->Integral(0, h1->FindBin(2))/h1->Integral(0, h1->FindBin(4.5)) << endl;
 
-	c->SaveAs("systematics/unused_tracks.pdf");
+	c->SaveAs("systematics/unused_showers.pdf");
 }

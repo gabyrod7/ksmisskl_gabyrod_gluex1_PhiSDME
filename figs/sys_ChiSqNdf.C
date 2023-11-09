@@ -53,5 +53,10 @@ void sys_ChiSqNdf() {
 	lg->AddEntry(line2, "Cut Variations", "l");
 	lg->Draw();
 
+	// Integrate histogram upto each line
+	cout << h1->Integral(h1->GetXaxis()->FindBin(0.0), h1->GetXaxis()->FindBin(4.0))/h1->Integral(h1->GetXaxis()->FindBin(0.0), h1->GetXaxis()->FindBin(3.0)) << endl;
+	cout << h1->Integral(h1->GetXaxis()->FindBin(0.0), h1->GetXaxis()->FindBin(4.0))/h1->Integral(h1->GetXaxis()->FindBin(0.0), h1->GetXaxis()->FindBin(3.5)) << endl;
+	cout << h1->Integral(h1->GetXaxis()->FindBin(0.0), h1->GetXaxis()->FindBin(4.0))/h1->Integral(h1->GetXaxis()->FindBin(0.0), h1->GetXaxis()->FindBin(4.5)) << endl;
+
 	c->SaveAs("systematics/chisq_ndf.pdf");
 }
