@@ -1,7 +1,7 @@
 void sys_UnusedTracks() {
 	gStyle->SetOptStat(0);
-	gStyle->SetPadTopMargin(0.03);
-	gStyle->SetPadRightMargin(0.01);
+	gStyle->SetPadTopMargin(0.065);
+	gStyle->SetPadRightMargin(0.015);
 	gStyle->SetPadBottomMargin(0.15);
 	gStyle->SetPadLeftMargin(0.17);
 
@@ -46,7 +46,7 @@ void sys_UnusedTracks() {
 
 	// line2->DrawLine(3, 0, 3, h1->GetMaximum());
 
-	TLegend *lg = new TLegend(0.6, 0.7, 0.95, 0.95);
+	TLegend *lg = new TLegend(0.63, 0.7, 0.98, 0.93);
 	lg->AddEntry(h1, "Data", "ep");
 	lg->AddEntry(line1, "Nominal cut", "l");
 	lg->AddEntry(line2, "Cut Variations", "l");

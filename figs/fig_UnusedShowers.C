@@ -56,5 +56,5 @@ void fig_UnusedShowers() {
 	t.SetTextColor(kRed);
 	t.DrawLatex(5.5, 0.73*h1->GetMaximum(), "Monte Carlo");
 
-	c->SaveAs("figs/unused_tracks.pdf");
+	c->SaveAs("figs/unused_showers.pdf");
 }

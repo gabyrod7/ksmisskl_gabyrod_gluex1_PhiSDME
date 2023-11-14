@@ -60,7 +60,7 @@ void sys_mmiss() {
 	// Integrate histogram upto each line
 	cout << h1->Integral(h1->GetXaxis()->FindBin(0.3), h1->GetXaxis()->FindBin(0.7))/h1->Integral(h1->GetXaxis()->FindBin(0.20), h1->GetXaxis()->FindBin(0.80)) << endl;
 	cout << h1->Integral(h1->GetXaxis()->FindBin(0.3), h1->GetXaxis()->FindBin(0.7))/h1->Integral(h1->GetXaxis()->FindBin(0.35), h1->GetXaxis()->FindBin(0.65)) << endl;
-	cout << h1->Integral(h1->GetXaxis()->FindBin(0.3), h1->GetXaxis()->FindBin(0.7))/h1->Integral(h1->GetXaxis()->FindBin(0.38), h1->GetXaxis()->FindBin(0.62)) << endl;
+	cout << h1->Integral(h1->GetXaxis()->FindBin(0.3), h1->GetXaxis()->FindBin(0.7))/h1->Integral(h1->GetXaxis()->FindBin(0.37), h1->GetXaxis()->FindBin(0.63)) << endl;
 
 	c->SaveAs("systematics/missing_mass.pdf");
 }

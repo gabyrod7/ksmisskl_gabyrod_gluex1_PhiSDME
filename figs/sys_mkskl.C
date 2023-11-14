@@ -42,16 +42,16 @@ void sys_mkskl() {
 
 	// Cut variation 1
 	line2 = new TLine(1.002, 0, 1.002, h1->GetMaximum());
-	line2->SetLineWidth(2); line2->SetLineStyle(2); line2->SetLineColor(kRed);
+	line2->SetLineWidth(2); line2->SetLineStyle(2); 
 	line2->Draw();
 
 	line2 = new TLine(1.043, 0, 1.043, h1->GetMaximum());
-	line2->SetLineWidth(2); line2->SetLineStyle(2); line2->SetLineColor(kRed);
+	line2->SetLineWidth(2); line2->SetLineStyle(2); 
 	line2->Draw();
 
 	// Cut variation 2
 	line3 = new TLine(1.007, 0, 1.007, h1->GetMaximum());
-	line3->SetLineWidth(2); line3->SetLineStyle(2); line3->SetLineColor(kGreen);
+	line3->SetLineWidth(2); line3->SetLineStyle(2); 
 	line3->Draw();
 	line3->DrawLine(1.038, 0, 1.038, h1->GetMaximum());
 
@@ -64,8 +64,8 @@ void sys_mkskl() {
 	TLegend *lg = new TLegend(0.6, 0.7, 0.95, 0.95);
 	lg->AddEntry(h1, "Data", "ep");
 	lg->AddEntry(line1, "Nominal cut", "l");
-	lg->AddEntry(line2, "Cut Variation 1", "l");
-	lg->AddEntry(line3, "Cut Variation 2", "l");
+	lg->AddEntry(line2, "Cut Variations", "l");
+	// lg->AddEntry(line3, "Cut Variation 2", "l");
 	lg->Draw();
 
 	// Integrate histogram upto each line
