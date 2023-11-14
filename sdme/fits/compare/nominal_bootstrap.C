@@ -1,3 +1,4 @@
+// #include "helper_functions.h"
 void draw_graph(TGraphErrors *g, const char* gtitle, float xmin, float xmax, float ymin, float ymax, bool hline, float hval);
 
 void set_marker(TGraphErrors *g, int style, int color) {
@@ -58,46 +59,46 @@ void nominal_bootstrap() {
 		}
 
 	c->cd(1);
-	draw_graph(g[0][0], "#rho_{00}^{0}",  0.1, 1.00, -0.17, 0.17, kTRUE, 0.00);
+	draw_graph(g[0][0], "#rho_{00}^{0}",  0.1, 1.00, -0.10, 0.10, kTRUE, 0.00);
 	g[1][0]->Draw("SAME P");
 
 	c->cd(2);
-	draw_graph(g[0][1], "Re(#rho_{10}^{0})",  0.1, 1.00, -0.17, 0.17, kTRUE, 0.00);
+	draw_graph(g[0][1], "Re(#rho_{10}^{0})",  0.1, 1.00, -0.10, 0.10, kTRUE, 0.00);
 	g[1][1]->Draw("SAME P");
 
 	c->cd(3);
-	draw_graph(g[0][2], "#rho_{1-1}^{0}", 0.1, 1.00, -0.17, 0.17, kTRUE, 0.00);
+	draw_graph(g[0][2], "#rho_{1-1}^{0}", 0.1, 1.00, -0.10, 0.10, kTRUE, 0.00);
 	g[1][2]->Draw("SAME P");
 
 	c->cd(4);
-	draw_graph(g[0][3], "#rho_{11}^{1}",  0.1, 1.00, -0.17, 0.17, kTRUE, 0.00);
+	draw_graph(g[0][3], "#rho_{11}^{1}",  0.1, 1.00, -0.10, 0.10, kTRUE, 0.00);
 	g[1][3]->Draw("SAME P");
 
 	c->cd(5);
-	draw_graph(g[0][4], "#rho_{00}^{1}",  0.1, 1.00, -0.17, 0.17, kTRUE, 0.00);
+	draw_graph(g[0][4], "#rho_{00}^{1}",  0.1, 1.00, -0.10, 0.10, kTRUE, 0.00);
 	g[1][4]->Draw("SAME P");
 
 	c->cd(6);
-	draw_graph(g[0][5], "Re(#rho_{10}^{1})",  0.1, 1.00, -0.17, 0.17, kTRUE, 0.00);
+	draw_graph(g[0][5], "Re(#rho_{10}^{1})",  0.1, 1.00, -0.10, 0.10, kTRUE, 0.00);
 	g[1][5]->Draw("SAME P");
 
 	c->cd(7);
-	draw_graph(g[0][6], "#rho_{1-1}^{1}", 0.1, 1.00, 0.25, 0.75, kTRUE, 0.50);
+	draw_graph(g[0][6], "#rho_{1-1}^{1}", 0.1, 1.00, 0.35, 0.65, kTRUE, 0.50);
 	g[1][6]->Draw("SAME P");
 
 
 	c->cd(8);
-	draw_graph(g[0][7], "Im(#rho_{10}^{2})",  0.1, 1.00, -0.17, 0.17, kTRUE, 0.00);
+	draw_graph(g[0][7], "Im(#rho_{10}^{2})",  0.1, 1.00, -0.10, 0.10, kTRUE, 0.00);
 	g[1][7]->Draw("SAME P");
 
 	c->cd(9);
-	draw_graph(g[0][8], "Im(#rho_{1-1}^{2})", 0.1, 1.00, -0.75, -0.25, kTRUE, -0.50);
+	draw_graph(g[0][8], "Im(#rho_{1-1}^{2})", 0.1, 1.00, -0.65, -0.35, kTRUE, -0.50);
 	g[1][8]->Draw("SAME ");
 
 	TLegend *lg = new TLegend(0.15, 0.17, 0.95, 0.37);
 	lg->SetNColumns(4);
-	lg->AddEntry(g[0][0], "Bootstrap fit", "lep");
-	lg->AddEntry(g[1][0], "Nominal fit", "lep");
+	lg->AddEntry(g[0][0], "Bootstrap", "lep");
+	lg->AddEntry(g[1][0], "Nominal", "lep");
 	//TLine *line = new TLine();
 	//lg->AddEntry(line, "SCHC", "l");
 
@@ -119,15 +120,38 @@ void draw_graph(TGraphErrors *g, const char* gtitle, float xmin, float xmax, flo
 
 	TLatex t;
 	t.SetTextSize(0.12);
-	if(gtitle == "#rho_{1-1}^{1}")
-		t.DrawLatex(0.45*xmax, 0.88*ymax, gtitle);
-	else if(ymax > 0)
-		t.DrawLatex(0.45*xmax, 0.72*ymax, gtitle);
+	if(ymax < 0)
+		t.DrawLatex(0.3*xmax, ymax + (1-0.83)*(ymin - ymax), gtitle);
 	else
-		t.DrawLatex(0.45*xmax, 1.26*ymax, gtitle);
+		t.DrawLatex(0.3*xmax, ymin + 0.83*(ymax - ymin), gtitle);
+
 
 	if (hline) {
 		TLine* l = new TLine(xmin, hval, xmax, hval);
 		l->Draw();
 	}
 }
+
+
+// void draw_graph(TGraphErrors *g, const char* gtitle, float xmin, float xmax, float ymin, float ymax, bool hline, float hval) {
+// 	TH1 *frame = gPad->DrawFrame(xmin,ymin,xmax,ymax);
+// 	frame->GetXaxis()->SetTitle("Four Momentum Transfer t (GeV^{2})");
+
+// 	g->SetLineColor(0);
+// 	g->Draw( "P" );
+
+// 	g->GetYaxis()->SetRangeUser(ymin, ymax);
+// 	g->GetXaxis()->SetRangeUser(xmin,xmax);
+
+// 	TLatex t;
+// 	t.SetTextSize(0.12);
+// 	if(ymax < 0)
+// 		t.DrawLatex(0.7*xmax, ymax + (1-0.83)*(ymin - ymax), gtitle);
+// 	else
+// 		t.DrawLatex(0.7*xmax, ymin + 0.83*(ymax - ymin), gtitle);
+
+// 	if (hline) {
+// 		TLine* l = new TLine(xmin, hval, xmax, hval);
+// 		l->Draw();
+// 	}
+// }

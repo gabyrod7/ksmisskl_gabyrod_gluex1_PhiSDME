@@ -34,7 +34,7 @@ void compare() {
 	gStyle->SetMarkerSize(2.0);
 
 	TFile *inf[3];
-	inf[0] = TFile::Open("../no_sideband/sdme.root");
+	inf[0] = TFile::Open("../gluex1/sdme_bootstrap.root");
 	inf[1] = TFile::Open("../kpkm/sdme.root");
 	inf[2] = TFile::Open("../jpac/jpac_model.root");
 
@@ -42,7 +42,7 @@ void compare() {
 	vector<string> names = {"g_rho000", "g_rho100", "g_rho1m10", "g_rho111", "g_rho001", "g_rho101", "g_rho1m11", "g_rho102", "g_rho1m12"};
 
 	double xlow = 0.01;
-	double xhigh = 1.5;
+	double xhigh = 1.0;
 
 	TCanvas *c = new TCanvas();
 	c->Divide(3,3);
