@@ -33,8 +33,11 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	//3.1) Define some variables first:
 	auto rdf_variables = rdf.Define("fs", "flight_significance").Define("mmiss", "missing_mass").Define("misse", "missing_p4_meas.E()")
 				.Define("mksp", "(ks_p4 + p_p4_kin).M()").Define("mklp", "(kl_p4 + p_p4_kin).M()")
-				.Define("ks_phi", "ks_p4_cm.Phi()").Define("p_z", "p_x4_kin.Z()")
+				.Define("ks_phi", "ks_p4_cm.Phi()")
 				.Define("ksphi", "ks_p4.Phi()*180/3.14159265359")
+				.Define("p_z_thrown", "p_x4_thrown.Z()")
+				.Define("p_z", "p_x4_kin.Z()")
+				.Define("p_z_res", "p_x4_kin.Z() - p_x4_thrown.Z()")
 				.Define("mpipp", "(pip_p4_kin + p_p4_kin).M()").Define("mpimp", "(pim_p4_kin + p_p4_kin).M()");
 
 	//3.2)Now apply cuts on the newly defined variables:
@@ -51,6 +54,7 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto rdfFlightSignificance_cut = rdf_variables.Filter("mmiss > 0.4 && mmiss < 0.6 && chisq_ndf < 4 && mandel_t > 0.1 && mandel_t < 0.5 && num_unused_tracks == 0");
 	auto rdfNumUnusedTracks_cut = rdf_variables.Filter("mmiss > 0.4 && mmiss < 0.6 && chisq_ndf < 2 && fs > 6 && mandel_t > 0.1 && mandel_t < 0.5");
 	auto rdfNumUnusedShowers_cut = rdf_variables.Filter("mmiss > 0.4 && mmiss < 0.6 && chisq_ndf < 2 && fs > 6 && mandel_t > 0.1 && mandel_t < 0.5 && num_unused_tracks == 0");
+	auto rdfProtonZ_cut = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t > 0.15 && mandel_t < 1.5");
 
 	cout <<"...done!"<< endl;
 	cout <<" "<< endl;
@@ -91,6 +95,10 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 
 	auto h1_ksphi = rdf_cut2.Histo1D({"h1_ksphi", ";-t;Counts",  180, -3.14, 3.14}, "ks_phi", "accidental_weight");
 	auto h1_ksphi_sb = rdf_cut2_sb.Histo1D({"h1_ksphi_sb", ";-t;Counts",  180, -3.14, 3.14}, "ks_phi", "accidental_weight");
+
+	auto h1_protonZ = rdfProtonZ_cut.Histo1D({"h1_protonZ", ";Recoil proton Z (cm);Counts", 100, 0, 100}, "p_z", "accidental_weight");
+	auto h1_protonZthrown = rdfProtonZ_cut.Histo1D({"h1_protonZthrown", ";Recoil proton Z (cm);Counts", 100, 0, 100}, "p_z_thrown", "accidental_weight");
+	auto h1_protonZres = rdfProtonZ_cut.Histo1D({"h1_protonZres", ";Recoil proton Z (cm);Counts", 100, -1, 1}, "p_z_res", "accidental_weight");
 
 	auto h2_mpipi_ChiSqNdf = rdfChiSqNdf_cut.Histo2D({"h2_mpipi_ChiSqNdf", ";M(#pi^{+}#pi^{-});#chi^{2]/ndf", 100, 0.30, 0.70, 500, 0.0, 5.0}, "mpipi", "chisq_ndf", "accidental_weight");
 	auto h2_mpipi_FlightSignificance = rdfFlightSignificance_cut.Histo2D({"h2_mpipi_FlightSignificance", ";M(#pi^{+}#pi^{-});Flight Significance", 100, 0.30, 0.70, 180, 2.0, 20.0}, "mpipi", "fs", "accidental_weight");
@@ -144,6 +152,10 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 
 	h1_ksphi->Write();
 	h1_ksphi_sb->Write();
+
+	h1_protonZ->Write();
+	h1_protonZthrown->Write();
+	h1_protonZres->Write();
 
 	h2_mpipi_ChiSqNdf->Write();
 	h2_mpipi_FlightSignificance->Write();
