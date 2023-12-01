@@ -199,7 +199,11 @@ void DSelector_phi::Init(TTree *locTree)
 	*/
 
 	dIsMC = (dTreeInterface->Get_Branch("MCWeight") != NULL);
-	if(dIsMC)	dFlatTreeInterface->Create_Branch_Fundamental<bool>("dIsMC");
+	if(dIsMC) {
+		dFlatTreeInterface->Create_Branch_Fundamental<bool>("dIsMC");
+
+		dFlatTreeInterface->Create_Branch_NoSplitTObject<TLorentzVector>("p_x4_thrown");
+	}
 
 	dFlatTreeInterface->Create_Branch_Fundamental<double>("event_weight");
 	dFlatTreeInterface->Create_Branch_Fundamental<double>("accidental_weight");
@@ -427,6 +431,8 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 
 		TLorentzVector locProtonX4 = dProtonWrapper->Get_X4();
 
+		TLorentzVector locProtonX4_Thrown;
+
 		// do some boosting
 		//TLorentzRotation resRestBoost( -locKSKL_P4.BoostVector() );
 		TLorentzRotation resRestBoost( -(locBeamP4_Measured + dTargetP4).BoostVector() );
@@ -495,7 +501,25 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		else if(Ks_Sideband && fabs(locDeltaT_RF) < 2)	Weight = -sideband_w;
 		else if(Ks_Sideband && fabs(locDeltaT_RF) > 2)	Weight = -sideband_w*locHistAccidWeightFactor;
 
-		if(dIsMC)	dFlatTreeInterface->Fill_Fundamental<bool>("dIsMC", dIsMC);
+		//Loop over throwns
+		for(UInt_t loc_i = 0; loc_i < Get_NumThrown(); ++loc_i)
+		{
+			//Set branch array indices corresponding to this particle
+			dThrownWrapper->Set_ArrayIndex(loc_i);
+
+			//Do stuff with the wrapper here ...
+			Particle_t locPID = dThrownWrapper->Get_PID();
+			TLorentzVector locThrownX4 = dThrownWrapper->Get_X4();
+			if(locPID == 14) {
+				locProtonX4_Thrown = locThrownX4;
+			}
+		}
+
+		if(dIsMC) {
+			dFlatTreeInterface->Fill_Fundamental<bool>("dIsMC", dIsMC);
+
+			dFlatTreeInterface->Fill_TObject<TLorentzVector>("p_x4_thrown", locProtonX4_Thrown);
+		}
 
 		dFlatTreeInterface->Fill_Fundamental<double>("event_weight", event_weight);
 		dFlatTreeInterface->Fill_Fundamental<double>("accidental_weight", locHistAccidWeightFactor);
