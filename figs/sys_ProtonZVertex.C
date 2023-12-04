@@ -1,4 +1,4 @@
-void sys_UnusedShowers() {
+void sys_ProtonZVertex() {
 	gStyle->SetOptStat(0);
 	gStyle->SetPadTopMargin(0.065);
 	gStyle->SetPadRightMargin(0.015);
@@ -20,8 +20,8 @@ void sys_UnusedShowers() {
 
 	TFile *inf1 = TFile::Open("hist_dat_gluex1.root");
 
-	TH1F *h1 = (TH1F*)inf1->Get("h1_UnusedShowers");
-	TH1F *h1_sb = (TH1F*)inf1->Get("h1_UnusedShowers_sb");
+	TH1F *h1 = (TH1F*)inf1->Get("h1_ProtonZVertex");
+	TH1F *h1_sb = (TH1F*)inf1->Get("h1_ProtonZVertex_sb");
 
 	h1->Add(h1_sb, -1);
 
@@ -36,14 +36,18 @@ void sys_UnusedShowers() {
 
 	TLine *line1, *line2;
 	
-	line1 = new TLine(3, 0, 3, h1->GetMaximum());
+	line1 = new TLine(52, 0, 52, h1->GetMaximum());
 	line1->SetLineWidth(2);
 	line1->Draw();
+	line1->DrawLine(78, 0, 78, h1->GetMaximum());
 
-	line2 = new TLine(4, 0, 4, h1->GetMaximum());
+	line2 = new TLine(79, 0, 79, h1->GetMaximum());
 	line2->SetLineWidth(2);
 	line2->SetLineStyle(2);
 	line2->Draw();
+	line2->DrawLine(77, 0, 77, h1->GetMaximum());
+	line2->DrawLine(53, 0, 53, h1->GetMaximum());
+	line2->DrawLine(51, 0, 51, h1->GetMaximum());
 
 	// line2->DrawLine(3, 0, 3, h1->GetMaximum());
 
@@ -53,10 +57,5 @@ void sys_UnusedShowers() {
 	lg->AddEntry(line2, "Cut Variations", "l");
 	lg->Draw();
 
-	// Integrate histogram upto each line
-	cout << h1->Integral(0, h1->FindBin(2))/h1->Integral(0, h1->FindBin(3)) << endl;
-	cout << h1->Integral(0, h1->FindBin(2))/h1->Integral(0, h1->FindBin(4)) << endl;
-	// cout << h1->Integral(0, h1->FindBin(2))/h1->Integral(0, h1->FindBin(4.5)) << endl;
-
-	c->SaveAs("systematics/unused_showers.pdf");
+	c->SaveAs("systematics/proton_zvertex.pdf");
 }

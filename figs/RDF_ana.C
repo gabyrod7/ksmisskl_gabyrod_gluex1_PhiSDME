@@ -72,6 +72,9 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	cuts = set_cuts(cuts_list, {"nshowers", ""});
 	auto rdfUnusedShowers_cut = rdf_variables.Filter(cuts);
 
+	cuts = set_cuts(cuts_list, {"proton_z_vertex", ""});
+	auto rdfProtonZVertex_cut = rdf_variables.Filter(cuts);
+
 	cuts = set_cuts(cuts_list);
 	auto rdfMpipi_cut = rdf_variables.Filter(cuts);
 
@@ -104,6 +107,9 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto h1_UnusedShowers = rdfUnusedShowers_cut.Filter(signal).Histo1D({"h1_UnusedShowers", ";Number of Unused Showers;Counts",  10, 0, 10}, "num_unused_showers", "accidental_weight");
 	auto h1_UnusedShowers_sb = rdfUnusedShowers_cut.Filter(sideband).Histo1D({"h1_UnusedShowers_sb", ";Number of Unused Showers;Counts",  10, 0, 10}, "num_unused_showers", "accidental_weight");
 
+	auto h1_ProtonZVertex = rdfProtonZVertex_cut.Filter(signal).Histo1D({"h1_ProtonZVertex", ";Proton Z vertex (cm);Counts",  75, 40, 115}, "proton_z_vertex", "accidental_weight");
+	auto h1_ProtonZVertex_sb = rdfProtonZVertex_cut.Filter(sideband).Histo1D({"h1_ProtonZVertex_sb", ";Proton Z-vertex (cm);Counts",  75, 40, 115}, "proton_z_vertex", "accidental_weight");
+
 	auto h1_Mpipi = rdfMpipi_cut.Histo1D({"h1_Mpipi", ";M(#pi^{+}#pi^{-});Counts",  160, 0.4, 0.56}, "mpipi", "accidental_weight");
 
 	cout <<" "<< endl;
@@ -131,6 +137,9 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 
 	h1_UnusedShowers->Write();
 	h1_UnusedShowers_sb->Write();
+
+	h1_ProtonZVertex->Write();
+	h1_ProtonZVertex_sb->Write();
 
 	h1_Mpipi->Write();
 
