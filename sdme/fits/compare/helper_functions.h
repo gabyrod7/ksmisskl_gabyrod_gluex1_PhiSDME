@@ -4,7 +4,9 @@
 void set_marker(TGraphErrors *g, int style, int color) {
 	g->SetMarkerStyle(style);
 	g->SetMarkerColor(color);
+
 	g->SetLineColor(color);
+
 	g->SetFillColorAlpha(color, 0.5);
 	g->SetFillStyle(3001);
 }
@@ -12,11 +14,14 @@ void set_marker(TGraphErrors *g, int style, int color) {
 void set_marker(TGraph *g, int style, int color) {
 	g->SetMarkerStyle(style);
 	g->SetMarkerColor(color);
+	g->SetMarkerSize(1.0);
+
 	g->SetLineColor(color);
+
 	g->SetFillColorAlpha(color, 0.5);
 	g->SetFillStyle(3001);
+
 	g->SetTitle("");
-	g->SetMarkerSize(1.0);
 }
 
 void set_line(TGraphErrors *g, int style, int color, double width) {
@@ -40,9 +45,11 @@ void draw_graph(TGraphErrors *g, const char* gtitle, float xmin, float xmax, flo
 	TLatex t;
 	t.SetTextSize(0.12);
 	if(ymax < 0)
-		t.DrawLatex(0.7*xmax, ymax + (1-0.83)*(ymin - ymax), gtitle);
+		t.DrawLatex(0.3*xmax, ymax + (1-0.83)*(ymin - ymax), gtitle);
+		// t.DrawLatex(0.7*xmax, ymax + (1-0.83)*(ymin - ymax), gtitle);
 	else
-		t.DrawLatex(0.7*xmax, ymin + 0.83*(ymax - ymin), gtitle);
+		t.DrawLatex(0.3*xmax, ymin + 0.83*(ymax - ymin), gtitle);
+		// t.DrawLatex(0.7*xmax, ymin + 0.83*(ymax - ymin), gtitle);
 
 	if (hline) {
 		TLine* l = new TLine(xmin, hval, xmax, hval);
@@ -99,6 +106,19 @@ TGraphErrors* calc_pull(TGraphErrors *nominal, TGraphErrors *variation) {
 		Delta = nominal->GetPointY(i) - variation->GetPointY(i);
 		sigma = variation->GetErrorY(i);
 		graph->SetPoint( i, nominal->GetPointX(i), Delta/sigma );
+		graph->SetPointError( i, nominal->GetErrorX(i), 0 );
+	}
+
+	return graph;
+}
+
+TGraphErrors* calc_percent_diff(TGraphErrors *nominal, TGraphErrors *variation) {
+	double Delta, sigma;
+	TGraphErrors* graph = new TGraphErrors(nominal->GetN());
+
+	for(int i = 0; i < nominal->GetN(); i++) {
+		Delta = 1 - variation->GetPointY(i)/nominal->GetPointY(i);
+		graph->SetPoint( i, nominal->GetPointX(i), Delta );
 		graph->SetPointError( i, nominal->GetErrorX(i), 0 );
 	}
 
