@@ -26,7 +26,7 @@ void split() {
 													{"fs", "flight_significance > 4"},
 													{"chisq", "chisq_ndf < 4"},
 													{"ntracks", "num_unused_tracks == 0"},
-													{"nshowers", "num_unused_showers < 3"},
+													{"nshowers", "num_unused_showers <= 2"},
 													{"proton_z_vertex", "proton_z_vertex > 52 && proton_z_vertex < 78"},
 													{"beam_energy", "beam_energy > 8.2 && beam_energy < 8.8"}};
 
@@ -37,113 +37,146 @@ void split() {
 	// Spring 2017 data for SDME
 	inf_names = {"DSelector/ftree_dat_sp17.root", "DSelector/ftree_acc_sp17.root", "DSelector/ftree_gen_sp17.root"};
 	dir = "sp17";
-	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+
 	// Spring 2018 data for SDME
 	inf_names = {"DSelector/ftree_dat_sp18.root", "DSelector/ftree_acc_sp18.root", "DSelector/ftree_gen_sp18.root"};	
 	dir = "sp18";
-	//runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+
 	// Fall 2018 data for SDME
 	inf_names = {"DSelector/ftree_dat_fa18.root", "DSelector/ftree_acc_fa18.root", "DSelector/ftree_gen_fa18.root"};	
 	dir = "fa18";
-	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+
 	// GlueX-I data for SDME
 	inf_names = {"DSelector/ftree_dat_gluex1.root", "DSelector/ftree_acc_gluex1.root", "DSelector/ftree_gen_gluex1.root"};	
 	dir = "gluex1";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
-//	// GlueX-1 data for SDME measurement. Beam energy 8.2-8.4
-//	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_phi_gluex1.root", "ftree_gen_phi_gluex1.root"};	
-//	dir = "sdme_gluex1_be1";
-//	cuts = "&& beam_energy > 8.2 && beam_energy < 8.4 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.4 && missing_mass < 0.6 && flight_significance > 6 && chisq_ndf < 2 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.01 && mkskl < 1.03 && Weight > 0.0";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-//	// GlueX-1 data for SDME measurement. Beam energy 8.4-8.6
-//	dir = "sdme_gluex1_be2";
-//	cuts = "&& beam_energy > 8.4 && beam_energy < 8.6 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.4 && missing_mass < 0.6 && flight_significance > 6 && chisq_ndf < 2 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.01 && mkskl < 1.03 && Weight > 0.0";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-//	// GlueX-1 data for SDME measurement. Beam energy 8.6-8.8
-//	dir = "sdme_gluex1_be3";
-//	cuts = "&& beam_energy > 8.6 && beam_energy < 8.8 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.4 && missing_mass < 0.6 && flight_significance > 6 && chisq_ndf < 2 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.01 && mkskl < 1.03 && Weight > 0.0";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	// Spring 2020 data for SDME
+	inf_names = {"DSelector/ftree_dat_sp20.root", "DSelector/ftree_acc_sp20.root", "DSelector/ftree_gen_sp20.root"};	
+	dir = "sp20";
+	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.2 && beam_energy < 8.6"});
+	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
-//	// GlueX-1 data for SDME measurement. mpipi 1 sigma
-//	inf_names = {"ftree_dat_sp18.root", "ftree_acc_phi_gluex1.root", "ftree_gen_phi_gluex1.root"};	
-//	dir = "sdme_gluex1_mpipi1sig";
-//	cuts = "&& mpipi > 0.487 && mpipi < 0.507 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.01 && mkskl < 1.03 && Weight > 0.0";
-//	gen_cuts = "";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-//	// mpipi 3 sigma 
-//	dir = "sdme_gluex1_mpipi3sig";
-//	cuts = "&& mpipi > 0.467 && mpipi < 0.527 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.01 && mkskl < 1.03 && Weight > 0.0";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-//	// mpipi 4 sigma
-//	dir = "sdme_gluex1_mpipi4sig";
-//	cuts = "&& mpipi > 0.457 && mpipi < 0.537 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.01 && mkskl < 1.03 && Weight > 0.0";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-//	Split("ftree_dat_sp17.root", "dat", "phi_KK", 20, "", "&& missing_mass > 0.4 && missing_mass < 0.6 && flight_significance > 6 && chisq_ndf < 2 && mandel_t > 0.20 && mandel_t < 0.50 && mkskl < 1.10");
+	// MC I/O test
+	inf_names = {"DSelector/ftree_acc_sdme_test.root", "DSelector/ftree_acc_sp17_Weight1.root", "DSelector/ftree_gen_sp17.root"};	
+	dir = "sdme_mc_test";
+	run = "sp17";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
-//	// GlueX-1 data for SDME measurement. missing mass 0.45-0.55
-//	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_phi_gluex1.root", "ftree_gen_phi_gluex1.root"};	
-//	dir = "sdme_gluex1_mmiss1";
-//	cuts = "&& mpipi > 0.480 && mpipi < 0.520 && missing_mass > 0.45 && missing_mass < 0.55 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.01 && mkskl < 1.03 && Weight > 0.0";
-//	gen_cuts = "";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-//	// missing mass 0.3-0.7
-//	dir = "sdme_gluex1_mmiss2";
-//	cuts = "&& mpipi > 0.480 && mpipi < 0.520 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.01 && mkskl < 1.03 && Weight > 0.0";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-//	// missing mass 0.2-0.8
-//	dir = "sdme_gluex1_mmiss3";
-//	cuts = "&& mpipi > 0.480 && mpipi < 0.520 && missing_mass > 0.2 && missing_mass < 0.8 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 2.00 && mkskl > 1.01 && mkskl < 1.03 && Weight > 0.0";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	// // GlueX-I data for SDME
+	// inf_names = {"DSelector/ftree_dat_gluex1.root", "DSelector/tmp/ftree_acc_gluex1.root", "DSelector/ftree_gen_gluex1.root"};	
+	// dir = "gluex1_noWeight";
+	// run = "gluex1";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
-	// GlueX-1 data for SDME measurement. mkskl 1.010-1.030
-	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_gluex1.root", "ftree_gen_gluex1.root"};	
+	run = "gluex1";
+
+	// GlueX-1 data for SDME measurement. Beam energy bins
+	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.2 && beam_energy < 8.4"});
+	dir = "beam_energy_bin1";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.4 && beam_energy < 8.6"});
+	dir = "beam_energy_bin2";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.6 && beam_energy < 8.8"});
+	dir = "beam_energy_bin3";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.41 && beam_energy < 8.59"});
+	dir = "beam_energy_bin4";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.2 && beam_energy < 8.6"});
+	dir = "beam_energy_bin5";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.2 && beam_energy < 8.5"});
+	dir = "beam_energy_bin6";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+
+	// GlueX-1 data for SDME measurement. KsKl invariant mass variation
+	cuts = set_cuts(cuts_list, {"mkskl", "mkskl > 1.003 && mkskl < 1.042"});
 	dir = "mkskl1";
-	cuts = "mkskl > 1.010 && mkskl < 1.030 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
-	// gen_cuts = "";
 	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-	// mkskl 1.005-1.04
+	cuts = set_cuts(cuts_list, {"mkskl", "mkskl > 1.007 && mkskl < 1.038"});
 	dir = "mkskl2";
-	cuts = "mkskl > 1.005 && mkskl < 1.040 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
-	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-	// mkskl 1-1.06
-	dir = "mkskl3";
-	cuts = "mkskl > 1.000 && mkskl < 1.060 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
-	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-	// // mkskl 1.005-1.020
-	// dir = "mkskl_low";
-	// cuts = "&& mkskl > 1.000 && mkskl < 1.020 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
-	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-	// // mkskl 1.020-1.050
-	// dir = "mkskl_high";
-	// cuts = "&& mkskl > 1.020 && mkskl < 1.050 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
 	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
-//	// Spring 2017 data for SDME
-//	inf_names = {"../../DSelector/ftree_acc_sdme1.root", "ftree_acc_sp17.root", "ftree_gen_sp17.root"};	
-//	dir = "mc_sdme1";
-//	cuts = "&& missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.5 && mkskl > 1.005 && mkskl < 1.05";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	// GlueX-1 data for SDME measurement. missing mass variation
+	cuts = set_cuts(cuts_list, {"mmiss", "missing_mass > 0.20 && missing_mass < 0.80"});
+	dir = "mmiss1";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"mmiss", "missing_mass > 0.35 && missing_mass < 0.65"});
+	dir = "mmiss2";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"mmiss", "missing_mass > 0.37 && missing_mass < 0.63"});
+	dir = "mmiss3";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
+	// GlueX-1 data for SDME measurement. mpipi variation
+	cuts = set_cuts(cuts_list, {"mpipi", "mpipi > 0.475 && mpipi < 0.525"});
+	dir = "mpipi1";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"mpipi", "mpipi > 0.482 && mpipi < 0.518"});
+	dir = "mpipi2";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"mpipi", "mpipi > 0.484 && mpipi < 0.516"});
+	dir = "mpipi3";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
-//	// mkskl 1.005-1.020
-//	dir = "mkskl_bin1";
-//	cuts = "&& mkskl > 1.000 && mkskl < 1.020 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-//	// mkskl 1.020-1.030
-//	dir = "mkskl_bin2";
-//	cuts = "&& mkskl > 1.020 && mkskl < 1.030 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-//	// mkskl 1.030-1.050
-//	dir = "mkskl_bin3";
-//	cuts = "&& mkskl > 1.020 && mkskl < 1.050 && missing_mass > 0.30 && missing_mass < 0.70 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.50";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	// GlueX-1 data for SDME measurement. KsKl invariant mass variation
+	cuts = set_cuts(cuts_list, {"mkskl", "mkskl > 1.005 && mkskl < 1.02"});
+	dir = "mkskl_low";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"mkskl", "mkskl > 1.02 && mkskl < 1.04"});
+	dir = "mkskl_high";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
-//	// GlueX-I no pipi-sideband 
-//	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_gluex1.root", "ftree_gen_gluex1.root"};	
-//	dir = "no_sideband";
-//	cuts = "&& missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && mandel_t < 1.5 && mkskl > 1.005 && mkskl < 1.05 && mpipi > 0.48 && mpipi < 0.52";
-//	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	// GlueX-1 data for SDME measurement. flight significance variation
+	cuts = set_cuts(cuts_list, {"fs", "flight_significance > 3.5"});
+	dir = "fs1";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"fs", "flight_significance > 4.5"});
+	dir = "fs2";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"fs", "flight_significance > 5.0"});
+	dir = "fs3";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+
+	// GlueX-I data for SDME measurement. chisq variation
+	cuts = set_cuts(cuts_list, {"chisq", "chisq_ndf < 3"});
+	dir = "chisq1";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"chisq", "chisq_ndf < 3.5"});
+	dir = "chisq2";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"chisq", "chisq_ndf < 4.5"});
+	dir = "chisq3";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+
+	// GlueX-I data for SDME measurement. unused tracks variation
+	cuts = set_cuts(cuts_list, {"ntracks", "num_unused_tracks <= 1"});
+	dir = "ntracks1";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"ntracks", "num_unused_tracks <= 2"});
+	dir = "ntracks2";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+
+	// GlueX-I data for SDME measurement. unused showers variation
+	cuts = set_cuts(cuts_list, {"nshowers", "num_unused_showers <= 3"});
+	dir = "nshowers1";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"nshowers", "num_unused_showers <= 4"});
+	dir = "nshowers2";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+
+	// GlueX-I data for SDME measurement. proton z-vertex variation
+	cuts = set_cuts(cuts_list, {"proton_z_vertex", "proton_z_vertex > 51 && proton_z_vertex < 79"});
+	dir = "proton_z_vertex1";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"proton_z_vertex", "proton_z_vertex > 53 && proton_z_vertex < 77"});
+	dir = "proton_z_vertex2";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
 	// For Partial Wave Analysis
 	inf_names = {"ftree_dat_gluex1.root", "ftree_acc_gluex1.root", "ftree_gen_gluex1.root"};	
@@ -169,7 +202,7 @@ void runSplit(std::vector<std::string> inf_names, std::string dir, int n_threads
 		gSystem->Exec( ("mkdir "+dir+"/").c_str() );
 	}
 
-	if((dir == "sp17" || dir == "sp18" || dir == "fa18" || dir == "gluex1") && run == "")	run = dir;
+	if((dir == "sp17" || dir == "sp18" || dir == "fa18" || dir == "gluex1" || dir == "sp20") && run == "")	run = dir;
 
 	Split(inf_names[0], "dat", dir, n_threads, run, cuts);
 	Split(inf_names[1], "acc", dir, n_threads, run, cuts);
@@ -186,7 +219,7 @@ void Split(std::string inf_name, std::string data, std::string dir, int n_thread
 
 	// make data frame
 	// format : tree name, file name, branches to open
-	auto df = ROOT::RDataFrame("kskl", inf_name.c_str()).Filter(filter);
+	auto df = ROOT::RDataFrame("kin", inf_name.c_str()).Filter(filter);
 
 	std::cout << std::endl;
 	std::cout << "We will now separate the file "+inf_name+" base on polarization angle" << std::endl;
@@ -199,10 +232,14 @@ void Split(std::string inf_name, std::string data, std::string dir, int n_thread
 	}
 	
 	// make new data frame with cuts
-	auto dat000 = df.Filter( "amptools_dat == 1 && pol_angle == 0" );
-	auto dat045 = df.Filter( "amptools_dat == 1 && pol_angle == 45" );
-	auto dat090 = df.Filter( "amptools_dat == 1 && pol_angle == 90" );
-	auto dat135 = df.Filter( "amptools_dat == 1 && pol_angle == 135" );
+	// auto dat000 = df.Filter( "amptools_dat == 1 && pol_angle == 0" );
+	// auto dat045 = df.Filter( "amptools_dat == 1 && pol_angle == 45" );
+	// auto dat090 = df.Filter( "amptools_dat == 1 && pol_angle == 90" );
+	// auto dat135 = df.Filter( "amptools_dat == 1 && pol_angle == 135" );
+	auto dat000 = df.Filter( "is_in_time && pol_angle == 0" );
+	auto dat045 = df.Filter( "is_in_time && pol_angle == 45" );
+	auto dat090 = df.Filter( "is_in_time && pol_angle == 90" );
+	auto dat135 = df.Filter( "is_in_time && pol_angle == 135" );
 
 	std::cout << std::endl << "Filters have been defines next we take a Snapshot" << std::endl;
 
@@ -218,10 +255,14 @@ void Split(std::string inf_name, std::string data, std::string dir, int n_thread
 	if(data == "dat") {
 		std::cout << std::endl << "Proccesing background files" << std::endl;
 
-		auto bkg000 = df.Filter("pol_angle == 0 && amptools_bkg == 1");
-		auto bkg045 = df.Filter("pol_angle == 45 && amptools_bkg == 1");
-		auto bkg090 = df.Filter("pol_angle == 90 && amptools_bkg == 1");
-		auto bkg135 = df.Filter("pol_angle == 135 && amptools_bkg == 1");
+		// auto bkg000 = df.Filter("pol_angle == 0 && amptools_bkg == 1");
+		// auto bkg045 = df.Filter("pol_angle == 45 && amptools_bkg == 1");
+		// auto bkg090 = df.Filter("pol_angle == 90 && amptools_bkg == 1");
+		// auto bkg135 = df.Filter("pol_angle == 135 && amptools_bkg == 1");
+		auto bkg000 = df.Filter("pol_angle == 0 && !is_in_time");
+		auto bkg045 = df.Filter("pol_angle == 45 && !is_in_time");
+		auto bkg090 = df.Filter("pol_angle == 90 && !is_in_time");
+		auto bkg135 = df.Filter("pol_angle == 135 && !is_in_time");
 
 		bkg000.Snapshot("kin", (dir+"/bkg_"+run+"_000.root").c_str(), branches);
 		bkg045.Snapshot("kin", (dir+"/bkg_"+run+"_045.root").c_str(), branches);
