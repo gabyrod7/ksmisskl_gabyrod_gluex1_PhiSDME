@@ -9,13 +9,24 @@ Here is a table the luminosity for each run period, what fraction of GlueX-I dat
 
 | run | luminosity | fraction of total | 0 | 45 | 90 | -45 |
 | --- | --- | --- | ---|---|---|---|
-| Spring 2017 | 21.8 | 0.175 | 0.3537 | 0.3484 | 0.3472 | 0.3512 | 
-| Spring 2018 | 63.0 | 0.504 | 0.3420 | 0.3474 | 0.3478 | 0.3517 | 
-| Fall 2018 | 40.1   | 0.321 | 0.3563 | 0.3403 | 0.3430 | 0.3523 | 
-| GlueX-I   | 124.9  | 1.000 | 0.3486 | 0.3452 | 0.3461 | 0.3518 |
-
+| Spring 2017 | 21.8 | 0.175  | 0.3537 | 0.3484 | 0.3472 | 0.3512 | 
+| Spring 2018 | 63.0 | 0.504  | 0.3420 | 0.3474 | 0.3478 | 0.3517 | 
+| Fall 2018 | 40.1   | 0.321  | 0.3563 | 0.3403 | 0.3430 | 0.3523 | 
+| GlueX-I   | 124.9  | 1.000  | 0.3486 | 0.3452 | 0.3461 | 0.3518 |
+| Spring 2020 | 132.4 | 1.060 | 0.3525 | 0.3535 | 0.3536 | 0.3721 |
 
 The combine.C script will create a gluex1Tpol.root file which has the weighted polarization fraction vs. beam energy.
+
+Spring 2020 luminosity number can be found at [GlueX Wiki](https://halldweb.jlab.org/wiki-private/index.php/GlueX_Phase-II_Dataset_Summary).
+Sprint 2020 polarization fraction values were obtained version 2020 of Mike Doggers scripts.
+The code to save the polarization histograms appear to be missing so the following lines were added  inside the ```if (mixMode == false)``` statement around line 1112.
+```
+TFile *fOut = new TFile("./outFiles/sp20TPol.root","RECREATE");
+hPol0->Write();
+hPol45->Write();
+hPol90->Write();
+hPol135->Write();
+```
 
 # Polarization angle 
 
