@@ -66,12 +66,14 @@ class amptools_cfg:
 		polAngle = {'sp17_000' : 1.8, 'sp17_045' : 47.9, 'sp17_090' : 94.5, 'sp17_135' : -41.6, 
 	      			'sp18_000' : 4.1, 'sp18_045' : 48.5, 'sp18_090' : 94.2, 'sp18_135' : -42.4, 
 					'fa18_000' : 3.3, 'fa18_045' : 48.3, 'fa18_090' : 92.9, 'fa18_135' : -42.1,
-					'gluex1_000' : 3.4, 'gluex1_045' : 48.3, 'gluex1_090' : 93.8, 'gluex1_135' : -42.2}
+					'gluex1_000' : 3.4, 'gluex1_045' : 48.3, 'gluex1_090' : 93.8, 'gluex1_135' : -42.2,
+	      			'sp20_000' : 1.4, 'sp20_045' : 47.1, 'sp20_090' : 93.4, 'sp20_135' : -42.2}
 		
 		polFrac	 = {'sp17_000' : 0.3537, 'sp17_045' : 0.3484, 'sp17_090' : 0.3472, 'sp17_135' : 0.3512, 
 	      			'sp18_000' : 0.3420, 'sp18_045' : 0.3474, 'sp18_090' : 0.3478, 'sp18_135' : 0.3517, 
 					'fa18_000' : 0.3563, 'fa18_045' : 0.3403, 'fa18_090' : 0.3430, 'fa18_135' : 0.3523,
-					'gluex1_000' : 0.3486, 'gluex1_045' : 0.3452, 'gluex1_090' : 0.3461, 'gluex1_135' : 0.3518}
+					'gluex1_000' : 0.3486, 'gluex1_045' : 0.3452, 'gluex1_090' : 0.3461, 'gluex1_135' : 0.3518,
+	      			'sp20_000' : 0.3525, 'sp20_045' : 0.3535, 'sp20_090' : 0.3536, 'sp20_135' : 0.3721}
 
 		for dat in self.data:
 			f.write('define pol_{0} {1:.1f} {2:.4f}\n'.format(dat, polAngle[dat], polFrac[dat]))
@@ -82,7 +84,8 @@ class amptools_cfg:
 		polAngle = {'sp17_000' : 1.8, 'sp17_045' : 47.9, 'sp17_090' : 94.5, 'sp17_135' : -41.6, 
 	      			'sp18_000' : 4.1, 'sp18_045' : 48.5, 'sp18_090' : 94.2, 'sp18_135' : -42.4, 
 					'fa18_000' : 3.3, 'fa18_045' : 48.3, 'fa18_090' : 92.9, 'fa18_135' : -42.1,
-     				'gluex1_000' : 3.3, 'gluex1_045' : 48.3, 'gluex1_090' : 92.9, 'gluex1_135' : -42.1}
+     				'gluex1_000' : 3.3, 'gluex1_045' : 48.3, 'gluex1_090' : 92.9, 'gluex1_135' : -42.1,
+	      			'sp20_000' : 4.1, 'sp20_045' : 48.5, 'sp20_090' : 94.2, 'sp20_135' : -42.4}
 
 		polFrac  = {'sp17_000' : self.pol_hist_location+'sp17TPol.root hPol0', 'sp17_045' : self.pol_hist_location+'sp17TPol.root hPol45', 
 	     			'sp17_090' : self.pol_hist_location+'sp17TPol.root hPol90', 'sp17_135' : self.pol_hist_location+'sp17TPol.root hPol135',
@@ -94,7 +97,10 @@ class amptools_cfg:
 					'fa18_090' : self.pol_hist_location+'fa18TPol.root hPol90', 'fa18_135' : self.pol_hist_location+'fa18TPol.root hPol135',
 
 	     			'gluex1_000' : self.pol_hist_location+'gluex1Tpol.root hPol0', 'gluex1_045' : self.pol_hist_location+'gluex1Tpol.root hPol45', 
-					'gluex1_090' : self.pol_hist_location+'gluex1Tpol.root hPol90', 'gluex1_135' : self.pol_hist_location+'gluex1Tpol.root hPol135'}
+					'gluex1_090' : self.pol_hist_location+'gluex1Tpol.root hPol90', 'gluex1_135' : self.pol_hist_location+'gluex1Tpol.root hPol135',
+     
+	     			'sp20_000' : self.pol_hist_location+'sp20TPol75.root hPol0', 'sp20_045' : self.pol_hist_location+'sp20TPol75.root hPol45', 
+					'sp20_090' : self.pol_hist_location+'sp20TPol75.root hPol90', 'sp20_135' : self.pol_hist_location+'sp20TPol75.root hPol135'}
 
 		for dat in self.data:
 			f.write('define pol_{0} {1:.1f} {2}\n'.format(dat, polAngle[dat], polFrac[dat]))
