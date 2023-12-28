@@ -38,20 +38,20 @@ void RDF_recon(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut
 	//3.2)Now apply cuts on the newly defined variables:
 	
 	//Check for energy and momentum balance:
-	auto rdf_cut = rdf_variables.Filter("mkskl > 1.01 && mkskl < 1.05 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0");
-	auto rdf_cut_sb = rdf_variables.Filter("mkskl > 1.01 && mkskl < 1.05 && (mpipi > 0.42 && mpipi < 0.46) && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0");
+	auto rdf_cut = rdf_variables.Filter("mkskl > 1.005 && mkskl < 1.04 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0");
+	auto rdf_cut_sb = rdf_variables.Filter("mkskl > 1.005 && mkskl < 1.04 && (mpipi > 0.42 && mpipi < 0.46) && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0");
 
-	auto rdf_cut2 = rdf_variables.Filter("mkskl > 1.01 && mkskl < 1.05 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks <= 1");
-	auto rdf_cut2_sb = rdf_variables.Filter("mkskl > 1.01 && mkskl < 1.05 && (mpipi > 0.42 && mpipi < 0.46) && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks <= 1");
+	auto rdf_cut2 = rdf_variables.Filter("mkskl > 1.005 && mkskl < 1.04 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks <= 1");
+	auto rdf_cut2_sb = rdf_variables.Filter("mkskl > 1.005 && mkskl < 1.04 && (mpipi > 0.42 && mpipi < 0.46) && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks <= 1");
 
-	auto rdf_cut3 = rdf_variables.Filter("mkskl > 1.01 && mkskl < 1.05 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 5 && num_unused_tracks == 0");
-	auto rdf_cut3_sb = rdf_variables.Filter("mkskl > 1.01 && mkskl < 1.05 && (mpipi > 0.42 && mpipi < 0.46) && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 5 && num_unused_tracks == 0");
+	auto rdf_cut3 = rdf_variables.Filter("mkskl > 1.005 && mkskl < 1.04 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 5 && num_unused_tracks == 0");
+	auto rdf_cut3_sb = rdf_variables.Filter("mkskl > 1.005 && mkskl < 1.04 && (mpipi > 0.42 && mpipi < 0.46) && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 4 && chisq_ndf < 5 && num_unused_tracks == 0");
 
-	auto rdf_cut4 = rdf_variables.Filter("mkskl > 1.01 && mkskl < 1.05 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 3 && chisq_ndf < 4 && num_unused_tracks == 0");
-	auto rdf_cut4_sb = rdf_variables.Filter("mkskl > 1.01 && mkskl < 1.05 && (mpipi > 0.42 && mpipi < 0.46) && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 3 && chisq_ndf < 4 && num_unused_tracks == 0");
+	auto rdf_cut4 = rdf_variables.Filter("mkskl > 1.005 && mkskl < 1.04 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 3 && chisq_ndf < 4 && num_unused_tracks == 0");
+	auto rdf_cut4_sb = rdf_variables.Filter("mkskl > 1.005 && mkskl < 1.04 && (mpipi > 0.42 && mpipi < 0.46) && missing_mass > 0.3 && missing_mass < 0.7 && flight_significance > 3 && chisq_ndf < 4 && num_unused_tracks == 0");
 
-	auto rdf_cut5 = rdf_variables.Filter("mkskl > 1.01 && mkskl < 1.05 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.45 && missing_mass < 0.55 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0");
-	auto rdf_cut5_sb = rdf_variables.Filter("mkskl > 1.01 && mkskl < 1.05 && (mpipi > 0.42 && mpipi < 0.46) && missing_mass > 0.45 && missing_mass < 0.55 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0");
+	auto rdf_cut5 = rdf_variables.Filter("mkskl > 1.005 && mkskl < 1.04 && mpipi > 0.48 && mpipi < 0.52 && missing_mass > 0.45 && missing_mass < 0.55 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0");
+	auto rdf_cut5_sb = rdf_variables.Filter("mkskl > 1.005 && mkskl < 1.04 && (mpipi > 0.42 && mpipi < 0.46) && missing_mass > 0.45 && missing_mass < 0.55 && flight_significance > 4 && chisq_ndf < 4 && num_unused_tracks == 0");
 
 	auto rdf_ShowerCut1 = rdf_cut.Filter("num_unused_showers < 1");
 	auto rdf_ShowerCut1_sb = rdf_cut_sb.Filter("num_unused_showers < 1");
