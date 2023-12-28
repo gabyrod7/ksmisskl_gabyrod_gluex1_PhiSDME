@@ -86,8 +86,20 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	cout <<"Set up histograms..."<< endl;
 	
 	//4.1) Histograms
-	auto im_kskl = rdf_cut.Filter(signal).Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts", 220, 0.99, 1.10}, "mkskl", "accidental_weight");
-	auto im_kskl_sb = rdf_cut.Filter(sideband).Histo1D({"im_kskl_sb", ";M(K_{S}K_{L});Counts", 220, 0.99, 1.10}, "mkskl", "accidental_weight");
+	auto im_kskl = rdf_cut.Filter(signal).Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
+	auto im_kskl_sb = rdf_cut.Filter(sideband).Histo1D({"im_kskl_sb", ";M(K_{S}K_{L});Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
+
+	auto im_ksp = rdf_cut.Filter(signal).Histo1D({"im_ksp", ";M(K_{S}p);Counts", 90, 2.50, 3.4}, "mksp", "accidental_weight");
+	auto im_ksp_sb = rdf_cut.Filter(sideband).Histo1D({"im_ksp_sb", ";M(K_{S}p);Counts", 90, 2.50, 3.4}, "mksp", "accidental_weight");
+
+	auto im_klp = rdf_cut.Filter(signal).Histo1D({"im_klp", ";M(K_{L}p);Counts", 90, 2.50, 3.4}, "mklp", "accidental_weight");
+	auto im_klp_sb = rdf_cut.Filter(sideband).Histo1D({"im_klp_sb", ";M(K_{L}p);Counts", 90, 2.50, 3.4}, "mklp", "accidental_weight");
+
+	auto im_pipp = rdf_cut.Filter(signal).Histo1D({"im_pipp", ";M(#pi^{+}p);Counts", 115, 1.10, 3.40}, "mpipp", "accidental_weight");
+	auto im_pipp_sb = rdf_cut.Filter(sideband).Histo1D({"im_pipp_sb", ";M(#pi^{+}p);Counts", 115, 1.10, 3.40}, "mpipp", "accidental_weight");
+
+	auto im_pimp = rdf_cut.Filter(signal).Histo1D({"im_pimp", ";M(#pi^{-}p);Counts", 115, 1.10, 3.40}, "mpimp", "accidental_weight");
+	auto im_pimp_sb = rdf_cut.Filter(sideband).Histo1D({"im_pimp_sb", ";M(#pi^{-}p);Counts", 115, 1.10, 3.40}, "mpimp", "accidental_weight");
 
 	auto h1_mandelt = rdf_cut.Filter(signal).Histo1D({"h1_mandelt", ";-t (GeV^{2});Counts", 75, 0, 1.5}, "mandel_t", "accidental_weight");
 	auto h1_mandelt_sb = rdf_cut.Filter(sideband).Histo1D({"h1_mandelt_sb", ";-t (GeV^{2});Counts", 75, 0, 1.5}, "mandel_t", "accidental_weight");
@@ -119,6 +131,18 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 
 	im_kskl->Write();
 	im_kskl_sb->Write();
+
+	im_ksp->Write();
+	im_ksp_sb->Write();
+
+	im_klp->Write();
+	im_klp_sb->Write();
+
+	im_pipp->Write();
+	im_pipp_sb->Write();
+
+	im_pimp->Write();
+	im_pimp_sb->Write();
 
 	h1_mandelt->Write();
 	h1_mandelt_sb->Write();

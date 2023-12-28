@@ -1,7 +1,7 @@
 void fig_UnusedTracks() {
 	gStyle->SetOptStat(0);
-	gStyle->SetPadTopMargin(0.03);
-	gStyle->SetPadRightMargin(0.01);
+	gStyle->SetPadTopMargin(0.07);
+	gStyle->SetPadRightMargin(0.03);
 	gStyle->SetPadBottomMargin(0.15);
 	gStyle->SetPadLeftMargin(0.17);
 
