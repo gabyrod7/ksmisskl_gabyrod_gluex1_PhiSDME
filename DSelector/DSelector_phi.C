@@ -64,6 +64,18 @@ double calc_vanHove_Y(double p1, double p2, double p3) {
 
 }
 
+std::string set_cuts(std::map<std::string, std::string> cuts_list, std::pair<std::string, std::string> change_cut = {"", ""}) {
+	std::string cuts = "";
+
+	for(auto it = cuts_list.begin(); it != cuts_list.end(); ++it) {
+		if(it->first == change_cut.first)	cuts += change_cut.second + " && ";
+		else								cuts += it->second + " && ";
+	}
+	cuts.erase(cuts.size()-4, 4); // remove last " && "
+
+	return cuts;
+}
+
 void DSelector_phi::Init(TTree *locTree)
 {
 	// USERS: IN THIS FUNCTION, ONLY MODIFY SECTIONS WITH A "USER" OR "EXAMPLE" LABEL. LEAVE THE REST ALONE.
@@ -207,6 +219,8 @@ void DSelector_phi::Init(TTree *locTree)
 
 	dFlatTreeInterface->Create_Branch_Fundamental<double>("event_weight");
 	dFlatTreeInterface->Create_Branch_Fundamental<double>("accidental_weight");
+
+	dFlatTreeInterface->Create_Branch_Fundamental<double>("RFTime");
 
 	dFlatTreeInterface->Create_Branch_Fundamental<int>("num_unused_tracks");
 	dFlatTreeInterface->Create_Branch_Fundamental<int>("num_unused_showers");
@@ -524,6 +538,8 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		dFlatTreeInterface->Fill_Fundamental<double>("event_weight", event_weight);
 		dFlatTreeInterface->Fill_Fundamental<double>("accidental_weight", locHistAccidWeightFactor);
 
+		dFlatTreeInterface->Fill_Fundamental<int>("num_unused_tracks", locDeltaT_RF);
+
 		dFlatTreeInterface->Fill_Fundamental<int>("num_unused_tracks", dComboWrapper->Get_NumUnusedTracks());
 		dFlatTreeInterface->Fill_Fundamental<int>("num_unused_showers", dComboWrapper->Get_NumUnusedShowers());
 		dFlatTreeInterface->Fill_Fundamental<int>("num_combos", Get_NumCombos());
@@ -593,7 +609,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		if(locBeamP4.E() > 8.2 && locBeamP4.E() < 8.8 && locKSKL_P4.M() < 1.04 && locKSKL_P4.M() > 1.005 
 			&& chisq_ndf < 4 && t < 1.0 && t > 0.15 && locPathLengthSignificance > 4 
 			&& mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7
-			&& dComboWrapper->Get_NumUnusedTracks() == 0 && dComboWrapper->Get_NumUnusedShowers() < 2)
+			&& dComboWrapper->Get_NumUnusedTracks() == 0 && dComboWrapper->Get_NumUnusedShowers() < 3)
 			h1_RFTime->Fill(locDeltaT_RF);
 		if(locSkipNearestOutOfTimeBunch && abs(locRelBeamBucket)==1) { // Skip nearest out-of-time bunch: tails of in-time distribution also leak in
 			dComboWrapper->Set_IsComboCut(true); 
