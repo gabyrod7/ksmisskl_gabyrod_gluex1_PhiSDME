@@ -57,13 +57,23 @@ void split() {
 	// Spring 2020 data for SDME
 	inf_names = {"DSelector/ftree_dat_sp20.root", "DSelector/ftree_acc_sp20.root", "DSelector/ftree_gen_sp20.root"};	
 	dir = "sp20";
-	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.2 && beam_energy < 8.6"});
-	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.0 && beam_energy < 8.6"});
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
 	// MC I/O test
-	inf_names = {"DSelector/ftree_acc_sdme_test.root", "DSelector/ftree_acc_sp17_Weight1.root", "DSelector/ftree_gen_sp17.root"};	
+	inf_names = {"DSelector/ftree_acc_sdme_test.root", "DSelector/ftree_acc_sp17_Weight1.root", "DSelector/ftree_gen_sp17.root"};
 	dir = "sdme_mc_test";
 	run = "sp17";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+
+	inf_names = {"DSelector/ftree_acc_sdme_test_wL1TriggerCondition.root", "DSelector/ftree_acc_sp17_Weight1_wL1TriggerCondition.root", "DSelector/ftree_gen_sp17.root"};
+	dir = "sdme_mc_test_wL1TriggerCondition";
+	run = "sp17";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+
+	inf_names = {"DSelector/ftree_dat_gluex1.root", "DSelector/ftree_acc_gluex1_Weight1_wL1TriggerCondition.root", "DSelector/ftree_gen_gluex1.root"};
+	dir = "gluex1_wL1TriggerCondition";
+	run = "gluex1";
 	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
 	// // GlueX-I data for SDME
@@ -72,6 +82,7 @@ void split() {
 	// run = "gluex1";
 	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
+	inf_names = {"DSelector/ftree_dat_gluex1.root", "DSelector/ftree_acc_gluex1.root", "DSelector/ftree_gen_gluex1.root"};	
 	run = "gluex1";
 
 	// GlueX-1 data for SDME measurement. Beam energy bins
@@ -84,22 +95,25 @@ void split() {
 	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.6 && beam_energy < 8.8"});
 	dir = "beam_energy_bin3";
 	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.41 && beam_energy < 8.59"});
+	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.4 && beam_energy < 8.8"});
 	dir = "beam_energy_bin4";
 	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.2 && beam_energy < 8.6"});
-	dir = "beam_energy_bin5";
-	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.2 && beam_energy < 8.5"});
-	dir = "beam_energy_bin6";
-	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	dir = "beam_energy_bin1";
+	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"beam_energy", "beam_energy > 8.5 && beam_energy < 8.8"});
+	dir = "beam_energy_bin2";
+	runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
 	// GlueX-1 data for SDME measurement. KsKl invariant mass variation
 	cuts = set_cuts(cuts_list, {"mkskl", "mkskl > 1.003 && mkskl < 1.042"});
 	dir = "mkskl1";
 	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-	cuts = set_cuts(cuts_list, {"mkskl", "mkskl > 1.007 && mkskl < 1.038"});
+	cuts = set_cuts(cuts_list, {"mkskl", "mkskl > 1.008 && mkskl < 1.039"});
 	dir = "mkskl2";
+	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
+	cuts = set_cuts(cuts_list, {"mkskl", "mkskl > 1.007 && mkskl < 1.038"});
+	dir = "mkskl3";
 	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
 	// GlueX-1 data for SDME measurement. missing mass variation
@@ -166,7 +180,7 @@ void split() {
 	cuts = set_cuts(cuts_list, {"nshowers", "num_unused_showers <= 3"});
 	dir = "nshowers1";
 	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
-	cuts = set_cuts(cuts_list, {"nshowers", "num_unused_showers <= 4"});
+	cuts = set_cuts(cuts_list, {"nshowers", "num_unused_showers <= 1"});
 	dir = "nshowers2";
 	// runSplit(inf_names, dir, n_threads, run, cuts, gen_cuts);
 
