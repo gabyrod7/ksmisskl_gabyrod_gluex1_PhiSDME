@@ -35,9 +35,9 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 				.Define("mksp", "(ks_p4 + p_p4_kin).M()").Define("mklp", "(kl_p4 + p_p4_kin).M()")
 				.Define("ks_phi", "ks_p4_cm.Phi()")
 				.Define("ksphi", "ks_p4.Phi()*180/3.14159265359")
-				.Define("p_z_thrown", "p_x4_thrown.Z()")
+				// .Define("p_z_thrown", "p_x4_thrown.Z()")
 				.Define("p_z", "p_x4_kin.Z()")
-				.Define("p_z_res", "p_x4_kin.Z() - p_x4_thrown.Z()")
+				// .Define("p_z_res", "p_x4_kin.Z() - p_x4_thrown.Z()")
 				.Define("mpipp", "(pip_p4_kin + p_p4_kin).M()").Define("mpimp", "(pim_p4_kin + p_p4_kin).M()");
 
 	//3.2)Now apply cuts on the newly defined variables:
@@ -97,8 +97,8 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto h1_ksphi_sb = rdf_cut2_sb.Histo1D({"h1_ksphi_sb", ";-t;Counts",  180, -3.14, 3.14}, "ks_phi", "accidental_weight");
 
 	auto h1_protonZ = rdfProtonZ_cut.Histo1D({"h1_protonZ", ";Recoil proton Z (cm);Counts", 100, 0, 100}, "p_z", "accidental_weight");
-	auto h1_protonZthrown = rdfProtonZ_cut.Histo1D({"h1_protonZthrown", ";Recoil proton Z (cm);Counts", 100, 0, 100}, "p_z_thrown", "accidental_weight");
-	auto h1_protonZres = rdfProtonZ_cut.Histo1D({"h1_protonZres", ";Recoil proton Z (cm);Counts", 100, -1, 1}, "p_z_res", "accidental_weight");
+	// auto h1_protonZthrown = rdfProtonZ_cut.Histo1D({"h1_protonZthrown", ";Recoil proton Z (cm);Counts", 100, 0, 100}, "p_z_thrown", "accidental_weight");
+	// auto h1_protonZres = rdfProtonZ_cut.Histo1D({"h1_protonZres", ";Recoil proton Z (cm);Counts", 100, -1, 1}, "p_z_res", "accidental_weight");
 
 	auto h2_mpipi_ChiSqNdf = rdfChiSqNdf_cut.Histo2D({"h2_mpipi_ChiSqNdf", ";M(#pi^{+}#pi^{-});#chi^{2]/ndf", 100, 0.30, 0.70, 500, 0.0, 5.0}, "mpipi", "chisq_ndf", "accidental_weight");
 	auto h2_mpipi_FlightSignificance = rdfFlightSignificance_cut.Histo2D({"h2_mpipi_FlightSignificance", ";M(#pi^{+}#pi^{-});Flight Significance", 100, 0.30, 0.70, 180, 2.0, 20.0}, "mpipi", "fs", "accidental_weight");
@@ -114,6 +114,10 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto h2_mkskl_mandelt = rdf_cut.Histo2D({"h2_mkskl_mandelt", ";M(K_{S}K_{L});-t (GeV^{2})", 60, 0.98, 1.10, 50, 0.15, 1.5}, "mkskl", "mandel_t", "accidental_weight");
 
 	auto h2_ksmass_ksphi = rdf_cut3.Histo2D({"h2_ksmass_ksphi", ";M(#pi#pi);#phi", 100, 0.4, 0.6, 90, -180, 180}, "mpipi", "ksphi", "accidental_weight");
+	auto h2_ksmass_ksphi1 = rdf_cut3.Filter("pol_angle == 0").Histo2D({"h2_ksmass_ksphi1", ";M(#pi#pi);#phi", 100, 0.4, 0.6, 90, -180, 180}, "mpipi", "ksphi", "accidental_weight");
+	auto h2_ksmass_ksphi2 = rdf_cut3.Filter("pol_angle == 45").Histo2D({"h2_ksmass_ksphi2", ";M(#pi#pi);#phi", 100, 0.4, 0.6, 90, -180, 180}, "mpipi", "ksphi", "accidental_weight");
+	auto h2_ksmass_ksphi3 = rdf_cut3.Filter("pol_angle == 90").Histo2D({"h2_ksmass_ksphi3", ";M(#pi#pi);#phi", 100, 0.4, 0.6, 90, -180, 180}, "mpipi", "ksphi", "accidental_weight");
+	auto h2_ksmass_ksphi4 = rdf_cut3.Filter("pol_angle == 135").Histo2D({"h2_ksmass_ksphi4", ";M(#pi#pi);#phi", 100, 0.4, 0.6, 90, -180, 180}, "mpipi", "ksphi", "accidental_weight");
 	auto h2_mkskl_ksphi = rdf_cut.Histo2D({"h2_mkskl_ksphi", ";M(K_{S}K_{L});#phi", 100, 0.98, 1.10, 40, -180, 180}, "mkskl", "ksphi", "accidental_weight");
 
 	cout <<" "<< endl;
@@ -154,8 +158,8 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	h1_ksphi_sb->Write();
 
 	h1_protonZ->Write();
-	h1_protonZthrown->Write();
-	h1_protonZres->Write();
+	// h1_protonZthrown->Write();
+	// h1_protonZres->Write();
 
 	h2_mpipi_ChiSqNdf->Write();
 	h2_mpipi_FlightSignificance->Write();
@@ -171,6 +175,10 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	h2_mkskl_mandelt->Write();
 
 	h2_ksmass_ksphi->Write();
+	h2_ksmass_ksphi1->Write();
+	h2_ksmass_ksphi2->Write();
+	h2_ksmass_ksphi3->Write();
+	h2_ksmass_ksphi4->Write();
 	h2_mkskl_ksphi->Write();
 
 	out_file->Write();
