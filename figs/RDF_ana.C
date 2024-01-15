@@ -107,8 +107,8 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto h1_MissingMass = rdfMissingMass_cut.Filter(signal).Histo1D({"h1_MissingMass", ";Missing Mass (GeV);Counts",  100, 0, 1}, "missing_mass", "accidental_weight");
 	auto h1_MissingMass_sb = rdfMissingMass_cut.Filter(sideband).Histo1D({"h1_MissingMass_sb", ";Missing Mass (GeV);Counts",  100, 0, 1}, "missing_mass", "accidental_weight");
 
-	auto h1_fs = rdfFlightSignificance_cut.Filter(signal).Histo1D({"h1_FS", ";Flight Significance (#sigma);Counts",  70, 3, 10}, "fs", "accidental_weight");
-	auto h1_fs_sb = rdfFlightSignificance_cut.Filter(sideband).Histo1D({"h1_FS_sb", ";Flight Significance (#sigma);Counts",  70, 3, 10}, "fs", "accidental_weight");
+	auto h1_fs = rdfFlightSignificance_cut.Filter(signal).Histo1D({"h1_FS", ";Flight Significance (#sigma);Counts",  80, 2, 10}, "fs", "accidental_weight");
+	auto h1_fs_sb = rdfFlightSignificance_cut.Filter(sideband).Histo1D({"h1_FS_sb", ";Flight Significance (#sigma);Counts",  80, 2, 10}, "fs", "accidental_weight");
 
 	auto h1_ChisqNdf = rdfChiSqNdf_cut.Filter(signal).Histo1D({"h1_ChisqNdf", ";#chi^{2}/ndf;Counts",  60, 0, 6}, "chisq_ndf", "accidental_weight");
 	auto h1_ChisqNdf_sb = rdfChiSqNdf_cut.Filter(sideband).Histo1D({"h1_ChisqNdf_sb", ";#chi^{2}/ndf;Counts",  60, 0, 6}, "chisq_ndf", "accidental_weight");
@@ -122,7 +122,7 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto h1_ProtonZVertex = rdfProtonZVertex_cut.Filter(signal).Histo1D({"h1_ProtonZVertex", ";Proton Z vertex (cm);Counts",  75, 40, 115}, "proton_z_vertex", "accidental_weight");
 	auto h1_ProtonZVertex_sb = rdfProtonZVertex_cut.Filter(sideband).Histo1D({"h1_ProtonZVertex_sb", ";Proton Z-vertex (cm);Counts",  75, 40, 115}, "proton_z_vertex", "accidental_weight");
 
-	auto h1_Mpipi = rdfMpipi_cut.Histo1D({"h1_Mpipi", ";M(#pi^{+}#pi^{-});Counts",  160, 0.4, 0.56}, "mpipi", "accidental_weight");
+	auto h1_Mpipi = rdfMpipi_cut.Histo1D({"h1_Mpipi", ";M(#pi^{+}#pi^{-}) (GeV);Counts",  160, 0.4, 0.56}, "mpipi", "accidental_weight");
 
 	cout <<" "<< endl;
 	

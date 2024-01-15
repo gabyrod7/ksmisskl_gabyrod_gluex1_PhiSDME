@@ -44,6 +44,7 @@ void sys_UnusedShowers() {
 	line2->SetLineWidth(2);
 	line2->SetLineStyle(2);
 	line2->Draw();
+	line2->DrawLine(2, 0, 2, h1->GetMaximum());
 
 	// line2->DrawLine(3, 0, 3, h1->GetMaximum());
 
