@@ -34,7 +34,6 @@ void nominal_bootstrap() {
 	gStyle->SetTitleSize(0.05,"XY");
 	gStyle->SetTitleOffset(1.1,"X");
 	
-//	gStyle->SetMarkerStyle(8);
 	gStyle->SetMarkerSize(0.01);
 
 	TFile *inf[2];
@@ -44,15 +43,11 @@ void nominal_bootstrap() {
 	TGraphErrors *g[4][9];
 	vector<string> names = {"g_rho000", "g_rho100", "g_rho1m10", "g_rho111", "g_rho001", "g_rho101", "g_rho1m11", "g_rho102", "g_rho1m12"};
 
-	TCanvas *c = new TCanvas();
+	TCanvas *c = new TCanvas("c", "c", 420, 550);
 	c->Divide(3,3);
 	for(int i = 0; i < 2; i++)
 		for(int j = 0; j < 9; j++) {
 			g[i][j] = (TGraphErrors*)inf[i]->Get(names[j].c_str());
-
-//			c->cd(j+1);
-//			if(i == 0)	g[i][j]->Draw("AP");
-//			else		g[i][j]->Draw("P SAME");
 
 			if(i == 0)	set_marker(g[i][j], 20, 1);	// 
 			if(i == 1)	set_marker(g[i][j], 21, 2);	// 
@@ -99,8 +94,6 @@ void nominal_bootstrap() {
 	lg->SetNColumns(4);
 	lg->AddEntry(g[0][0], "Bootstrap", "lep");
 	lg->AddEntry(g[1][0], "Nominal", "lep");
-	//TLine *line = new TLine();
-	//lg->AddEntry(line, "SCHC", "l");
 
 	c->cd(2);
 	lg->Draw();
@@ -131,27 +124,3 @@ void draw_graph(TGraphErrors *g, const char* gtitle, float xmin, float xmax, flo
 		l->Draw();
 	}
 }
-
-
-// void draw_graph(TGraphErrors *g, const char* gtitle, float xmin, float xmax, float ymin, float ymax, bool hline, float hval) {
-// 	TH1 *frame = gPad->DrawFrame(xmin,ymin,xmax,ymax);
-// 	frame->GetXaxis()->SetTitle("Four Momentum Transfer t (GeV^{2})");
-
-// 	g->SetLineColor(0);
-// 	g->Draw( "P" );
-
-// 	g->GetYaxis()->SetRangeUser(ymin, ymax);
-// 	g->GetXaxis()->SetRangeUser(xmin,xmax);
-
-// 	TLatex t;
-// 	t.SetTextSize(0.12);
-// 	if(ymax < 0)
-// 		t.DrawLatex(0.7*xmax, ymax + (1-0.83)*(ymin - ymax), gtitle);
-// 	else
-// 		t.DrawLatex(0.7*xmax, ymin + 0.83*(ymax - ymin), gtitle);
-
-// 	if (hline) {
-// 		TLine* l = new TLine(xmin, hval, xmax, hval);
-// 		l->Draw();
-// 	}
-// }
