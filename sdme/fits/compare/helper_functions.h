@@ -86,13 +86,12 @@ TGraphErrors* calc_barlow(TGraphErrors *nominal, TGraphErrors *variation) {
 	return graph;
 }
 
-TGraph* calc_deviation(TGraphErrors *nominal, TGraphErrors *variation) {
+TGraph* calc_diff(TGraphErrors *nominal, TGraphErrors *variation) {
 	TGraph* graph = new TGraph(nominal->GetN());
-	double Delta, sigma;
+
 
 	for(int i = 0; i < nominal->GetN(); i++) {
-		Delta = nominal->GetPointY(i) - variation->GetPointY(i);
-		graph->SetPoint( i, nominal->GetPointX(i), Delta/variation->GetErrorY(i) );
+		graph->SetPoint( i, nominal->GetPointX(i), nominal->GetPointY(i) - variation->GetPointY(i) );
 	}
 
 	return graph;
