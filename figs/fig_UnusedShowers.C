@@ -29,7 +29,7 @@ void fig_UnusedShowers() {
 	TH1F *h3 = (TH1F*)h1->Clone();
 
 	// h2->Scale(h1->GetMaximum()/h2->GetMaximum());
-	h2->Scale(h1->GetBinContent(1)/h2->GetBinContent(1));
+	h2->Scale(h1->GetBinContent(4)/h2->GetBinContent(4));
 	h3->GetXaxis()->SetRangeUser(0.00, 3.00);
 
 	h1->SetMarkerColor(kBlack);
@@ -42,7 +42,7 @@ void fig_UnusedShowers() {
 	h1->SetMarkerSize(1.5);
 	h2->SetMarkerSize(2.0);
 
-	h1->GetYaxis()->SetRangeUser(0, 1.1*h1->GetMaximum());
+	h1->GetYaxis()->SetRangeUser(0, 1.1*h2->GetMaximum());
 
 	TCanvas *c = new TCanvas();
 	h1->Draw();
