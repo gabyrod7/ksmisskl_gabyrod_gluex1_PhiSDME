@@ -76,6 +76,7 @@ void ds_dt(string inf_dat, string inf_acc, string inf_gen, string inf_flux, stri
 	eff->Draw();
 	// eff->Write("efficiency");
 	c->SaveAs(("figs/"+outf+"_efficiency.pdf").c_str());
+	cout << "efficiency " << eff->Integral("width") << endl;
 
 	c = new TCanvas();
 	dat->Draw();
@@ -86,8 +87,14 @@ void ds_dt(string inf_dat, string inf_acc, string inf_gen, string inf_flux, stri
 	// t.DrawLatex(0.4, 1.1, "Br(#phi #rightarrow K_{S}K_{L}) = 0.34");
 	// t.DrawLatex(0.4, 0.98, "Br(K_{S} #rightarrow #pi^{+}#pi^{-}) = 0.69");
 
+	TF1 *f = new TF1("expo", "[0]*exp([1]*x)", 0.15, 1.0);
+	f->SetParameter(0, 1.0);
+	f->SetParameter(1, -4.5);
+
 	dat->Write();
-	// dat->Fit("expo");
+	dat->Fit(f);
+
+	cout << "chi2/ndf = " << f->GetChisquare() << "/" << f->GetNDF() << " = " << f->GetChisquare()/f->GetNDF() << endl;
 
 	double integral, error;
 
