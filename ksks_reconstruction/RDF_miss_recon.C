@@ -37,7 +37,7 @@ void RDF_miss_recon(Int_t n_threads,string inf_name, string opf_name, Bool_t sho
 
 	//3.2)Now apply cuts on the newly defined variables:
 	
-	auto rdf_cut = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.4 && mmiss < 0.6 && fs > 6 && chisq_ndf < 2 && mandel_t > 0.2 && mandel_t < 1.0");
+	auto rdf_cut = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15 && mandel_t < 1.0");
 	auto rdf_pippimpippim = rdf_cut.Filter("topology == 1");
 	auto rdf_pippimpi0pi0 = rdf_cut.Filter("topology == 2");
 	auto rdf_0 = rdf_cut.Filter("topology == 0");
@@ -52,6 +52,9 @@ void RDF_miss_recon(Int_t n_threads,string inf_name, string opf_name, Bool_t sho
 	//4.1) Histograms
 	auto im_kskl = rdf_cut.Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts", 50, 1.00, 2.00}, "mkskl", "Weight");
 	auto im_kskl2 = rdf_cut.Filter("num_unused_tracks == 0 && num_unused_showers < 3").Histo1D({"im_kskl_all_cuts", ";M(K_{S}K_{L});Counts", 50, 1.00, 2.00}, "mkskl", "accidental_weight");
+
+	auto h2_mkskl_ntracks = rdf_cut.Histo2D({"h2_mkskl_ntracks", ";M(K_{S}K_{L});Nunber of Unused Tracks", 50, 1.00, 2.00, 4, 0, 4}, "mkskl", "num_unused_tracks", "Weight");
+	auto h2_mkskl_showers = rdf_cut.Histo2D({"h2_mkskl_showers", ";M(K_{S}K_{L});Nunber of Unused Showers", 50, 1.00, 2.00, 10, 0, 10}, "mkskl", "num_unused_showers", "Weight");
 
 	auto NumUnusedTracks =  rdf_cut.Histo1D({"NumUnusedTracks", ";Number of Unused Tracks;Counts", 4, 0, 4}, "num_unused_tracks", "Weight");
 	auto NumUnusedShowers = rdf_cut.Histo1D({"NumUnusedShowers", ";Number of Unused Showers;Counts", 10, 0, 10}, "num_unused_showers", "Weight");
@@ -79,6 +82,9 @@ void RDF_miss_recon(Int_t n_threads,string inf_name, string opf_name, Bool_t sho
 
 	im_kskl->Write();
 	im_kskl2->Write();
+
+	h2_mkskl_ntracks->Write();
+	h2_mkskl_showers->Write();
 
 	NumUnusedTracks->Write();
 	NumUnusedShowers->Write();

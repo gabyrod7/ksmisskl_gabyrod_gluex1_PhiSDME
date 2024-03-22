@@ -1,11 +1,14 @@
+'''
+The reconstruction of KsKlp in our analysis has a missing Kl in the final state.
+To study the reconstruction efficiency of KsKs, I take MC used to study KsKsp 
+and reconstruct it as KsKlp by running hd_root with the appropriate KsKlp reaction filter.
+'''
+
 import os
 import glob
-import sys
 from multiprocessing import Pool
 
-#new_dir = 'ksks_D2_pref_m1525_w086_r2017_01_2M'
-#mc_dir = 'gen_amp_ksks_D2_pref_m1525_w086_r2017_01_2M'
-new_dir = 'trees'
+new_dir = '/d/grid15/gabyrod7/analysis/ksmisskl_gabyrod_gluex1_PhiSDME/ksks_reconstruction/trees'
 mc_dir = '/d/grid17/gabyrod7/MC/ksks/gen_amp_ksks_f_r2017_01_20M'
 
 def run_over_rest_files(run_number):
@@ -15,21 +18,20 @@ def run_over_rest_files(run_number):
 		os.mkdir(run_number)
 	os.chdir(run_number)
 
-	#fnames = glob.glob( '/d/grid17/gabyrod7/MC/ksks/%s/hddm/dana_rest_gen_amp_%s_???.hddm'%(mc_dir, run_number) )
 	fnames = glob.glob( mc_dir+'/hddm/dana_rest_gen_amp_'+run_number+'_???.hddm' )
 	print(fnames)
 
 	for fname in fnames:
-		cmd = "hd_root --nthreads=1 -PPLUGINS=ReactionFilter -PReaction1=1_14__m10_16_14 -PReaction1:Flags=B4_M16 %s"%(fname)
+		cmd = "hd_root --nthreads=1 -PPLUGINS=ReactionFilter -PReaction1=1_14__m10_16_14 -PReaction1:Flags=B3_M16 %s"%(fname)
 		print(cmd)
 		os.system(cmd)
 
-		cmd = 'mv tree_ksmisskl__B4_M16.root ../tree_ksmisskl__B4_M16_%s_%s.root' % (run_number, str(fname[-8:-5]))
+		cmd = 'mv tree_ksmisskl__B3_M16.root ../tree_ksmisskl__B3_M16_%s_%s.root' % (run_number, str(fname[-8:-5]))
 		print(cmd)
 		os.system(cmd)
 	
 if __name__ == '__main__':
-	processes=20 # number of process to spawn
+	processes=16 # number of process to spawn
 
 	fnames = glob.glob(mc_dir+'/hddm/dana_rest*.hddm')
 	tmp = [(tree.split('/')[-1])[18:24] for tree in fnames]
@@ -39,8 +41,9 @@ if __name__ == '__main__':
 	if os.path.exists(new_dir) == False:
 		os.mkdir(new_dir)
 
-	#for n in run_numbers:
-	#	print(n)
+	# for run_number in run_numbers:
+	# 	print(run_number)
+	# 	run_over_rest_files(run_number)
 	p=Pool(processes)
 	p.map(run_over_rest_files, run_numbers)
 	p.terminate()

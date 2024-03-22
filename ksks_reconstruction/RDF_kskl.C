@@ -37,7 +37,7 @@ void RDF_kskl(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_
 
 	//3.2)Now apply cuts on the newly defined variables:
 	
-	auto rdf_cut = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.4 && mmiss < 0.6 && fs > 6 && chisq_ndf < 2 && mandel_t > 0.2 && mandel_t < 1.0");
+	auto rdf_cut = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15 && mandel_t < 1.0");
 
 	cout <<"...done!"<< endl;
 	cout <<" "<< endl;
@@ -47,13 +47,16 @@ void RDF_kskl(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_
 	cout <<"Set up histograms..."<< endl;
 	
 	//4.1) Histograms
-	auto im_kskl = rdf_cut.Filter("num_unused_tracks == 0 && num_unused_showers < 3").Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts", 50, 1.00, 2.00}, "mkskl", "accidental_weight");
+	auto im_kskl = rdf_cut.Filter("num_unused_tracks == 0 && num_unused_showers < 3").Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
 
 	auto NumUnusedTracks = rdf_cut.Histo1D({"NumUnusedTracks", ";Number of Unused Tracks;Counts", 4, 0, 4}, "num_unused_tracks", "accidental_weight");
 	auto NumUnusedShowers = rdf_cut.Histo1D({"NumUnusedShowers", ";Number of Unused Showers;Counts", 10, 0, 10}, "num_unused_showers", "accidental_weight");
 
 	auto NumUnusedTracks_showercut = rdf_cut.Filter("num_unused_showers < 3").Histo1D({"NumUnusedTracks_showercut", ";Number of Unused Tracks;Counts", 4, 0, 4}, "num_unused_tracks", "accidental_weight");
 	auto NumUnusedShowers_trackscut = rdf_cut.Filter("num_unused_tracks == 0").Histo1D({"NumUnusedShowers_trackscut", ";Number of Unused Showers;Counts", 10, 0, 10}, "num_unused_showers", "accidental_weight");
+
+	auto h2_mkskl_NumUnusedTracks_showercut = rdf_cut.Filter("num_unused_showers < 3").Histo2D({"h2_mkskl_NumUnusedTracks_showercut", ";M(K_{S}_{L});Number of Unused Tracks;Counts", 10, 1.0, 2.0, 4, 0, 4}, "mkskl", "num_unused_tracks", "accidental_weight");
+	auto h2_mkskl_NumUnusedShowers_trackscut = rdf_cut.Filter("num_unused_tracks == 0").Histo2D({"h2_mkskl_NumUnusedShowers_trackscut", ";M(K_{S}_{L});Number of Unused Showers;Counts", 10, 1.0, 2.0, 10, 0, 10}, "mkskl", "num_unused_showers", "accidental_weight");
 
 	cout <<" "<< endl;
 	
@@ -67,6 +70,9 @@ void RDF_kskl(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_
 
 	NumUnusedTracks_showercut->Write();
 	NumUnusedShowers_trackscut->Write();
+
+	h2_mkskl_NumUnusedTracks_showercut->Write();
+	h2_mkskl_NumUnusedShowers_trackscut->Write();
 
 	out_file->Write();
 	out_file->Close();
