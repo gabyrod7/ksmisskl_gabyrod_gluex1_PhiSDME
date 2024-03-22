@@ -9,6 +9,8 @@ void set_marker(TGraphErrors *g, int style, int color) {
 
 	g->SetFillColorAlpha(color, 0.5);
 	g->SetFillStyle(3001);
+
+	g->SetTitle("");
 }
 
 void set_marker(TGraph *g, int style, int color) {
@@ -32,12 +34,12 @@ void set_line(TGraphErrors *g, int style, int color, double width) {
 	g->SetFillStyle(3001);
 }
 
-void draw_graph(TGraphErrors *g, const char* gtitle, float xmin, float xmax, float ymin, float ymax, bool hline, float hval) {
+void draw_graph(TGraphErrors *g, const char* gtitle, float xmin, float xmax, float ymin, float ymax, bool hline, float hval, string draw_opt = "a2") {
 	TH1 *frame = gPad->DrawFrame(xmin,ymin,xmax,ymax);
 	frame->GetXaxis()->SetTitle("Four Momentum Transfer t (GeV^{2})");
 
 	g->SetLineColor(0);
-	g->Draw( "a2" );
+	g->Draw(draw_opt.c_str());
 
 	g->GetYaxis()->SetRangeUser(ymin, ymax);
 	g->GetXaxis()->SetRangeUser(xmin,xmax);
@@ -103,7 +105,7 @@ TGraphErrors* calc_pull(TGraphErrors *nominal, TGraphErrors *variation) {
 
 	for(int i = 0; i < nominal->GetN(); i++) {
 		Delta = nominal->GetPointY(i) - variation->GetPointY(i);
-		sigma = variation->GetErrorY(i);
+		sigma = nominal->GetErrorY(i);
 		graph->SetPoint( i, nominal->GetPointX(i), Delta/sigma );
 		graph->SetPointError( i, nominal->GetErrorX(i), 0 );
 	}
