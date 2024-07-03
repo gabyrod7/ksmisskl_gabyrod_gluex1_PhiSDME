@@ -2,10 +2,10 @@ TCanvas* twoscales(TH1F* h1, TH1F* h2);
 
 void fig_mandelt_acc() {
 	gStyle->SetOptStat(0);
-	gStyle->SetPadTopMargin(0.03);
+	gStyle->SetPadTopMargin(0.07);
 	gStyle->SetPadRightMargin(0.09);
 	gStyle->SetPadBottomMargin(0.15);
-	gStyle->SetPadLeftMargin(0.14);
+	gStyle->SetPadLeftMargin(0.12);
 
 	gStyle->SetTitleBorderSize(0);
 		
@@ -15,7 +15,9 @@ void fig_mandelt_acc() {
 	
 	gStyle->SetTitleSize(0.06,"XY");
 	gStyle->SetTitleOffset(1.15,"X");
-	gStyle->SetTitleOffset(1.25,"Y");
+	gStyle->SetTitleOffset(1.05,"Y");
+
+	TGaxis::SetMaxDigits(3);
 	
 	gStyle->SetMarkerSize(1.5);
 	gROOT->ForceStyle();
