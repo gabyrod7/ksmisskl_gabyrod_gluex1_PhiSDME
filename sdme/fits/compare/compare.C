@@ -121,7 +121,7 @@ void compare() {
 
 void draw_graph(TGraphErrors *g, const char* gtitle, float xmin, float xmax, float ymin, float ymax, bool hline, float hval) {
 	TH1 *frame = gPad->DrawFrame(xmin,ymin,xmax,ymax);
-	frame->GetXaxis()->SetTitle("Four Momentum Transfer t (GeV^{2})");
+	frame->GetXaxis()->SetTitle("Four Momentum Transfer (GeV^{2})");
 
 	g->Draw( "P" );
 
