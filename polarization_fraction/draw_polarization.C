@@ -2,13 +2,13 @@ void draw_polarization() {
 	gStyle->SetPadTopMargin(0.03);
 	gStyle->SetPadRightMargin(0.01);
 	gStyle->SetPadBottomMargin(0.13);
-	gStyle->SetPadLeftMargin(0.1);
+	gStyle->SetPadLeftMargin(0.11);
 
 	gStyle->SetTitleBorderSize(0);
 	
 	gStyle->SetTitleFont(132);
 	gStyle->SetTitleSize(0.05);
-	gStyle->SetTitleOffset(1.2);
+	// gStyle->SetTitleOffset(1.2);
 	
 	gStyle->SetLabelSize(0.05,"XY");
 	gStyle->SetLabelOffset(0.01,"XY");  
@@ -45,15 +45,20 @@ void draw_polarization() {
             h->GetXaxis()->SetRangeUser(7, 11.4);
             h->GetYaxis()->SetRangeUser(0, 0.5);
 
+            h->GetXaxis()->SetTitle("E_{#gamma} (GeV)");
+            h->GetYaxis()->SetTitle("Polarization Fraction");
+            h->GetYaxis()->SetTitleOffset(0.8);
+
             h->Draw();
+
+            line1 = new TLine(8.2, 0, 8.2, h->GetMaximum());
+            line2 = new TLine(8.8, 0, 8.8, h->GetMaximum());
+            line1->Draw();
+            line2->Draw();
         }
         else    
             h->Draw("same");
 
-        line1 = new TLine(8.2, 0, 8.2, h->GetBinContent(h->GetXaxis()->FindBin(8.21)));
-        line2 = new TLine(8.8, 0, 8.8, h->GetBinContent(h->GetXaxis()->FindBin(8.79)));
-        line1->Draw();
-        line2->Draw();
 
         lg->AddEntry(h, htitles[hnames[i]].c_str(), "lep");
     }
