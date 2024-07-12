@@ -41,7 +41,7 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 				.Define("mpipp", "(pip_p4_kin + p_p4_kin).M()").Define("mpimp", "(pim_p4_kin + p_p4_kin).M()");
 
 	//3.2)Now apply cuts on the newly defined variables:
-	auto rdf_cut = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && p_z > 52 && p_z < 78 && mandel_t > 0.15 && mandel_t < 1.5");
+	auto rdf_cut = rdf_variables.Filter("mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && num_unused_tracks == 0 && num_unused_showers < 3 && p_z > 52 && p_z < 78 && mandel_t > 0.15 && mandel_t < 1.0");
 	auto rdf_cut_sb = rdf_variables.Filter("((mpipi > 0.44 && mpipi < 0.46) || (mpipi > 0.54 && mpipi < 0.56)) && mmiss > 0.3 && mmiss < 0.7 && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15 && mandel_t < 1.5 && num_unused_tracks == 0 && num_unused_showers < 3&& p_z > 52 && p_z < 78");
 	auto rdf_cut_mmiss = rdf_variables.Filter("p_z > 52 && p_z < 78 && mpipi > 0.48 && mpipi < 0.52 && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15&& mandel_t < 1.5 && num_unused_tracks == 0 && num_unused_showers < 3");
 	auto rdf_cut_mmiss_sb = rdf_variables.Filter("p_z > 52 && p_z < 78 && ((mpipi > 0.44 && mpipi < 0.46) || (mpipi > 0.54 && mpipi < 0.56)) && fs > 4 && chisq_ndf < 4 && mandel_t > 0.15&& mandel_t < 1.5 && num_unused_tracks == 0 && num_unused_showers < 3");
