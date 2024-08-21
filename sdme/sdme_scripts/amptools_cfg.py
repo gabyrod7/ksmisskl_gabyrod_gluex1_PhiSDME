@@ -17,6 +17,7 @@ class amptools_cfg:
 		self.pol_hist_location = '/d/grid15/gabyrod7/analysis/ksmisskl_gabyrod_gluex1_PhiSDME/polarization_fraction/'
 		self.costum_polInfo = 'polInfo.cfg'
 		self.amplitudes = ''
+		self.bkgAmplitude = ''
 
 	def set_data(self, data):
 		self.data = data
@@ -60,6 +61,9 @@ class amptools_cfg:
 
 	def set_amplitudes(self, amplitudes):
 		self.amplitudes = amplitudes
+  
+	def set_bkgAmplitude(self, bkgAmplitude):
+		self.bkgAmplitude = bkgAmplitude
 
 	# Write the polarization information to the config file for the case of fixed average polarization
 	def write_pol_average(self, f):
@@ -256,6 +260,17 @@ class amptools_cfg:
 			line = 'initialize {0}_{1}::sum_{1}::SDME cartesian {2:.2f} 0.0 real \n'.format(self.reaction_name, dat, random.uniform(0, 100))
 			f.write(line)
 
+	def write_uniformBkg(self, f):
+		f.write('\n# Background \n')
+
+		for dat in self.data:
+			f.write(f'sum {self.reaction_name}_{dat} sum_Background\n')
+		f.write('\n')
+  
+		for dat in self.data:
+			f.write(f'amplitude {self.reaction_name}_{dat}::sum_Background::Uniform Uniform\n')
+			f.write(f'initialize {self.reaction_name}_{dat}::sum_Background::Uniform cartesian 1 0 real\n')
+
 	def write_amptools_config(self):
 		print('Generating config file '+self.fname)
 		
@@ -289,10 +304,14 @@ class amptools_cfg:
 
 			write_amplitude = {'sdme' : self.write_sdme, 'twopsZlm' : self.write_twopsZlm}
 			write_amplitude[self.amplitudes](f)
+   
+			write_bkgAmplitude = {'uniform' : self.write_uniformBkg}
+			if self.bkgAmplitude != '':
+				write_bkgAmplitude[self.bkgAmplitude](f)
 
 if __name__ == '__main__':
-	z = [runPeriod+'_'+polAngle for runPeriod in ['sp17', 'sp18', 'fa18'] for polAngle in ['000', '045', '090', '135']]
-	x = amptools_cfg()
-	x.set_data(z)
-	x.set_particles('Beam Proton KShort KLong')
-	x.write_amptools_config()
+    z = [runPeriod+'_'+polAngle for runPeriod in ['sp17', 'sp18', 'fa18'] for polAngle in ['000', '045', '090', '135']]
+    x = amptools_cfg()
+    x.set_data(z)
+    x.set_particles('Beam Proton KShort KLong')
+    x.write_amptools_config()

@@ -8,7 +8,7 @@ low_t=0.15
 high_t=1.0
 fit_name=$nbins'bins_'$high_t't'
 plotter_name='phi1020_plotter'
-trees='/d/grid15/gabyrod7/analysis/ksmisskl_gabyrod_gluex1_PhiSDME/sdme/trees/sdme_dir/'
+trees='/d/grid15/gabyrod7/analysis/ksmisskl_gabyrod_gluex1_PhiSDME/sdme/fits/sdme_dir/trees/'
 
 # Check if we are on a GPU node at FSU
 if [ "$(hostname)" = 'scigrid52.local' ]
@@ -25,6 +25,7 @@ else
 	nprocess=$nbins
 fi
 
+setup_trees () { root -l -q -b setup_trees.C; }
 divide_data () { ./divideData.pl $fit_name $nbins $low_t $high_t $trees; }
 amptools_fit () { python3 fitsdme.py $fit_name $nbins $nfits $nprocess; }
 read_bootstrap () { 
@@ -61,12 +62,13 @@ variation () {
 	draw_variation
 }
 
-TEMP=`getopt -a -o n:dfrp --long nthread:divide,fit,read,draw,run_plotter,plotter,bootstrap,read_bootstrap,all,variation,draw_variation -- "$@"`
+TEMP=`getopt -a -o n:dfrpt --long nthread:divide,fit,read,draw,run_plotter,plotter,bootstrap,read_bootstrap,all,variation,draw_variation,setupTrees -- "$@"`
 eval set -- "$TEMP"
 
 while true; do
 	case "$1" in 
 		-n | --nthread) nprocess=$2; shift 2;;
+		-t | --setupTrees) setup_trees; shift;;
 		-d | --divide) divide_data; shift;;
 		-f | --fit) amptools_fit; shift;;
 		--read) read_amptools_fit; shift;;
@@ -75,7 +77,7 @@ while true; do
 		-p | --plotter) root -l -b -q "plotter.C(\"$fit_name\", 3, 3)"; shift;;
 		--bootstrap) bootstrap; shift;;
 		--read_bootstrap) read_bootstrap; shift;;
-		--all) divide_data; amptools_fit; draw_amptools_fit; run_plotter; shift;;
+		--all) setup_trees; divide_data; amptools_fit; draw_amptools_fit; run_plotter; shift;;
 		--variation) variation; shift;;
 		--draw_variation) draw_variation; shift;;
 		--) shift; break;;

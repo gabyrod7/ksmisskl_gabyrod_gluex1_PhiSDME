@@ -1,4 +1,4 @@
-void plot_variables(string fit_name = "", string var = "", int nx = 3, int ny = 3, vector<string> subdirs = {"REACTION_DATA_000", "REACTION_DATA_045", "REACTION_DATA_090", "REACTION_DATA_135"});
+void plot_variables(string fit_name = "", string var = "", int nx = 3, int ny = 3, vector<string> subdirs = {"REACTION_gluex1_000", "REACTION_gluex1_045", "REACTION_gluex1_090", "REACTION_gluex1_135"});
 
 void plotter(string fit_name = "9bins_1.50t", int nx = 3, int ny = 3) {
 	gStyle->SetPadTopMargin(0.08);
@@ -32,7 +32,7 @@ void plotter(string fit_name = "9bins_1.50t", int nx = 3, int ny = 3) {
 	plot_variables(fit_name, "t", nx, ny);
 }
 
-void plot_variables(string fit_name = "", string var = "", int nx = 3, int ny = 3, vector<string> subdirs = {"REACTION_DATA_000", "REACTION_DATA_045", "REACTION_DATA_090", "REACTION_DATA_135"}) {
+void plot_variables(string fit_name = "", string var = "", int nx = 3, int ny = 3, vector<string> subdirs = {"REACTION_gluex1_000", "REACTION_gluex1_045", "REACTION_gluex1_090", "REACTION_gluex1_135"}) {
 	gStyle->SetOptStat(0);
 
 	if(gSystem->AccessPathName("figs/"))
