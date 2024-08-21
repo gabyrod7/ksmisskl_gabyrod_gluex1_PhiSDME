@@ -44,10 +44,13 @@ bootstrap_*.log
 *.log
 *.fit
 *.ni
-*.txt
+# *.txt
 
 # Ignore tmp files
 *tmp*
 
 # Ignore directories
 sdme/fits/
+
+# Random stuff
+*old*
