@@ -4,6 +4,7 @@ void plot_slac_results(string filename = "slac_9.3GeV.csv") {
 	gStyle->SetMarkerStyle(0);
 	gStyle->SetMarkerSize(0.0);
 	gStyle->SetLineColor(kGreen+2);
+	gStyle->SetMarkerColor(kGreen+2);
 
 	FILE *fin = fopen(filename.c_str(),"r");
 	TFile *opf = TFile::Open("sdme_slac_9.3GeV.root", "RECREATE");
