@@ -64,6 +64,28 @@ double calc_vanHove_Y(double p1, double p2, double p3) {
 
 }
 
+double calc_tprime(TLorentzVector targetP4, TLorentzVector beamP4, TLorentzVector recoilP4, TLorentzVector mesonP4) {
+	TVector3 cm_boost_vect = (-1)*((targetP4 + beamP4).BoostVector()); // get 3-vector for boosting to the CM frame
+
+	double m1 = targetP4.M2();
+	double m2 = beamP4.M2();
+	double m3 = recoilP4.M2();
+	double m4 = mesonP4.M2();
+
+	double s = (beamP4 + targetP4).M2();
+
+	TLorentzVector p1cm(targetP4);
+	TLorentzVector p3cm(recoilP4);
+
+	p1cm.Boost(cm_boost_vect);
+	p3cm.Boost(cm_boost_vect);
+
+	double tmin = (m1-m2-m3+m4)*(m1-m2-m3+m4)/(4.*s) - (p1cm.Vect().Mag() - p3cm.Vect().Mag())*(p1cm.Vect().Mag() - p3cm.Vect().Mag());
+
+	double t = (targetP4 - recoilP4).M2();
+	return abs(t) - abs(tmin) ;
+}
+
 std::string set_cuts(std::map<std::string, std::string> cuts_list, std::pair<std::string, std::string> change_cut = {"", ""}) {
 	std::string cuts = "";
 
@@ -85,7 +107,7 @@ void DSelector_phi::Init(TTree *locTree)
 	// Init() will be called many times when running on PROOF (once per file to be processed).
 
 	//USERS: SET OUTPUT FILE NAME //can be overriden by user in PROOF
-	dOutputFileName = ""; //"" for none
+	dOutputFileName = "hist.root"; //"" for none
 	dOutputTreeFileName = "tree.root"; //"" for none
 	dFlatTreeFileName = "ftree.root"; //output flat tree (one combo per tree entry), "" for none
 	dFlatTreeName = "kskl"; //if blank, default name will be chosen
@@ -157,6 +179,8 @@ void DSelector_phi::Init(TTree *locTree)
 	//EXAMPLE MANUAL HISTOGRAMS:
 	dHist_MissingMassSquared = new TH1I("MissingMassSquared", ";Missing Mass Squared (GeV/c^{2})^{2}", 600, -0.06, 0.06);
 	dHist_BeamEnergy = new TH1I("BeamEnergy", ";Beam Energy (GeV)", 600, 0.0, 12.0);
+
+	h1_tmp = new TH1F("h1_tmp", ";tmp;Counts", 10, 0, 10);
 
 	h1_RFTime = new TH1F("h1_RFTime", ";|t_{Beam} _ t_{RF}| (ns);Counts / 0.1 ns", 280, -14, 14);
 	h1_ChiSqNdf = new TH1F("h1_ChiSqNdf", ";#chi^{2}/ndf;Counts", 60, 0, 6);
@@ -232,6 +256,7 @@ void DSelector_phi::Init(TTree *locTree)
 
 	dFlatTreeInterface->Create_Branch_Fundamental<double>("beam_energy");
 	dFlatTreeInterface->Create_Branch_Fundamental<double>("mandel_t");
+	dFlatTreeInterface->Create_Branch_Fundamental<double>("mandel_tp");
 	dFlatTreeInterface->Create_Branch_Fundamental<double>("ks_proper_time");
 
 	dFlatTreeInterface->Create_Branch_Fundamental<double>("flight_significance");
@@ -344,6 +369,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		//In general: Multiple PIDs, so multiple sets: Contain within a map
 		//Multiple combos: Contain maps within a set (easier, faster to search)
 	set<map<Particle_t, set<Int_t> > > locUsedSoFar_MissingMass;
+	set<map<Particle_t, set<Int_t> > > locUsedSoFar;
 
 	//INSERT USER ANALYSIS UNIQUENESS TRACKING HERE
 
@@ -363,6 +389,8 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 	/************************************************* LOOP OVER COMBOS *************************************************/
 
 	//Loop over combos
+	int count = 0;
+	vector<int> track_beamIDs = {};
 	for(UInt_t loc_i = 0; loc_i < Get_NumCombos(); ++loc_i)
 	{
 		//Set branch array indices for combo and all combo particles
@@ -444,6 +472,8 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		TLorentzVector locPrecoil_P4_Measured = locBeamP4_Measured + dTargetP4 - locProtonP4_Measured;
 
 		TLorentzVector locProtonX4 = dProtonWrapper->Get_X4();
+		TLorentzVector locPiMinusX4 = dPiMinusWrapper->Get_X4();
+		TLorentzVector locPiPlusX4 = dPiPlusWrapper->Get_X4();
 
 		TLorentzVector locProtonX4_Thrown;
 
@@ -472,6 +502,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		double vanHove_y = calc_vanHove_Y(ks_res.Pz(), kl_res.Pz(), recoil_res.Pz());
 
 		double t = -(locProtonP4 - dTargetP4).M2();
+		double tp = calc_tprime(dTargetP4, locBeamP4, locProtonP4, locKSKL_P4);
 
 		double mkskl = locKSKL_P4.M();
 		double mmiss = locMissingP4_Measured.M();
@@ -550,6 +581,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 
 		dFlatTreeInterface->Fill_Fundamental<double>("beam_energy", locBeamP4.E());
 		dFlatTreeInterface->Fill_Fundamental<double>("mandel_t", t);
+		dFlatTreeInterface->Fill_Fundamental<double>("mandel_tp", tp);
 		dFlatTreeInterface->Fill_Fundamental<double>("ks_proper_time", ks_proper_time);
 
 		dFlatTreeInterface->Fill_Fundamental<double>("flight_significance", locPathLengthSignificance);
@@ -609,8 +641,31 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		if(locBeamP4.E() > 8.2 && locBeamP4.E() < 8.8 && locKSKL_P4.M() < 1.04 && locKSKL_P4.M() > 1.005 
 			&& chisq_ndf < 4 && t < 1.0 && t > 0.15 && locPathLengthSignificance > 4 
 			&& mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7
-			&& dComboWrapper->Get_NumUnusedTracks() == 0 && dComboWrapper->Get_NumUnusedShowers() < 3)
-			h1_RFTime->Fill(locDeltaT_RF);
+			&& dComboWrapper->Get_NumUnusedTracks() == 0 && dComboWrapper->Get_NumUnusedShowers() < 3 && (fabs(locDeltaT_RF) < 2)) {
+				// count++;
+
+				cout << "Beam ID: " << locBeamID << endl;
+				cout << "Run: " << Get_RunNumber() << endl;
+				cout << "Event: " << Get_EventNumber() << endl;
+				cout << "Beam ID: " << locBeamID << endl;
+				cout << "count: " << count << endl << endl;
+
+				if(Get_EventNumber() == 2734601) {
+					cout << "KLong P4 (px,py,pz,e): " << locMissingKLongP4.X() << " " << locMissingKLongP4.Y() << " " << locMissingKLongP4.Z() << " " << locMissingKLongP4.T() << endl;
+					cout << "KShort P4 (px,py,pz,e): " << locDecayingKShortP4.X() << " " << locDecayingKShortP4.Y() << " " << locDecayingKShortP4.Z() << " " << locDecayingKShortP4.T() << endl;
+					cout << "Proton P4 (px,py,pz,e): " << locProtonP4.X() << " " << locProtonP4.Y() << " " << locProtonP4.Z() << " " << locProtonP4.T() << endl;
+					cout << "Pi+ P4 (px,py,pz,e): " << locPiPlusP4.X() << " " << locPiPlusP4.Y() << " " << locPiPlusP4.Z() << " " << locPiPlusP4.T() << endl;
+					cout << "Pi- P4 (px,py,pz,e): " << locPiMinusP4.X() << " " << locPiMinusP4.Y() << " " << locPiMinusP4.Z() << " " << locPiMinusP4.T() << endl;
+					cout << endl;
+					cout << "Proton X4 (px,py,pz,e): " << locProtonX4.X() << " " << locProtonX4.Y() << " " << locProtonX4.Z() << " " << locProtonX4.T() << endl;
+					cout << "Pi+ X4 (px,py,pz,e): " << locPiPlusX4.X() << " " << locPiPlusX4.Y() << " " << locPiPlusX4.Z() << " " << locPiPlusX4.T() << endl;
+					cout << "Pi- X4 (px,py,pz,e): " << locPiMinusX4.X() << " " << locPiMinusX4.Y() << " " << locPiMinusX4.Z() << " " << locPiMinusX4.T() << endl;
+					cout << endl;
+					cout << endl;
+				}
+
+				h1_RFTime->Fill(locDeltaT_RF);
+			}
 		if(locSkipNearestOutOfTimeBunch && abs(locRelBeamBucket)==1) { // Skip nearest out-of-time bunch: tails of in-time distribution also leak in
 			dComboWrapper->Set_IsComboCut(true); 
 			continue; 
@@ -623,6 +678,7 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 			dComboWrapper->Set_IsComboCut(true);
 			continue;
 		}
+
 
 		if(mmiss > 0.3 && mmiss < 0.7)
 			im_pipi->Fill(locDecayingKShortP4.M(), locHistAccidWeightFactor);
@@ -708,22 +764,46 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		//Missing Mass Squared
 		double locMissingMassSquared = locMissingP4_Measured.M2();
 
-		//Uniqueness tracking: Build the map of particles used for the missing mass
-			//For beam: Don't want to group with final-state photons. Instead use "Unknown" PID (not ideal, but it's easy).
-		map<Particle_t, set<Int_t> > locUsedThisCombo_MissingMass;
-		locUsedThisCombo_MissingMass[Unknown].insert(locBeamID); //beam
-		locUsedThisCombo_MissingMass[Proton].insert(locProtonTrackID);
-		locUsedThisCombo_MissingMass[PiMinus].insert(locPiMinusTrackID);
-		locUsedThisCombo_MissingMass[PiPlus].insert(locPiPlusTrackID);
+		// //Uniqueness tracking: Build the map of particles used for the missing mass
+		// 	//For beam: Don't want to group with final-state photons. Instead use "Unknown" PID (not ideal, but it's easy).
+		// map<Particle_t, set<Int_t> > locUsedThisCombo_MissingMass;
+		// // locUsedThisCombo_MissingMass[Unknown].insert(locBeamID); //beam
+		// locUsedThisCombo_MissingMass[Proton].insert(locProtonTrackID);
+		// locUsedThisCombo_MissingMass[PiMinus].insert(locPiMinusTrackID);
+		// locUsedThisCombo_MissingMass[PiPlus].insert(locPiPlusTrackID);
+
+		// //compare to what's been used so far
+		// if(locUsedSoFar_MissingMass.find(locUsedThisCombo_MissingMass) == locUsedSoFar_MissingMass.end())
+		// {
+		// 	//unique missing mass combo: histogram it, and register this combo of particles
+		// 	dHist_MissingMassSquared->Fill(locMissingMassSquared); // Fills in-time and out-of-time beam photon combos
+		// 	//dHist_MissingMassSquared->Fill(locMissingMassSquared,locHistAccidWeightFactor); // Alternate version with accidental subtraction
+
+		// 	if(locBeamP4.E() > 8.2 && locBeamP4.E() < 8.8 && locKSKL_P4.M() < 1.04 && locKSKL_P4.M() > 1.005 
+		// 		&& chisq_ndf < 4 && t < 1.0 && t > 0.15 && locPathLengthSignificance > 4 
+		// 		&& mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7
+		// 		&& dComboWrapper->Get_NumUnusedTracks() == 0 && dComboWrapper->Get_NumUnusedShowers() < 3 && (fabs(locDeltaT_RF) < 2))
+		// 			count++;
+					
+		// 	locUsedSoFar_MissingMass.insert(locUsedThisCombo_MissingMass);
+		// }
+
+		map<Particle_t, set<Int_t> > locUsedThisCombo;
+		// locUsedThisCombo[Unknown].insert(locBeamID); //beam
+		locUsedThisCombo[Proton].insert(locProtonTrackID);
+		locUsedThisCombo[PiMinus].insert(locPiMinusTrackID);
+		locUsedThisCombo[PiPlus].insert(locPiPlusTrackID);
 
 		//compare to what's been used so far
-		if(locUsedSoFar_MissingMass.find(locUsedThisCombo_MissingMass) == locUsedSoFar_MissingMass.end())
+		if(locUsedSoFar.find(locUsedThisCombo) == locUsedSoFar.end())
 		{
-			//unique missing mass combo: histogram it, and register this combo of particles
-			dHist_MissingMassSquared->Fill(locMissingMassSquared); // Fills in-time and out-of-time beam photon combos
-			//dHist_MissingMassSquared->Fill(locMissingMassSquared,locHistAccidWeightFactor); // Alternate version with accidental subtraction
-
-			locUsedSoFar_MissingMass.insert(locUsedThisCombo_MissingMass);
+			if(locBeamP4.E() > 8.2 && locBeamP4.E() < 8.8 && locKSKL_P4.M() < 1.04 && locKSKL_P4.M() > 1.005 
+				&& chisq_ndf < 4 && t < 1.0 && t > 0.15 && locPathLengthSignificance > 4 
+				&& mpipi > 0.48 && mpipi < 0.52 && mmiss > 0.3 && mmiss < 0.7
+				&& dComboWrapper->Get_NumUnusedTracks() == 0 && dComboWrapper->Get_NumUnusedShowers() < 3 && (fabs(locDeltaT_RF) < 2))
+					count++;
+					
+			locUsedSoFar.insert(locUsedThisCombo);
 		}
 
 		//E.g. Cut
@@ -754,6 +834,8 @@ Bool_t DSelector_phi::Process(Long64_t locEntry)
 		//FILL FLAT TREE
 		//Fill_FlatTree(); //for the active combo
 	} // end of combo loop
+
+	h1_tmp->Fill(count);
 
 	//FILL HISTOGRAMS: Num combos / events surviving actions
 	Fill_NumCombosSurvivedHists();

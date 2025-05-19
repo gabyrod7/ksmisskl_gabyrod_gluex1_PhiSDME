@@ -65,6 +65,8 @@ class DSelector_phi : public DSelector
 		TH1I* dHist_MissingMassSquared;
 		TH1I* dHist_BeamEnergy;
 
+		TH1F* h1_tmp;
+
 		TH1F *h1_RFTime;
 		TH1F *h1_ChiSqNdf;
 		TH1F *h1_FS;
