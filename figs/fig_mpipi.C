@@ -28,19 +28,23 @@ void fig_mpipi() {
 	TH1F *h3 = (TH1F*)h1->Clone();
 
 	h2->Scale(h1->GetMaximum()/h2->GetMaximum());
-	h3->GetXaxis()->SetRangeUser(0.48, 0.52);
+	h3->GetXaxis()->SetRangeUser(0.4805, 0.52);
 
 	h1->SetMarkerColor(kBlack);
-	h2->SetMarkerColor(kRed);
-	h3->SetFillColorAlpha(kGreen, 0.2);
+	h2->SetMarkerColor(kBlue);
+	// h3->SetFillColorAlpha(kGreen, 0.2);
+	h3->SetFillColorAlpha(kGray+1, 0.5);
 
 	h1->SetMarkerStyle(8);
-	h2->SetMarkerStyle(35);
+	h2->SetMarkerStyle(25);
+
+	h1->SetLineColor(kBlack);
+	h2->SetLineColor(kBlue);
 
 	h1->GetYaxis()->SetRangeUser(0, 1.1*h1->GetMaximum());
 
 	char title[100];
-	sprintf(title, "Counts / %.1f (MeV/c^{2})", h1->GetBinWidth(1)*1000);
+	sprintf(title, "Counts / %.0f MeV", h1->GetBinWidth(1)*1000);
 	h1->GetYaxis()->SetTitle(title);
 	h1->GetXaxis()->SetTitle("M(#pi^{+}#pi^{-}) (GeV/c^{2})");
 
@@ -63,10 +67,10 @@ void fig_mpipi() {
 
 	TLegend *leg = new TLegend(0.20, 0.6, 0.54, 0.87);
 	leg->SetTextSize(0.055);
-	leg->AddEntry(h1, "GlueX-I Data", "lep");
+	leg->AddEntry(h1, "GlueX Data", "lep");
 	leg->AddEntry(h2, "Simulated Data", "lep");
 	leg->AddEntry(line, "Signal Region", "l");
-	leg->Draw();
+	// leg->Draw();
 
 	c->SaveAs("figs/mpipi.pdf");
 

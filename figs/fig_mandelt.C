@@ -1,6 +1,6 @@
 void fig_mandelt() {
 	gStyle->SetOptStat(0);
-	gStyle->SetPadTopMargin(0.03);
+	gStyle->SetPadTopMargin(0.07);
 	gStyle->SetPadRightMargin(0.03);
 	gStyle->SetPadBottomMargin(0.15);
 	gStyle->SetPadLeftMargin(0.15);
@@ -26,26 +26,37 @@ void fig_mandelt() {
 	TH1F *h2 = (TH1F*)inf2->Get("h1_mandelt");
 
 	h1->Add(h1_sb, -1);
+	TH1F *h3 = (TH1F*)h1->Clone();
 
 	h2->Scale(h1->GetMaximum()/h2->GetMaximum());
+	h3->GetXaxis()->SetRangeUser(0.15, 1.00);
 
 	h1->SetMarkerColor(kBlack);
-	h2->SetMarkerColor(kRed);
+	h2->SetMarkerColor(kBlue);
+	h3->SetFillColorAlpha(kGray+1, 0.5);
 
 	h1->SetMarkerStyle(8);
-	h2->SetMarkerStyle(35);
+	h2->SetMarkerStyle(25);
 
-	h1->GetYaxis()->SetRangeUser(10, 10*h1->GetMaximum());
+	// h1->GetYaxis()->SetRangeUser(10, 10*h1->GetMaximum());
+	h1->GetYaxis()->SetRangeUser(10, 1000000);
 
 	char title[100];
-	sprintf(title, "Counts / %.2f (GeV^{2}/c^{2})", h1->GetBinWidth(1));
+	sprintf(title, "Counts / %.2f GeV^{2}", h1->GetBinWidth(1));
 	h1->GetYaxis()->SetTitle(title);
-	h1->GetXaxis()->SetTitle("Squared 4-Momentum Transfer -t (GeV^{2}/c^{2})");
+	// h1->GetXaxis()->SetTitle("Squared 4-Momentum Transfer #minust (GeV^{2})");
+	h1->GetXaxis()->SetTitle("#minust (GeV^{2})");
 
 	TCanvas *c = new TCanvas();
 	c->SetLogy();
 	h1->Draw();
+	h3->Draw("SAME HIST");
 	h2->Draw("SAME");
+
+	TLine *line = new TLine(0.3, 0, 0.7, 0.5*h1->GetMaximum());
+	line->SetLineWidth(2);
+	line->DrawLine(0.15, 0, 0.15, 0.5*h1->GetMaximum());
+	line->DrawLine(1.00, 0, 1.00, 0.5*h1->GetMaximum());
 
 	// TLatex t;
 	// t.SetTextSize(0.08);
@@ -55,15 +66,11 @@ void fig_mandelt() {
 
 	TLegend *leg = new TLegend(0.63, 0.7, 0.97, 0.97);
 	leg->SetTextSize(0.055);
-	leg->AddEntry(h1, "GlueX-I Data", "lep");
+	leg->AddEntry(h1, "GlueX Data", "lep");
 	leg->AddEntry(h2, "Simulated Data", "lep");
-	leg->Draw();
+	// leg->Draw();
 
 	c->SaveAs("figs/mandel_t.pdf");
-
-	TLine *line = new TLine(0.15, 0, 0.15, h1->GetMaximum());
-	line->SetLineWidth(2);
-	line->Draw();
 
 	// c = new TCanvas();
 	// TRatioPlot *rp = new TRatioPlot(h1, h2);

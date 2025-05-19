@@ -53,5 +53,8 @@ void fig_FlightSignificance() {
 	t.SetTextColor(kRed);
 	t.DrawLatex(6.5, 0.73*h1->GetMaximum(), "Monte Carlo");
 
+	TLine *line = new TLine(4, 0, 4, h1->GetMaximum());
+	line->Draw();
+
 	c->SaveAs("figs/flight_significance.pdf");
 }

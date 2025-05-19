@@ -35,20 +35,24 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	//3.1) Define some variables first:
 	auto rdf_variables = rdf.Define("fs", "flight_significance").Define("misse", "missing_p4_meas.E()").Define("mmiss", "missing_mass")
 				.Define("mksp", "(ks_p4 + p_p4_kin).M()").Define("mklp", "(kl_p4 + p_p4_kin).M()")
+				.Define("mksp2", "(ks_p4 + p_p4_kin).M2()").Define("mklp2", "(kl_p4 + p_p4_kin).M2()")
 				.Define("ks_phi", "ks_p4_cm.Phi()").Define("p_z", "p_x4_kin.Z()")
 				.Define("ksphi", "ks_p4.Phi()*180/3.14159265359")
 				.Define("mpipp", "(pip_p4_kin + p_p4_kin).M()").Define("mpimp", "(pim_p4_kin + p_p4_kin).M()");
 
 	// 3.2) Make list of nominal cuts
-	std::map<std::string, std::string> cuts_list = {{"mkskl", "mkskl > 1.005 && mkskl < 1.04"},
-													{"mmiss", "missing_mass > 0.3 && missing_mass < 0.7"},
-													{"mandel_t", "mandel_t < 1.5"},
-													{"flight_significance", "flight_significance > 4"},
-													{"chisq", "chisq_ndf < 4"},
-													{"ntracks", "num_unused_tracks == 0"},
-													{"nshowers", "num_unused_showers < 3"},
-													{"proton_z_vertex", "proton_z_vertex > 52 && proton_z_vertex < 78"},
-													{"beam_energy", "beam_energy > 8.2 && beam_energy < 8.8"}};
+	std::map<std::string, std::string> cuts_list = {
+		{"mkskl", "mkskl > 1.005 && mkskl < 1.04"},
+		{"mmiss", "missing_mass > 0.3 && missing_mass < 0.7"},
+		{"mandel_t", "mandel_t < 1.5"},
+		{"flight_significance", "flight_significance > 4"},
+		{"chisq", "chisq_ndf < 4"},
+		{"ntracks", "num_unused_tracks == 0"},
+		{"nshowers", "num_unused_showers < 3"},
+		{"proton_z_vertex", "proton_z_vertex > 52 && proton_z_vertex < 78"},
+		{"beam_energy", "beam_energy > 8.2 && beam_energy < 8.8"}
+	};
+
 	string cuts = "";
 	string signal = "mpipi > 0.48 && mpipi < 0.52";
 	string sideband = "mpipi > 0.42 && mpipi < 0.46";
@@ -86,14 +90,16 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	cout <<"Set up histograms..."<< endl;
 	
 	//4.1) Histograms
-	auto im_kskl = rdf_cut.Filter(signal).Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
-	auto im_kskl_sb = rdf_cut.Filter(sideband).Histo1D({"im_kskl_sb", ";M(K_{S}K_{L});Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
+	// auto im_kskl = rdf_cut.Filter(signal).Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
+	// auto im_kskl_sb = rdf_cut.Filter(sideband).Histo1D({"im_kskl_sb", ";M(K_{S}K_{L});Counts", 110, 0.99, 1.10}, "mkskl", "accidental_weight");
+	auto im_kskl = rdf_cut.Filter(signal).Histo1D({"im_kskl", ";M(K_{S}K_{L});Counts", 130, 0.97, 1.10}, "mkskl", "accidental_weight");
+	auto im_kskl_sb = rdf_cut.Filter(sideband).Histo1D({"im_kskl_sb", ";M(K_{S}K_{L});Counts", 130, 0.97, 1.10}, "mkskl", "accidental_weight");
 
-	auto im_ksp = rdf_cut.Filter(signal).Histo1D({"im_ksp", ";M(K_{S}p);Counts", 90, 2.50, 3.4}, "mksp", "accidental_weight");
-	auto im_ksp_sb = rdf_cut.Filter(sideband).Histo1D({"im_ksp_sb", ";M(K_{S}p);Counts", 90, 2.50, 3.4}, "mksp", "accidental_weight");
+	auto im_ksp = rdf_cut.Filter(signal).Histo1D({"im_ksp", ";M(K_{S}p);Counts", 140, 2.2, 3.6}, "mksp", "accidental_weight");
+	auto im_ksp_sb = rdf_cut.Filter(sideband).Histo1D({"im_ksp_sb", ";M(K_{S}p);Counts", 140, 2.2, 3.6}, "mksp", "accidental_weight");
 
-	auto im_klp = rdf_cut.Filter(signal).Histo1D({"im_klp", ";M(K_{L}p);Counts", 90, 2.50, 3.4}, "mklp", "accidental_weight");
-	auto im_klp_sb = rdf_cut.Filter(sideband).Histo1D({"im_klp_sb", ";M(K_{L}p);Counts", 90, 2.50, 3.4}, "mklp", "accidental_weight");
+	auto im_klp = rdf_cut.Filter(signal).Histo1D({"im_klp", ";M(K_{L}p);Counts", 140, 2.2, 3.6}, "mklp", "accidental_weight");
+	auto im_klp_sb = rdf_cut.Filter(sideband).Histo1D({"im_klp_sb", ";M(K_{L}p);Counts", 140, 2.2, 3.6}, "mklp", "accidental_weight");
 
 	auto im_pipp = rdf_cut.Filter(signal).Histo1D({"im_pipp", ";M(#pi^{+}p);Counts", 115, 1.10, 3.40}, "mpipp", "accidental_weight");
 	auto im_pipp_sb = rdf_cut.Filter(sideband).Histo1D({"im_pipp_sb", ";M(#pi^{+}p);Counts", 115, 1.10, 3.40}, "mpipp", "accidental_weight");
@@ -101,8 +107,10 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto im_pimp = rdf_cut.Filter(signal).Histo1D({"im_pimp", ";M(#pi^{-}p);Counts", 115, 1.10, 3.40}, "mpimp", "accidental_weight");
 	auto im_pimp_sb = rdf_cut.Filter(sideband).Histo1D({"im_pimp_sb", ";M(#pi^{-}p);Counts", 115, 1.10, 3.40}, "mpimp", "accidental_weight");
 
-	auto h1_mandelt = rdf_cut.Filter(signal).Histo1D({"h1_mandelt", ";-t (GeV^{2});Counts", 75, 0, 1.5}, "mandel_t", "accidental_weight");
-	auto h1_mandelt_sb = rdf_cut.Filter(sideband).Histo1D({"h1_mandelt_sb", ";-t (GeV^{2});Counts", 75, 0, 1.5}, "mandel_t", "accidental_weight");
+	// auto h1_mandelt = rdf_cut.Filter(signal).Histo1D({"h1_mandelt", ";-t (GeV^{2});Counts", 150, 0, 1.5}, "mandel_t", "accidental_weight");
+	// auto h1_mandelt_sb = rdf_cut.Filter(sideband).Histo1D({"h1_mandelt_sb", ";-t (GeV^{2});Counts", 150, 0, 1.5}, "mandel_t", "accidental_weight");
+	auto h1_mandelt = rdf_cut.Filter(signal).Histo1D({"h1_mandelt", ";-t (GeV^{2});Counts", 30, 0, 1.5}, "mandel_t", "accidental_weight");
+	auto h1_mandelt_sb = rdf_cut.Filter(sideband).Histo1D({"h1_mandelt_sb", ";-t (GeV^{2});Counts", 30, 0, 1.5}, "mandel_t", "accidental_weight");
 
 	auto h1_MissingMass = rdfMissingMass_cut.Filter(signal).Histo1D({"h1_MissingMass", ";Missing Mass (GeV);Counts",  100, 0, 1}, "missing_mass", "accidental_weight");
 	auto h1_MissingMass_sb = rdfMissingMass_cut.Filter(sideband).Histo1D({"h1_MissingMass_sb", ";Missing Mass (GeV);Counts",  100, 0, 1}, "missing_mass", "accidental_weight");
@@ -123,6 +131,9 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	auto h1_ProtonZVertex_sb = rdfProtonZVertex_cut.Filter(sideband).Histo1D({"h1_ProtonZVertex_sb", ";Proton Z-vertex (cm);Counts",  75, 40, 115}, "proton_z_vertex", "accidental_weight");
 
 	auto h1_Mpipi = rdfMpipi_cut.Histo1D({"h1_Mpipi", ";M(#pi^{+}#pi^{-}) (GeV);Counts",  160, 0.4, 0.56}, "mpipi", "accidental_weight");
+
+	auto dalitz_ksp_klp = rdf_cut.Filter(signal).Histo2D({"dalitz_ksp_klp", ";M^{2}(K_{S}p) (GeV^{2});M^{2}(K_{L}p) (GeV^{2});Counts", 90, 4, 13, 90, 4, 13}, "mksp2", "mklp2", "accidental_weight");
+	auto dalitz_ksp_klp_sb = rdf_cut.Filter(sideband).Histo2D({"dalitz_ksp_klp_sb", ";M^{2}(K_{S}p) (GeV^{2});M^{2}(K_{L}p) (GeV^{2});Counts", 90, 4, 13, 90, 5.7, 13}, "mksp2", "mklp2", "accidental_weight");
 
 	cout <<" "<< endl;
 	
@@ -166,6 +177,16 @@ void RDF_ana(Int_t n_threads,string inf_name, string opf_name, Bool_t show_cut_r
 	h1_ProtonZVertex_sb->Write();
 
 	h1_Mpipi->Write();
+
+	dalitz_ksp_klp->Write();
+	dalitz_ksp_klp_sb->Write();
+
+	// plot the pipi mass with no flight significance cut
+	auto im_pipi = rdfFlightSignificance_cut.Histo1D({"im_pipi", ";M(#pi#pi);Counts", 100, 0.3, 0.7}, "mpipi", "accidental_weight");
+	// plot pipi mass with no chi^2 cut
+	auto im_pipi_chi = rdfChiSqNdf_cut.Histo1D({"im_pipi_chi", ";M(#pi#pi);Counts", 100, 0.3, 0.7}, "mpipi", "accidental_weight");
+	im_pipi->Write();
+	im_pipi_chi->Write();
 
 	out_file->Write();
 	out_file->Close();

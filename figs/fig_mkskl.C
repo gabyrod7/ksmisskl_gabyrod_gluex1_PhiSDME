@@ -37,24 +37,34 @@ void fig_mkskl() {
 	h3->GetXaxis()->SetRangeUser(1.005, 1.04);
 
 	h1->SetMarkerColor(kBlack);
-	h2->SetMarkerColor(kRed);
-	h3->SetFillColorAlpha(kGreen, 0.2);
+	h2->SetMarkerColor(kBlue);
+	// h3->SetFillColorAlpha(kGreen, 0.2);
+	h3->SetFillColorAlpha(kGray+1, 0.5);
 
 	h1->SetMarkerStyle(8);
-	h2->SetMarkerStyle(35);
+	h2->SetMarkerStyle(25);
+
+	h1->SetLineColor(kBlack);
+	h2->SetLineColor(kBlue);
 
 	h1->GetYaxis()->SetRangeUser(0, 1.1*h1->GetMaximum());
 
 	char title[100];
-	sprintf(title, "Counts / %.1f (MeV/c^{2})", h1->GetBinWidth(1)*1000);
+	sprintf(title, "Counts / %.0f MeV", h1->GetBinWidth(1)*1000);
 	h1->GetYaxis()->SetTitle(title);
-	h1->GetXaxis()->SetTitle("M(K_{S}K_{L}) (GeV/c^{2})");
+	h1->GetXaxis()->SetTitle("M(K^{0}_{S}K^{0}_{L}) (GeV)");
 
 	TCanvas *c = new TCanvas();
 	h1->Draw();
 	h3->Draw("SAME HIST");
 	h1->Draw("SAME");
 	h2->Draw("SAME");
+
+
+	TLine *line = new TLine(0.3, 0, 0.7, 0.5*h1->GetMaximum());
+	line->SetLineWidth(2);
+	line->DrawLine(1.005, 0, 1.005, 0.5*h1->GetMaximum());
+	line->DrawLine(1.04, 0, 1.04, 0.5*h1->GetMaximum());
 
 	// TLatex t;
 	// t.SetTextSize(0.08);
@@ -64,8 +74,9 @@ void fig_mkskl() {
 
 	TLegend *leg = new TLegend(0.63, 0.66, 0.97, 0.93);
 	leg->SetTextSize(0.055);
-	leg->AddEntry(h1, "GlueX-I Data", "lep");
+	leg->AddEntry(h1, "GlueX Data", "lep");
 	leg->AddEntry(h2, "Simulated Data", "lep");
+	// leg->AddEntry(line, "Signal Region", "l");
 	leg->Draw();
 
 	c->SaveAs("figs/mkskl.pdf");
